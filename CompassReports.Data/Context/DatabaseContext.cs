@@ -6,7 +6,7 @@ namespace CompassReports.Data.Context
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext() : base("connStr") { }
+        public DatabaseContext() : base("CompassReports.Connection") { }
 
         // Define Db sets.
         public virtual DbSet<AssessmentDimension> AssessmentDimensions { get; set; }

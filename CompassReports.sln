@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompassReports.Web", "CompassReports.Web\CompassReports.Web.csproj", "{66013134-BC6D-40BD-8B51-90456D6ADD2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompassReports.Web.Tests", "CompassReports.Web.Tests\CompassReports.Web.Tests.csproj", "{47EFBA67-12DC-4141-AFE6-436F3E2A09DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompassReports.Data", "CompassReports.Data\CompassReports.Data.csproj", "{6FC00796-F511-4059-B705-5ECD0EDEB4BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompassReports.Resources", "CompassReports.Resources\CompassReports.Resources.csproj", "{90A71709-01B2-4679-B9A1-CEAB0C06CC54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66013134-BC6D-40BD-8B51-90456D6ADD2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66013134-BC6D-40BD-8B51-90456D6ADD2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66013134-BC6D-40BD-8B51-90456D6ADD2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66013134-BC6D-40BD-8B51-90456D6ADD2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47EFBA67-12DC-4141-AFE6-436F3E2A09DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47EFBA67-12DC-4141-AFE6-436F3E2A09DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47EFBA67-12DC-4141-AFE6-436F3E2A09DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47EFBA67-12DC-4141-AFE6-436F3E2A09DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC00796-F511-4059-B705-5ECD0EDEB4BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC00796-F511-4059-B705-5ECD0EDEB4BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC00796-F511-4059-B705-5ECD0EDEB4BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC00796-F511-4059-B705-5ECD0EDEB4BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A71709-01B2-4679-B9A1-CEAB0C06CC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A71709-01B2-4679-B9A1-CEAB0C06CC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A71709-01B2-4679-B9A1-CEAB0C06CC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A71709-01B2-4679-B9A1-CEAB0C06CC54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

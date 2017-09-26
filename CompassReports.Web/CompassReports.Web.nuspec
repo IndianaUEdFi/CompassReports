@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>CompassReports.Web</id>
+        <version>1.0.0</version>
+        <description>CompassReports.Web</description>
+        <authors>MSD Wayne</authors>
+    </metadata>
+	<files>
+	  <file src="bin\**" target="bin" />
+    <file src="index.html" target="index.html" />
+    <file src="Web.config" target="Web.config" />
+  </files>
+</package>

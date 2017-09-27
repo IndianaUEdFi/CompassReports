@@ -1,0 +1,81 @@
+﻿html, body{
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.section{ height: 100%;}
+.locked-sidebar { background-color: #FAFAFA;}
+
+.side-button-active{
+  background-color: rgb(0,62,105);
+}
+
+.side-icon-active{
+  color: #FFFFFF;
+}
+
+.side-icon-inactive{
+  color: #000000;
+}
+
+.md-button.sidebar-button{
+  min-width: 2px;
+  max-width: 100%;
+  min-height: 2px;
+  max-height: 50px;
+  margin-left: 12px;
+  width: 51px;
+  padding-left: 0px;
+}
+
+md-sidenav.locked-sidebar, 
+md-sidenav.md-locked-open.locked-sidebar, 
+md-sidenav.md-closed.md-locked-open-add-active.locked-sidebar {
+    min-width: 4em !important;
+    width: 85vw !important;
+    max-width: 4em !important;
+    overflow-x: hidden;
+}
+
+md-sidenav.toggleable-sidebar, 
+md-sidenav.md-locked-open.toggleable-sidebar, 
+md-sidenav.md-closed.md-locked-open-add-active.toggleable-sidebar {
+    min-width: 0em !important;
+    width: 85vw !important;
+    max-width: 20em !important;
+} 
+md-sidenav.toggleable-sidebar {
+    position: relative !important;
+    left: 0;   
+    z-index: 0   
+}
+
+md-sidenav.toggleable-sidebar.right{
+    left: 0;
+}
+
+md-sidenav.toggleable-sidebar.left {
+    left: -285px;
+    -ms-opacity: 0;
+    opacity: 0;
+    width: 0px !important;
+}
+
+
+md-sidenav.toggleable-sidebar.left-add, .left-remove {
+    -ms-transition: all ease-in-out 0.5s;
+    -o-transition: all ease-in-out 0.5s;
+    -webkit-transition: all ease-in-out 0.5s;
+    transition: all ease-in-out 0.5s;
+}
+
+
+md-sidenav.toggleable-sidebar.right-add, .right-remove {
+    -ms-transition: all ease-in-out 0.5s;
+    -o-transition: all ease-in-out 0.5s;
+    -webkit-transition: all ease-in-out 0.5s;
+    transition: all ease-in-out 0.5s;
+}

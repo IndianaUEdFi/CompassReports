@@ -1,10 +1,25 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
-    <title>CompassReports</title>
-	<meta charset="utf-8" />
+    <title>{{title}}</title>
+    <meta charset="utf-8" />
+    
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-animate.min.js"></script>
+    <script src="Scripts/angular-aria.min.js"></script>
+    <script src="Scripts/angular-material.min.js"></script>
+    <script src="Scripts/angular-material-sidemenu.min.js"></script>
+    <script src="Scripts/angular-sanitize.min.js"></script>
+    <script src="Scripts/angular-ui-router.min.js"></script>
+    <script src="Scripts/client.js"></script>
+
+    <link href="Content/angular-material.min.css" rel="stylesheet" >
+    <link href="Content/angular-material-sidemenu.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="Content/site.css" rel="stylesheet">
+
 </head>
-<body>
-    <h1>Welcome to Compass Reports</h1>
+<body md-theme="compass-reports-theme" ng-cloak ng-controller="app" layout="column" flex>
+<div id="main" ui-view="content" layout="column" flex></div>
 </body>
 </html>

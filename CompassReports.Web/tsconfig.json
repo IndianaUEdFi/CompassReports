@@ -1,0 +1,19 @@
+﻿{
+  "version": "2.2.0",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "amd",
+    "sourceMap": true,
+    "removeComments": false,
+    "noImplicitAny": false,
+    "outFile": "./Scripts/client.js",
+    "typeRoots": [ "./Typings" ]
+  },
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules",
+    "wwwroot/lib",
+    "bin",
+    "obj"
+  ]
+}

@@ -1,0 +1,64 @@
+﻿<md-toolbar>
+    <div class="md-toolbar-tools">
+        <md-button class="md-fab md-mini" ng-click="ctrl.toggleSidenav()">
+            <md-icon md-font-set="material-icons">menu</md-icon>
+        </md-button>
+        <h1 style="padding-left: 10px">DOE Compass</h1>
+    </div>
+</md-toolbar>
+
+<div class="container" layout="row" flex>
+    <md-sidenav md-component-id="l-sidenav" class="locked-sidebar" md-is-locked-open="true" md-whiteframe="4">
+        <md-list>
+            <md-list-item ng-click="ctrl.toggleExpanded(1)" ng-class="{ 'side-button-active': ctrl.isSelected(1) && ctrl.isOpen }">
+                <i class="material-icons" ng-class="{ 'side-icon-active': ctrl.isSelected(1) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(1)}">group</i>
+            </md-list-item>
+            <md-list-item ng-click="ctrl.toggleExpanded(2)" ng-class="{ 'side-button-active': ctrl.isSelected(2) && ctrl.isOpen }">
+                <i ng-class="{ 'side-icon-active': ctrl.isSelected(2) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(2), 'material-icons': true}">school</i>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+    <md-sidenav md-component-id="t-sidenav" class="toggleable-sidebar custom-sidenav" ng-class="{'right': ctrl.isOpen, 'left': !ctrl.isOpen}" md-is-locked-open="true" md-whiteframe="4">
+
+        <section ng-show="ctrl.isSelected(1)" layout="column">
+            <md-toolbar class="md-toolbar-tools md-accent md-hue-1">
+                <h2>Enrollment and Attendance</h2>
+            </md-toolbar>
+            <md-content layout-padding>
+                <md-sidemenu>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="recent_actors" md-heading="Enrollment" md-arrow="true">
+                            <md-sidemenu-button>Enrollment</md-sidemenu-button>
+                            <md-sidemenu-button>Trends</md-sidemenu-button>
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="recent_actors" md-heading="Attendance" md-arrow="true">
+                            <md-sidemenu-button>Attedance</md-sidemenu-button>
+                            <md-sidemenu-button>Trends</md-sidemenu-button>
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                </md-sidemenu>
+            </md-content>
+        </section>
+
+        <section ng-show="ctrl.isSelected(2)" layout="column">
+            <md-toolbar class="md-toolbar-tools md-accent md-hue-1">
+                <h2>Student Performance</h2>
+            </md-toolbar>
+            <md-content layout-padding>
+                <md-sidemenu>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="school" md-heading="Performance" md-arrow="true">
+                            <md-sidemenu-button>Performance</md-sidemenu-button>
+                            <md-sidemenu-button>Performance Trends</md-sidemenu-button>
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                </md-sidemenu>
+            </md-content>
+        </section>
+
+
+    </md-sidenav>
+    <md-content id="content" ui-view="report" layout-margin layout-padding flex="100"></md-content>
+</div>

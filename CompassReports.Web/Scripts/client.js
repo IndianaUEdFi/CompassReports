@@ -2,24 +2,14 @@ var App;
 (function (App) {
     angular
         .module('app', [
-        //Api
-        //'app.api',
-        //Vendors
         'ngAnimate',
         'ngMaterial',
         'ngMaterialSidemenu',
         'ui.router',
-        ////Settings
         'app.settings',
-        ////Services
-        //'app.services',
-        ////Directives
-        //'app.directives',
-        ////Modules
         'app.reports'
     ]);
 })(App || (App = {}));
-/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppConfig = (function () {
@@ -78,7 +68,6 @@ var App;
         .module('app')
         .config(AppConfig);
 })(App || (App = {}));
-/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppController = (function () {
@@ -91,7 +80,6 @@ var App;
         .module('app')
         .controller('app', AppController);
 })(App || (App = {}));
-/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppRun = (function () {
@@ -104,7 +92,6 @@ var App;
                 console.log('changing state');
                 console.log(toState);
             });
-            // Cleanup
             $rootScope.$on('$destroy', function () {
                 contentLoadedEvent();
                 stateAuthorizeStartEvent();
@@ -118,41 +105,40 @@ var App;
         .module('app')
         .run(AppRun);
 })(App || (App = {}));
-// Internet Explorer does not support startsWith or includes
-// Typescript allows extension of interfaces through merging all with the same name together
-if (!(String.prototype).startsWith) {
-    (String.prototype).startsWith = function (searchString, position) {
-        position = position || 0;
-        return this.indexOf(searchString, position) === position;
-    };
-}
-if (!(String.prototype).includes) {
-    (String.prototype).includes = function (search, start) {
-        if (typeof start !== 'number') {
-            start = 0;
-        }
-        if (start + search.length > this.length) {
-            return false;
-        }
-        else {
-            return this.indexOf(search, start) !== -1;
-        }
-    };
-}
 var App;
 (function (App) {
-    var SystemSettings = (function () {
-        function SystemSettings() {
-            this.apiBaseUrl = 'api';
-            this.directiveBaseUri = 'app/directives';
-            this.moduleBaseUri = 'app/modules';
-            this.componentBaseUri = 'app/components';
-        }
-        return SystemSettings;
-    }());
-    angular
-        .module('app.settings', [])
-        .constant('settings', new SystemSettings());
+    var Reports;
+    (function (Reports) {
+        var Home;
+        (function (Home) {
+            var HomeController = (function () {
+                function HomeController() {
+                    console.log('home app');
+                }
+                return HomeController;
+            }());
+            HomeController.$inject = [];
+            var HomeConfig = (function () {
+                function HomeConfig($stateProvider, settings) {
+                    $stateProvider.state('app.reports.home', {
+                        url: '/home',
+                        views: {
+                            'report@app.reports': {
+                                templateUrl: settings.moduleBaseUri + "/reports/home/home.view.html",
+                                controller: HomeController,
+                                controllerAs: 'ctrl'
+                            }
+                        }
+                    });
+                }
+                return HomeConfig;
+            }());
+            HomeConfig.$inject = ['$stateProvider', 'settings'];
+            angular
+                .module('app.reports.home', [])
+                .config(HomeConfig);
+        })(Home = Reports.Home || (Reports.Home = {}));
+    })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
 var App;
 (function (App) {
@@ -212,39 +198,38 @@ var App;
             .config(ReportsLayoutConfig);
     })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
+if (!(String.prototype).startsWith) {
+    (String.prototype).startsWith = function (searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}
+if (!(String.prototype).includes) {
+    (String.prototype).includes = function (search, start) {
+        if (typeof start !== 'number') {
+            start = 0;
+        }
+        if (start + search.length > this.length) {
+            return false;
+        }
+        else {
+            return this.indexOf(search, start) !== -1;
+        }
+    };
+}
 var App;
 (function (App) {
-    var Reports;
-    (function (Reports) {
-        var Home;
-        (function (Home) {
-            var HomeController = (function () {
-                function HomeController() {
-                    console.log('home app');
-                }
-                return HomeController;
-            }());
-            HomeController.$inject = [];
-            var HomeConfig = (function () {
-                function HomeConfig($stateProvider, settings) {
-                    $stateProvider.state('app.reports.home', {
-                        url: '/home',
-                        views: {
-                            'report@app.reports': {
-                                templateUrl: settings.moduleBaseUri + "/reports/home/home.view.html",
-                                controller: HomeController,
-                                controllerAs: 'ctrl'
-                            }
-                        }
-                    });
-                }
-                return HomeConfig;
-            }());
-            HomeConfig.$inject = ['$stateProvider', 'settings'];
-            angular
-                .module('app.reports.home', [])
-                .config(HomeConfig);
-        })(Home = Reports.Home || (Reports.Home = {}));
-    })(Reports = App.Reports || (App.Reports = {}));
+    var SystemSettings = (function () {
+        function SystemSettings() {
+            this.apiBaseUrl = 'api';
+            this.directiveBaseUri = 'app/directives';
+            this.moduleBaseUri = 'app/modules';
+            this.componentBaseUri = 'app/components';
+        }
+        return SystemSettings;
+    }());
+    angular
+        .module('app.settings', [])
+        .constant('settings', new SystemSettings());
 })(App || (App = {}));
 //# sourceMappingURL=client.js.map

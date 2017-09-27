@@ -153,6 +153,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Modules\Reports\Enrollment\enrollment.view.html" />
     <Content Include="App\Modules\Reports\Home\home.view.html" />
     <Content Include="App\Modules\Reports\reports-layout.view.html" />
     <Content Include="Content\angular-material-sidemenu.min.css" />
@@ -161,11 +162,13 @@
     <Content Include="index.html" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-chart.min.js" />
     <Content Include="Scripts\angular-material-sidemenu.min.js" />
     <Content Include="Scripts\angular-material.min.js" />
     <Content Include="Scripts\angular-sanitize.min.js" />
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -216,6 +219,7 @@
     <TypeScriptCompile Include="App\app.controller.ts" />
     <TypeScriptCompile Include="App\app.module.ts" />
     <TypeScriptCompile Include="App\app.run.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\reports-layout.module.ts" />
     <TypeScriptCompile Include="App\ployfills.ts" />
@@ -315,7 +319,6 @@
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
   </PropertyGroup>
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

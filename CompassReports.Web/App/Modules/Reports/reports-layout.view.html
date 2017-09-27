@@ -7,7 +7,7 @@
     </div>
 </md-toolbar>
 
-<div class="container" layout="row" flex>
+<div class="container" layout="row" flex="100">
     <md-sidenav md-component-id="l-sidenav" class="locked-sidebar" md-is-locked-open="true" md-whiteframe="4">
         <md-list>
             <md-list-item ng-click="ctrl.toggleExpanded(1)" ng-class="{ 'side-button-active': ctrl.isSelected(1) && ctrl.isOpen }">
@@ -28,13 +28,13 @@
                 <md-sidemenu>
                     <md-sidemenu-group>
                         <md-sidemenu-content md-icon="recent_actors" md-heading="Enrollment" md-arrow="true">
-                            <md-sidemenu-button>Enrollment</md-sidemenu-button>
+                            <md-sidemenu-button ui-sref="app.reports.enrollment">Enrollment</md-sidemenu-button>
                             <md-sidemenu-button>Trends</md-sidemenu-button>
                         </md-sidemenu-content>
                     </md-sidemenu-group>
                     <md-sidemenu-group>
                         <md-sidemenu-content md-icon="recent_actors" md-heading="Attendance" md-arrow="true">
-                            <md-sidemenu-button>Attedance</md-sidemenu-button>
+                            <md-sidemenu-button>Attendance</md-sidemenu-button>
                             <md-sidemenu-button>Trends</md-sidemenu-button>
                         </md-sidemenu-content>
                     </md-sidemenu-group>
@@ -60,5 +60,5 @@
 
 
     </md-sidenav>
-    <md-content id="content" ui-view="report" layout-margin layout-padding flex="100"></md-content>
+    <div ui-view="report" style="width: 100%"></div>
 </div>

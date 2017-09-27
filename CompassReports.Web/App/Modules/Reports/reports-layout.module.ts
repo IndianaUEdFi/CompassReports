@@ -52,6 +52,9 @@
     }
 
     angular
-        .module('app.reports', ['app.reports.home'])
+        .module('app.reports', [
+            'app.reports.enrollment',
+            'app.reports.home'
+        ])
         .config(ReportsLayoutConfig);
 }

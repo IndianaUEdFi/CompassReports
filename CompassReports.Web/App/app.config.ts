@@ -57,7 +57,7 @@ module App {
                 .accentPalette('dark-yellow')
                 .warnPalette('red');
 
-            $urlRouterProvider.otherwise('/home');
+            $urlRouterProvider.otherwise('/enrollment');
 
             $stateProvider
                 .state('app', {

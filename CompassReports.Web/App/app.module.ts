@@ -5,6 +5,7 @@
             //'app.api',
 
             //Vendors
+            'chart.js',
             'ngAnimate',
             'ngMaterial',
             'ngMaterialSidemenu',

@@ -2,14 +2,25 @@ var App;
 (function (App) {
     angular
         .module('app', [
+        //Api
+        //'app.api',
+        //Vendors
+        'chart.js',
         'ngAnimate',
         'ngMaterial',
         'ngMaterialSidemenu',
         'ui.router',
+        ////Settings
         'app.settings',
+        ////Services
+        //'app.services',
+        ////Directives
+        //'app.directives',
+        ////Modules
         'app.reports'
     ]);
 })(App || (App = {}));
+/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppConfig = (function () {
@@ -55,7 +66,7 @@ var App;
                 .primaryPalette('dark-blue')
                 .accentPalette('dark-yellow')
                 .warnPalette('red');
-            $urlRouterProvider.otherwise('/home');
+            $urlRouterProvider.otherwise('/enrollment');
             $stateProvider
                 .state('app', {
                 abstract: true
@@ -68,6 +79,7 @@ var App;
         .module('app')
         .config(AppConfig);
 })(App || (App = {}));
+/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppController = (function () {
@@ -80,6 +92,7 @@ var App;
         .module('app')
         .controller('app', AppController);
 })(App || (App = {}));
+/// <reference path="app.module.ts"/>
 var App;
 (function (App) {
     var AppRun = (function () {
@@ -92,6 +105,7 @@ var App;
                 console.log('changing state');
                 console.log(toState);
             });
+            // Cleanup
             $rootScope.$on('$destroy', function () {
                 contentLoadedEvent();
                 stateAuthorizeStartEvent();
@@ -105,41 +119,27 @@ var App;
         .module('app')
         .run(AppRun);
 })(App || (App = {}));
-var App;
-(function (App) {
-    var Reports;
-    (function (Reports) {
-        var Home;
-        (function (Home) {
-            var HomeController = (function () {
-                function HomeController() {
-                    console.log('home app');
-                }
-                return HomeController;
-            }());
-            HomeController.$inject = [];
-            var HomeConfig = (function () {
-                function HomeConfig($stateProvider, settings) {
-                    $stateProvider.state('app.reports.home', {
-                        url: '/home',
-                        views: {
-                            'report@app.reports': {
-                                templateUrl: settings.moduleBaseUri + "/reports/home/home.view.html",
-                                controller: HomeController,
-                                controllerAs: 'ctrl'
-                            }
-                        }
-                    });
-                }
-                return HomeConfig;
-            }());
-            HomeConfig.$inject = ['$stateProvider', 'settings'];
-            angular
-                .module('app.reports.home', [])
-                .config(HomeConfig);
-        })(Home = Reports.Home || (Reports.Home = {}));
-    })(Reports = App.Reports || (App.Reports = {}));
-})(App || (App = {}));
+// Internet Explorer does not support startsWith or includes
+// Typescript allows extension of interfaces through merging all with the same name together
+if (!(String.prototype).startsWith) {
+    (String.prototype).startsWith = function (searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}
+if (!(String.prototype).includes) {
+    (String.prototype).includes = function (search, start) {
+        if (typeof start !== 'number') {
+            start = 0;
+        }
+        if (start + search.length > this.length) {
+            return false;
+        }
+        else {
+            return this.indexOf(search, start) !== -1;
+        }
+    };
+}
 var App;
 (function (App) {
     var Reports;
@@ -194,29 +194,136 @@ var App;
         }());
         ReportsLayoutConfig.$inject = ['$stateProvider', 'settings'];
         angular
-            .module('app.reports', ['app.reports.home'])
+            .module('app.reports', [
+            'app.reports.enrollment',
+            'app.reports.home'
+        ])
             .config(ReportsLayoutConfig);
     })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
-if (!(String.prototype).startsWith) {
-    (String.prototype).startsWith = function (searchString, position) {
-        position = position || 0;
-        return this.indexOf(searchString, position) === position;
-    };
-}
-if (!(String.prototype).includes) {
-    (String.prototype).includes = function (search, start) {
-        if (typeof start !== 'number') {
-            start = 0;
-        }
-        if (start + search.length > this.length) {
-            return false;
-        }
-        else {
-            return this.indexOf(search, start) !== -1;
-        }
-    };
-}
+var App;
+(function (App) {
+    var Reports;
+    (function (Reports) {
+        var Enrollment;
+        (function (Enrollment) {
+            var EnrollmentController = (function () {
+                function EnrollmentController($mdSidenav) {
+                    var _this = this;
+                    this.$mdSidenav = $mdSidenav;
+                    this.charts = [
+                        {
+                            title: 'Grade',
+                            headers: ['', 'Grade', 'Count'],
+                            labels: ['Pre-Kindergarden', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12', 'Grade 12+/Adult'],
+                            data: [23097, 83263, 83750, 84596, 89159, 84813, 85383, 84284, 85791, 83981, 97023, 88652, 85913, 82367, 1308],
+                            colors: [
+                                '#003E69', '#124862', '#24525C',
+                                '#365C55', '#48664F', '#5A7148',
+                                '#6C7B42', '#7E853C', '#908F35',
+                                '#A2992F', '#B4A428', '#C6AE22',
+                                '#D8B81B', '#EAC215', '#FDCD0F'
+                            ],
+                            options: { legend: { display: true, position: 'left' } }
+                        },
+                        {
+                            title: 'Ethnicity',
+                            headers: ['', 'Ethnicity', 'Count'],
+                            labels: ['American Indian', 'Asian', 'Black', 'Hispanic', 'Multiracial', 'Navite Hawaiian or Other Pacific Islander', 'White'],
+                            data: [2301, 26090, 137338, 130842, 54109, 817, 781883],
+                            options: { legend: { display: true, position: 'left' } },
+                            colors: ['#003E69', '#2A555A', '#546D4B', '#7E853C', '#A89D2D', '#D2B51E', '#FDCD0F']
+                        },
+                        {
+                            title: 'Free/Reduced Price Meals',
+                            headers: ['', 'Meal Type', 'Count'],
+                            labels: ['Free meals', 'Reduced price meals', 'Paid meals'],
+                            data: [432677, 85564, 615139],
+                            options: { legend: { display: true, position: 'left' } },
+                            colors: ['#003E69', '#7E853C', '#FDCD0F']
+                        },
+                        {
+                            title: 'Spcial Education',
+                            headers: ['', 'Education', 'Count'],
+                            labels: ['Special Education', 'General Education'],
+                            data: [164706, 968674],
+                            options: { legend: { display: true, position: 'left' } },
+                            colors: ['#003E69', '#FDCD0F']
+                        },
+                        {
+                            title: 'English Language Learners',
+                            headers: ['', 'Language Learner', 'Count'],
+                            labels: ['English Language Learner', 'Non-English Language Learner'],
+                            data: [1082703, 50677],
+                            options: { legend: { display: true, position: 'left' } },
+                            colors: ['#003E69', '#FDCD0F']
+                        }
+                    ];
+                    this.toggleFilters = function () {
+                        _this.$mdSidenav('filternav').toggle();
+                    };
+                    console.log('home app');
+                }
+                return EnrollmentController;
+            }());
+            EnrollmentController.$inject = ['$mdSidenav'];
+            var EnrollmentConfig = (function () {
+                function EnrollmentConfig($stateProvider, settings) {
+                    $stateProvider.state('app.reports.enrollment', {
+                        url: '/enrollment',
+                        views: {
+                            'report@app.reports': {
+                                templateUrl: settings.moduleBaseUri + "/reports/enrollment/enrollment.view.html",
+                                controller: EnrollmentController,
+                                controllerAs: 'ctrl'
+                            }
+                        }
+                    });
+                }
+                return EnrollmentConfig;
+            }());
+            EnrollmentConfig.$inject = ['$stateProvider', 'settings'];
+            angular
+                .module('app.reports.enrollment', [])
+                .config(EnrollmentConfig);
+        })(Enrollment = Reports.Enrollment || (Reports.Enrollment = {}));
+    })(Reports = App.Reports || (App.Reports = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Reports;
+    (function (Reports) {
+        var Home;
+        (function (Home) {
+            var HomeController = (function () {
+                function HomeController() {
+                    console.log('home app');
+                }
+                return HomeController;
+            }());
+            HomeController.$inject = [];
+            var HomeConfig = (function () {
+                function HomeConfig($stateProvider, settings) {
+                    $stateProvider.state('app.reports.home', {
+                        url: '/home',
+                        views: {
+                            'report@app.reports': {
+                                templateUrl: settings.moduleBaseUri + "/reports/home/home.view.html",
+                                controller: HomeController,
+                                controllerAs: 'ctrl'
+                            }
+                        }
+                    });
+                }
+                return HomeConfig;
+            }());
+            HomeConfig.$inject = ['$stateProvider', 'settings'];
+            angular
+                .module('app.reports.home', [])
+                .config(HomeConfig);
+        })(Home = Reports.Home || (Reports.Home = {}));
+    })(Reports = App.Reports || (App.Reports = {}));
+})(App || (App = {}));
 var App;
 (function (App) {
     var SystemSettings = (function () {

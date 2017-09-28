@@ -32,14 +32,14 @@
                     <md-card-content>
                         
                         <div ng-if="chart.showTable">
-                            <table class="mui-table">
+                            <table class="material-table material-table-bordered">
                                 <thead>
                                 <tr>
                                     <th ng-repeat="header in chart.headers">{{header}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="label in chart.labels">
+                                <tr ng-repeat="label in chart.labels" class="data-rows">
                                     <td style="width: 20px"><md-icon  ng-style="{'color': chart.colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
                                     <td>{{label}}</td>
                                     <td>{{chart.data[$index]}}</td>

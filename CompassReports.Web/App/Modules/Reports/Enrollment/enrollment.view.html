@@ -1,64 +1,63 @@
-﻿<div layout="column" flex="100">
-    <md-toolbar class="md-hue-1">
-        <div class="md-toolbar-tools">
-            <h2>Enrollment</h2>
-            <span flex></span>
-            <div>
-                <md-button class="md-fab md-mini md-accent" ng-click="ctrl.toggleFilters()">
-                    <md-icon md-font-set="material-icons">filter_list</md-icon>
-                </md-button>
-                <md-tooltip md-autohide="true" md-direction="left">Toggle filter</md-tooltip>
-            </div>
+﻿<md-toolbar class="md-hue-1">
+    <div class="md-toolbar-tools">
+        <h2>Enrollment</h2>
+        <span flex></span>
+        <div>
+            <md-button class="md-fab md-mini md-accent" ng-click="ctrl.toggleFilters()">
+                <md-icon md-font-set="material-icons">filter_list</md-icon>
+            </md-button>
+            <md-tooltip md-autohide="true" md-direction="left">Toggle filter</md-tooltip>
         </div>
+    </div>
+</md-toolbar>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filternav" id="filternav">
+    <md-toolbar class="md-toolbar-tools md-accent md-hue-1">
+        <h2>Filters</h2>
     </md-toolbar>
+</md-sidenav>
 
-    <!--<md-content id="content" ui-view="report" layout-margin layout-padding flex="100">-->
-    <md-content id="content" ui-view="report" flex="100">
-        <div layout="row" layout-wrap>
-            <div flex-xl="33" flex-lg="50" flex-md="50" flex-sm="100" ng-repeat="chart in ctrl.charts">
-                <md-card>
-                    <md-toolbar class="md-accent md-hue-1">
-                        <div class="md-toolbar-tools">
-                            <h4>{{chart.title}}</h4>
-                            <span flex></span>
-                            <div>
-                                <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.showTable = !chart.showTable">
-                                    <md-icon ng-if="!chart.showTable" md-font-set="material-icons">grid_on</md-icon>
-                                    <md-icon ng-if="chart.showTable" md-font-set="material-icons">pie_chart</md-icon>
-                                </md-button>
-                            </div>
+<md-content flex style="overflow-x: hidden">
+
+    <div layout="row" layout-wrap flex>
+        <div flex-xl="33" flex-lg="50" flex-md="50" flex-sm="100" ng-repeat="chart in ctrl.charts">
+            <md-card>
+                <md-toolbar class="md-accent md-hue-1">
+                    <div class="md-toolbar-tools">
+                        <h4>{{chart.title}}</h4>
+                        <span flex></span>
+                        <div>
+                            <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.showTable = !chart.showTable">
+                                <md-icon ng-if="!chart.showTable" md-font-set="material-icons">grid_on</md-icon>
+                                <md-icon ng-if="chart.showTable" md-font-set="material-icons">pie_chart</md-icon>
+                            </md-button>
                         </div>
-                    </md-toolbar>
-                    <md-card-content>
-                        
-                        <div ng-if="chart.showTable">
-                            <table class="material-table material-table-bordered">
-                                <thead>
-                                <tr>
-                                    <th ng-repeat="header in chart.headers">{{header}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="label in chart.labels" class="data-rows">
-                                    <td style="width: 20px"><md-icon  ng-style="{'color': chart.colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
-                                    <td>{{label}}</td>
-                                    <td>{{chart.data[$index]}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div ng-if="!chart.showTable">
-                            <canvas id="pie" class="chart chart-pie" chart-data="chart.data" chart-labels="chart.labels" chart-options="chart.options" chart-colors="chart.colors"></canvas>
-                        </div>
-                    </md-card-content>
-                </md-card>
-            </div>
+                    </div>
+                </md-toolbar>
+                <md-card-content>
+
+                    <div ng-if="chart.showTable">
+                        <table class="material-table material-table-bordered">
+                            <thead>
+                            <tr>
+                                <th ng-repeat="header in chart.headers">{{header}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="label in chart.labels" class="data-rows">
+                                <td style="width: 20px"><md-icon ng-style="{'color': chart.colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                                <td>{{label}}</td>
+                                <td>{{chart.data[$index]}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-if="!chart.showTable">
+                        <canvas id="pie" class="chart chart-pie" chart-data="chart.data" chart-labels="chart.labels" chart-options="chart.options" chart-colors="chart.colors"></canvas>
+                    </div>
+                </md-card-content>
+            </md-card>
         </div>
-    </md-content>
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filternav" id="filternav">
-        <md-toolbar class="md-toolbar-tools md-accent md-hue-1">
-            <h2>Filters</h2>
-        </md-toolbar>
-    </md-sidenav>
-</div>
+    </div>
+</md-content>

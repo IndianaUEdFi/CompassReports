@@ -7,8 +7,8 @@
     </div>
 </md-toolbar>
 
-<div class="container" layout="row" flex="100">
-    <md-sidenav md-component-id="l-sidenav" class="locked-sidebar" md-is-locked-open="true" md-whiteframe="4">
+<div layout="row" flex="100" style="overflow-x: hidden">
+    <md-sidenav md-component-id="l-sidenav" class="locked-sidebar" md-is-locked-open="true" md-whiteframe="4" style="z-index: 1">
         <md-list>
             <md-list-item ng-click="ctrl.toggleExpanded(1)" ng-class="{ 'side-button-active': ctrl.isSelected(1) && ctrl.isOpen }">
                 <i class="material-icons" ng-class="{ 'side-icon-active': ctrl.isSelected(1) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(1)}">group</i>
@@ -57,8 +57,7 @@
                 </md-sidemenu>
             </md-content>
         </section>
-
-
     </md-sidenav>
-    <div ui-view="report" style="width: 100%"></div>
+    
+    <div layout="column" flex ui-view="report"></div>
 </div>

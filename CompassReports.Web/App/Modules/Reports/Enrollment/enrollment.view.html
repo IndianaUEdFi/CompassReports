@@ -1,20 +1,134 @@
-﻿<md-toolbar class="md-hue-1">
-    <div class="md-toolbar-tools">
-        <h2>Enrollment</h2>
+﻿<style>
+    ul.filter-status{
+    width: 100%;
+    margin-bottom: 9px;
+    overflow: hidden;
+}
+
+ul.filter-status li{
+    width: 25%;
+    line-height: 1.4em;
+    float: left;
+    display: inline;
+    font-size: 13px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+ul.filter-status li div {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  font-weight: normal;
+}
+</style>
+
+<md-toolbar class="md-hue-1">
+    <div class="md-toolbar-tools" style="max-height: none; height: inherit;">
+        <h3 style="padding-right: 50px">Enrollment</h3>
+        
+        <ul class="filter-status">
+            <li>
+                School Year
+                <div style="font-size: 12px">{{ctrl.model.SchoolYear}}</div>
+            </li>
+            <li ng-if="ctrl.model.Grades.length">
+                Grade Levels<br />
+                <div style="font-size: 12px">
+                    <span ng-repeat="grade in ctrl.model.Grades">{{grade}}<span ng-if="!$last">, </span></span>
+                </div>
+            </li>
+            <li ng-if="ctrl.model.Ethnicities.length">
+                Ethnicities<br />
+                <div style="font-size: 12px">
+                    <span ng-repeat="ethnicitiy in ctrl.model.Ethnicities">{{ethnicitiy}}<span ng-if="!$last">, </span></span>
+                </div>
+            </li>
+            <li ng-if="ctrl.model.MealPlans.length">
+                Meal Plans<br />
+                <div style="font-size: 12px">
+                    <span ng-repeat="plan in ctrl.model.MealPlans">{{plan}}<span ng-if="!$last">, </span></span>
+                </div>
+            <li ng-if="ctrl.model.EducationTypes.length">
+                Education Types<br />
+                <div style="font-size: 12px">
+                    <span ng-repeat="type in ctrl.model.EducationTypes">{{type}}<span ng-if="!$last">, </span></span>
+                </div>
+            </li>
+            <li ng-if="ctrl.model.LanguageLearners.length">
+                English Language Learners<br />
+                <div style="font-size: 12px">
+                    <span ng-repeat="langLearner in ctrl.model.LanguageLearners">{{langLearner}}<span ng-if="!$last">, </span></span>
+                </div>
+            </li>
+        </ul>
         <span flex></span>
-        <div>
-            <md-button class="md-fab md-mini md-accent" ng-click="ctrl.toggleFilters()">
-                <md-icon md-font-set="material-icons">filter_list</md-icon>
+        <div style="padding-left: 30px">
+            <md-button class="md-raised md-accent md-hue-2" ng-click="ctrl.toggleFilters()">
+                Filters
             </md-button>
-            <md-tooltip md-autohide="true" md-direction="left">Toggle filter</md-tooltip>
         </div>
     </div>
 </md-toolbar>
 
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filternav" id="filternav">
-    <md-toolbar class="md-toolbar-tools md-accent md-hue-1">
-        <h2>Filters</h2>
+    <md-toolbar class="md-toolbar-tools md-accent md-hue-2">
+        <h2 >Filters</h2>
+        <span flex></span>
+        <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="ctrl.toggleFilters()">
+            <md-icon md-font-set="material-icons">keyboard_arrow_right</md-icon>
+        </md-button>
     </md-toolbar>
+    <md-content layout-padding>
+        <div layout="row" layout-align="center">
+            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.apply()">Apply</md-button>
+            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.reset()">Reset</md-button>
+        </div>
+        <form name="ctrl.filterForm">
+            <div layout="column" layout-wrap>
+                <md-input-container flex="100">
+                    <label>School Year</label>
+                    <md-select ng-model="ctrl.model.SchoolYear">
+                        <md-option ng-repeat="year in ctrl.years" ng-value="year">{{year}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Grade Levels</label>
+                    <md-select ng-model="ctrl.model.Grades" multiple>
+                        <md-option ng-repeat="grade in ctrl.grades" ng-value="grade">{{grade}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Ethnicities</label>
+                    <md-select ng-model="ctrl.model.Ethnicities" multiple>
+                        <md-option ng-repeat="ethnicity in ctrl.ethnicities" ng-value="ethnicity">{{ethnicity}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Meal Plans</label>
+                    <md-select ng-model="ctrl.model.MealPlans" multiple>
+                        <md-option ng-repeat="mealPlan in ctrl.mealPlans" ng-value="mealPlan">{{mealPlan}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>Education Types</label>
+                    <md-select ng-model="ctrl.model.EducationTypes" multiple>
+                        <md-option ng-repeat="edType in ctrl.educationTypes" ng-value="edType">{{edType}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="100">
+                    <label>English Language Learners</label>
+                    <md-select ng-model="ctrl.model.LanguageLearners" multiple>
+                        <md-option ng-repeat="langLearner in ctrl.languageLearners" ng-value="langLearner">{{langLearner}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
 </md-sidenav>
 
 <md-content flex style="overflow-x: hidden">
@@ -22,9 +136,9 @@
     <div layout="row" layout-wrap flex>
         <div flex-xl="33" flex-lg="50" flex-md="50" flex-sm="100" ng-repeat="chart in ctrl.charts">
             <md-card>
-                <md-toolbar class="md-accent md-hue-1">
+                <md-toolbar class="md-accent md-hue-1" style="height: 50px">
                     <div class="md-toolbar-tools">
-                        <h4>{{chart.title}}</h4>
+                        <h3>{{chart.title}}</h3>
                         <span flex></span>
                         <div>
                             <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.showTable = !chart.showTable">

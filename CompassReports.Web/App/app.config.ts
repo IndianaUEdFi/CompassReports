@@ -53,8 +53,16 @@ module App {
             });
 
             $mdThemingProvider.theme('compass-reports-theme')
-                .primaryPalette('dark-blue')
-                .accentPalette('dark-yellow')
+                .primaryPalette('dark-blue',
+                {
+                    'hue-2': '100'
+                })
+                .accentPalette('dark-yellow',
+                {
+                    'hue-1': '200',
+                    'hue-2': '300',
+                    'hue-3': '100'
+                })
                 .warnPalette('red');
 
             $urlRouterProvider.otherwise('/enrollment');

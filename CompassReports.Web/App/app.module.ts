@@ -18,7 +18,7 @@
             //'app.services',
 
             ////Directives
-            //'app.directives',
+            'app.directives',
 
             ////Modules
             'app.reports'

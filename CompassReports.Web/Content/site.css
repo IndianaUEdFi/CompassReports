@@ -120,3 +120,7 @@ md-sidenav.toggleable-sidebar.right-add, .right-remove {
     border-bottom: none;
 }
 
+md-tooltip.overflow-tooltip .md-content {
+    height: auto;
+    white-space: normal;
+}

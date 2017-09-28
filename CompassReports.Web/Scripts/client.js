@@ -15,7 +15,7 @@ var App;
         ////Services
         //'app.services',
         ////Directives
-        //'app.directives',
+        'app.directives',
         ////Modules
         'app.reports'
     ]);
@@ -63,8 +63,14 @@ var App;
                 'contrastDefaultColor': 'dark',
             });
             $mdThemingProvider.theme('compass-reports-theme')
-                .primaryPalette('dark-blue')
-                .accentPalette('dark-yellow')
+                .primaryPalette('dark-blue', {
+                'hue-2': '100'
+            })
+                .accentPalette('dark-yellow', {
+                'hue-1': '200',
+                'hue-2': '300',
+                'hue-3': '100'
+            })
                 .warnPalette('red');
             $urlRouterProvider.otherwise('/enrollment');
             $stateProvider
@@ -140,6 +146,45 @@ if (!(String.prototype).includes) {
         }
     };
 }
+angular
+    .module('app.directives', [
+    'app.directives.truncate-tooltip'
+]);
+var App;
+(function (App) {
+    var Directive;
+    (function (Directive) {
+        var TruncateTooltip;
+        (function (TruncateTooltip) {
+            function truncateTooltipDirective($timeout) {
+                return {
+                    restrict: 'A',
+                    tempate: '<md-tooltip class="overflow-tooltip">' +
+                        '<div style="max-width: 300px; line-height: 18px">{{value}}</div>' +
+                        '</md-tooltip>',
+                    scope: {},
+                    link: function (scope, element) {
+                        element.bind('mouseover', function () {
+                            var el = element[0];
+                            console.log('moused over');
+                            console.log(element.text());
+                            if (el.offsetWidth < el.scrollWidth) {
+                                console.log('showing tooltip');
+                                scope.showTooltip = true;
+                                scope.value = element.text();
+                            }
+                            else
+                                scope.showTooltip = false;
+                        });
+                    }
+                };
+            }
+            angular
+                .module('app.directives.truncate-tooltip', [])
+                .directive('truncateTooltip', ['$timeout', truncateTooltipDirective]);
+        })(TruncateTooltip = Directive.TruncateTooltip || (Directive.TruncateTooltip = {}));
+    })(Directive = App.Directive || (App.Directive = {}));
+})(App || (App = {}));
 var App;
 (function (App) {
     var Reports;
@@ -211,11 +256,20 @@ var App;
                 function EnrollmentController($mdSidenav) {
                     var _this = this;
                     this.$mdSidenav = $mdSidenav;
+                    this.years = ['2005-2006', '2006-2007', '2007-2008', '2008-2009', '2009-2010', '2010-2011', '2011-2012', '2012-2013', '2013-2014', '2014-2015', '2015-2016', '2016-2017'];
+                    this.grades = ['Pre-Kindergarden', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12', 'Grade 12+/Adult'];
+                    this.ethnicities = ['American Indian', 'Asian', 'Black', 'Hispanic', 'Multiracial', 'Navite Hawaiian or Other Pacific Islander', 'White'];
+                    this.mealPlans = ['Free meals', 'Reduced price meals', 'Paid meals'];
+                    this.educationTypes = ['Special Education', 'General Education'];
+                    this.languageLearners = ['English Language Learner', 'Non-English Language Learner'];
+                    this.model = {
+                        SchoolYear: '2016-2017'
+                    };
                     this.charts = [
                         {
                             title: 'Grade',
                             headers: ['', 'Grade', 'Count'],
-                            labels: ['Pre-Kindergarden', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12', 'Grade 12+/Adult'],
+                            labels: this.grades,
                             data: [23097, 83263, 83750, 84596, 89159, 84813, 85383, 84284, 85791, 83981, 97023, 88652, 85913, 82367, 1308],
                             colors: [
                                 '#003E69', '#124862', '#24525C',
@@ -223,13 +277,18 @@ var App;
                                 '#6C7B42', '#7E853C', '#908F35',
                                 '#A2992F', '#B4A428', '#C6AE22',
                                 '#D8B81B', '#EAC215', '#FDCD0F'
+                                //'#E57373', '#F06292', '#BA68C8',
+                                //'#9575CD', '#7986CB', '#64B5F6',
+                                //'#4FC3F7', '#4DD0E1', '#4DB6AC',
+                                //'#81C784', '#AED581', '#DCE775', 
+                                //'#FFF176', '#FFD54F', '#FFB74D'
                             ],
                             options: { legend: { display: true, position: 'left' } }
                         },
                         {
                             title: 'Ethnicity',
                             headers: ['', 'Ethnicity', 'Count'],
-                            labels: ['American Indian', 'Asian', 'Black', 'Hispanic', 'Multiracial', 'Navite Hawaiian or Other Pacific Islander', 'White'],
+                            labels: this.ethnicities,
                             data: [2301, 26090, 137338, 130842, 54109, 817, 781883],
                             options: { legend: { display: true, position: 'left' } },
                             colors: ['#003E69', '#2A555A', '#546D4B', '#7E853C', '#A89D2D', '#D2B51E', '#FDCD0F']
@@ -237,15 +296,15 @@ var App;
                         {
                             title: 'Free/Reduced Price Meals',
                             headers: ['', 'Meal Type', 'Count'],
-                            labels: ['Free meals', 'Reduced price meals', 'Paid meals'],
+                            labels: this.mealPlans,
                             data: [432677, 85564, 615139],
                             options: { legend: { display: true, position: 'left' } },
                             colors: ['#003E69', '#7E853C', '#FDCD0F']
                         },
                         {
-                            title: 'Spcial Education',
+                            title: 'Special Education',
                             headers: ['', 'Education', 'Count'],
-                            labels: ['Special Education', 'General Education'],
+                            labels: this.educationTypes,
                             data: [164706, 968674],
                             options: { legend: { display: true, position: 'left' } },
                             colors: ['#003E69', '#FDCD0F']
@@ -253,7 +312,7 @@ var App;
                         {
                             title: 'English Language Learners',
                             headers: ['', 'Language Learner', 'Count'],
-                            labels: ['English Language Learner', 'Non-English Language Learner'],
+                            labels: this.languageLearners,
                             data: [1082703, 50677],
                             options: { legend: { display: true, position: 'left' } },
                             colors: ['#003E69', '#FDCD0F']
@@ -261,6 +320,11 @@ var App;
                     ];
                     this.toggleFilters = function () {
                         _this.$mdSidenav('filternav').toggle();
+                    };
+                    this.reset = function () {
+                        _this.model = {
+                            SchoolYear: '2016-2017'
+                        };
                     };
                     console.log('home app');
                 }

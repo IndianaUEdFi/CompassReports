@@ -9,7 +9,7 @@ namespace CompassReports.Resources.Services
 {
     public interface ISchoolService
     {
-        
+         void Get();
     }
 
     public class SchoolService : ISchoolService
@@ -19,5 +19,11 @@ namespace CompassReports.Resources.Services
         public SchoolService(DatabaseContext db)
         {
             _db = db;
+        }
+
+        public void Get()
+        {
+            var model = _db.SchoolDimensions.ToList();
+            var temp = model;
         }
     }}

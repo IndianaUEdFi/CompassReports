@@ -8,7 +8,7 @@ using System.Web;
 namespace CompassReports.Data.Entities
 {
     [Table("PerformanceLevelDimension", Schema = "cmp")]
-    public class PerformanceLevelDimension
+    public class PerformanceLevelDimension : EntityBase
     {
         [Key]
         public int PerformanceLevelKey { get; set; }

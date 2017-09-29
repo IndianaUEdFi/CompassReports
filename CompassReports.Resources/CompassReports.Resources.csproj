@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Enrollment\EnrollmentChartModel.cs" />
+    <Compile Include="Models\Enrollment\EnrollmentFilterModel.cs" />
+    <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Services\EnrollmentService.cs" />
+    <Compile Include="Services\EnrollmentFiltersService.cs" />
     <Compile Include="Services\SchoolService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,9 +63,7 @@
       <Name>CompassReports.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

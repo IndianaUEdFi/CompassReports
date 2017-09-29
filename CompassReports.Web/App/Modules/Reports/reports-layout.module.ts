@@ -1,8 +1,7 @@
 ﻿module App.Reports {
+
     class ReportsLayoutController {
         static $inject = [];
-
-        constructor() { }
 
         isOpen = false;
         menuId = 0;

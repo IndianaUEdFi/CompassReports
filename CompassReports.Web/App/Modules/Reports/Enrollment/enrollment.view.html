@@ -1,68 +1,39 @@
-﻿<style>
-    ul.filter-status{
-    width: 100%;
-    margin-bottom: 9px;
-    overflow: hidden;
-}
-
-ul.filter-status li{
-    width: 25%;
-    line-height: 1.4em;
-    float: left;
-    display: inline;
-    font-size: 13px;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 5px;
-    padding-right: 5px;
-    padding-left: 5px
-}
-
-ul.filter-status li div {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  white-space: nowrap;
-  font-weight: normal;
-}
-</style>
-
-<md-toolbar class="md-hue-1">
+﻿<md-toolbar class="md-hue-1">
     <div class="md-toolbar-tools" style="max-height: none; height: inherit;">
         <h3 style="padding-right: 50px">Enrollment</h3>
         
         <ul class="filter-status">
             <li>
                 School Year
-                <div style="font-size: 12px">{{ctrl.model.SchoolYear}}</div>
+                <div style="font-size: 12px">{{ctrl.displaySchoolYears[ctrl.filters.SchoolYear]}}</div>
             </li>
-            <li ng-if="ctrl.model.Grades.length">
+            <li ng-if="ctrl.filters.Grades.length">
                 Grade Levels<br />
                 <div style="font-size: 12px">
-                    <span ng-repeat="grade in ctrl.model.Grades">{{grade}}<span ng-if="!$last">, </span></span>
+                    <span ng-repeat="grade in ctrl.filters.Grades">{{grade}}<span ng-if="!$last">, </span></span>
                 </div>
             </li>
-            <li ng-if="ctrl.model.Ethnicities.length">
+            <li ng-if="ctrl.filters.Ethnicities.length">
                 Ethnicities<br />
                 <div style="font-size: 12px">
                     <span ng-repeat="ethnicitiy in ctrl.model.Ethnicities">{{ethnicitiy}}<span ng-if="!$last">, </span></span>
                 </div>
             </li>
-            <li ng-if="ctrl.model.MealPlans.length">
+            <li ng-if="ctrl.filters.LunchStatuses.length">
                 Meal Plans<br />
                 <div style="font-size: 12px">
-                    <span ng-repeat="plan in ctrl.model.MealPlans">{{plan}}<span ng-if="!$last">, </span></span>
+                    <span ng-repeat="status in ctrl.filters.LunchStatuses">{{status}}<span ng-if="!$last">, </span></span>
                 </div>
-            <li ng-if="ctrl.model.EducationTypes.length">
+            <li ng-if="ctrl.filters.SpecialEducationStatuses.length">
                 Education Types<br />
                 <div style="font-size: 12px">
-                    <span ng-repeat="type in ctrl.model.EducationTypes">{{type}}<span ng-if="!$last">, </span></span>
+                    <span ng-repeat="status in ctrl.filters.SpecialEducationStatuses">{{status}}<span ng-if="!$last">, </span></span>
                 </div>
             </li>
-            <li ng-if="ctrl.model.LanguageLearners.length">
+            <li ng-if="ctrl.filters.EnglishLanguageLearnerStatuses.length">
                 English Language Learners<br />
                 <div style="font-size: 12px">
-                    <span ng-repeat="langLearner in ctrl.model.LanguageLearners">{{langLearner}}<span ng-if="!$last">, </span></span>
+                    <span ng-repeat="status in ctrl.filters.EnglishLanguageLearnerStatuses">{{status}}<span ng-if="!$last">, </span></span>
                 </div>
             </li>
         </ul>
@@ -92,38 +63,38 @@ ul.filter-status li div {
             <div layout="column" layout-wrap>
                 <md-input-container flex="100">
                     <label>School Year</label>
-                    <md-select ng-model="ctrl.model.SchoolYear">
-                        <md-option ng-repeat="year in ctrl.years" ng-value="year">{{year}}</md-option>
+                    <md-select ng-model="ctrl.filters.SchoolYear">
+                        <md-option ng-repeat="year in ctrl.schoolYears" ng-value="year.Value">{{year.Display}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="100">
                     <label>Grade Levels</label>
-                    <md-select ng-model="ctrl.model.Grades" multiple>
+                    <md-select ng-model="ctrl.filters.Grades" multiple>
                         <md-option ng-repeat="grade in ctrl.grades" ng-value="grade">{{grade}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="100">
                     <label>Ethnicities</label>
-                    <md-select ng-model="ctrl.model.Ethnicities" multiple>
+                    <md-select ng-model="ctrl.filters.Ethnicities" multiple>
                         <md-option ng-repeat="ethnicity in ctrl.ethnicities" ng-value="ethnicity">{{ethnicity}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="100">
                     <label>Meal Plans</label>
-                    <md-select ng-model="ctrl.model.MealPlans" multiple>
-                        <md-option ng-repeat="mealPlan in ctrl.mealPlans" ng-value="mealPlan">{{mealPlan}}</md-option>
+                    <md-select ng-model="ctrl.filters.LunchStatuses" multiple>
+                        <md-option ng-repeat="status in ctrl.lunchStatuses" ng-value="status">{{status}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="100">
                     <label>Education Types</label>
-                    <md-select ng-model="ctrl.model.EducationTypes" multiple>
-                        <md-option ng-repeat="edType in ctrl.educationTypes" ng-value="edType">{{edType}}</md-option>
+                    <md-select ng-model="ctrl.filters.SpecialEducationStatuses" multiple>
+                        <md-option ng-repeat="status in ctrl.specialEducationStatuses" ng-value="status">{{status}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container flex="100">
                     <label>English Language Learners</label>
-                    <md-select ng-model="ctrl.model.LanguageLearners" multiple>
-                        <md-option ng-repeat="langLearner in ctrl.languageLearners" ng-value="langLearner">{{langLearner}}</md-option>
+                    <md-select ng-model="ctrl.filters.EnglishLanguageLearnerStatuses" multiple>
+                        <md-option ng-repeat="status in ctrl.englishLanguageLearnerStatuses" ng-value="status">{{status}}</md-option>
                     </md-select>
                 </md-input-container>
             </div>
@@ -138,36 +109,36 @@ ul.filter-status li div {
             <md-card>
                 <md-toolbar class="md-accent md-hue-1" style="height: 50px">
                     <div class="md-toolbar-tools">
-                        <h3>{{chart.title}}</h3>
+                        <h3>{{chart.Chart.Title}}</h3>
                         <span flex></span>
                         <div>
-                            <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.showTable = !chart.showTable">
-                                <md-icon ng-if="!chart.showTable" md-font-set="material-icons">grid_on</md-icon>
-                                <md-icon ng-if="chart.showTable" md-font-set="material-icons">pie_chart</md-icon>
+                            <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.ShowChart = !chart.ShowChart">
+                                <md-icon ng-if="chart.ShowChart" md-font-set="material-icons">grid_on</md-icon>
+                                <md-icon ng-if="!chart.ShowChart" md-font-set="material-icons">pie_chart</md-icon>
                             </md-button>
                         </div>
                     </div>
                 </md-toolbar>
                 <md-card-content>
 
-                    <div ng-if="chart.showTable">
+                    <div ng-if="!chart.ShowChart">
                         <table class="material-table material-table-bordered">
                             <thead>
                             <tr>
-                                <th ng-repeat="header in chart.headers">{{header}}</th>
+                                <th ng-repeat="header in chart.Chart.Headers">{{header}}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="label in chart.labels" class="data-rows">
-                                <td style="width: 20px"><md-icon ng-style="{'color': chart.colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                            <tr ng-repeat="label in chart.Chart.Labels" class="data-rows">
+                                <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
                                 <td>{{label}}</td>
-                                <td>{{chart.data[$index]}}</td>
+                                <td>{{chart.Chart.Data[$index]}}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div ng-if="!chart.showTable">
-                        <canvas id="pie" class="chart chart-pie" chart-data="chart.data" chart-labels="chart.labels" chart-options="chart.options" chart-colors="chart.colors"></canvas>
+                    <div ng-if="chart.ShowChart">
+                        <canvas id="pie" class="chart chart-pie" chart-data="chart.Chart.Data" chart-labels="chart.Chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
                     </div>
                 </md-card-content>
             </md-card>

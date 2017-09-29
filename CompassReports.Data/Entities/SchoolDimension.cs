@@ -8,7 +8,7 @@ using System.Web;
 namespace CompassReports.Data.Entities
 {
     [Table("SchoolDimension", Schema = "cmp")]
-    public class SchoolDimension
+    public class SchoolDimension : EntityBase
     {
         [Key]
         public int SchoolKey { get; set; }
@@ -69,7 +69,7 @@ namespace CompassReports.Data.Entities
         public string AccreditationStatus { get; set; }
 
         [Required]
-        public int LocalEducationAgencyId { get; set; }
+        public int LocalEducationAgencyKey { get; set; }
 
         [Required]
         [MaxLength(75)]

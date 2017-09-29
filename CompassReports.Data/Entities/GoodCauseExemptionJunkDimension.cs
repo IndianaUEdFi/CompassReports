@@ -8,7 +8,7 @@ using System.Web;
 namespace CompassReports.Data.Entities
 {
     [Table("GoodCauseExemptionJunkDimension", Schema = "cmp")]
-    public class GoodCauseExemptionJunkDimension
+    public class GoodCauseExemptionJunkDimension : EntityBase
     {
         [Key]
         public int GoodCauseExemptionKey { get; set; }

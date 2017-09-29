@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Web.Http;
+using CompassReports.Data;
 using CompassReports.Data.Context;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
@@ -31,6 +32,8 @@ namespace CompassReports.Web
         private static void InitializeContainer(Container container)
         {
             container.Register<DatabaseContext, DatabaseContext>(Lifestyle.Scoped);
+
+            container.Register(typeof(IRepository<>), typeof(Repository<>), Lifestyle.Scoped);
         }
 
         public static void InitalizeTypes(Container container, string endsWith)

@@ -8,7 +8,7 @@ using System.Web;
 namespace CompassReports.Data.Entities
 {
     [Table("AssessmentDimension", Schema = "cmp")]
-    public class AssessmentDimension
+    public class AssessmentDimension : EntityBase
     {
         [Key]
         public int AssessmentKey { get; set; }

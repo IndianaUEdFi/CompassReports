@@ -2,7 +2,7 @@
     angular
         .module('app', [
             //Api
-            //'app.api',
+            'app.api',
 
             //Vendors
             'chart.js',
@@ -15,7 +15,7 @@
             'app.settings',
 
             ////Services
-            //'app.services',
+            'app.services',
 
             ////Directives
             'app.directives',

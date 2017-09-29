@@ -1,9 +1,19 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var App;
 (function (App) {
     angular
         .module('app', [
         //Api
-        //'app.api',
+        'app.api',
         //Vendors
         'chart.js',
         'ngAnimate',
@@ -13,7 +23,7 @@ var App;
         ////Settings
         'app.settings',
         ////Services
-        //'app.services',
+        'app.services',
         ////Directives
         'app.directives',
         ////Modules
@@ -146,6 +156,158 @@ if (!(String.prototype).includes) {
         }
     };
 }
+/// <reference path="../app.config.ts" />
+var App;
+(function (App) {
+    var ApiService = (function () {
+        function ApiService(enrollment, enrollmentFilters) {
+            this.enrollment = enrollment;
+            this.enrollmentFilters = enrollmentFilters;
+        }
+        return ApiService;
+    }());
+    ApiService.$inject = [
+        'api.enrollment',
+        'api.enrollment-filters'
+    ];
+    var ApiBase = (function () {
+        function ApiBase(services, settings) {
+            this.services = services;
+            this.settings = settings;
+            this.resourceUrl = '';
+        }
+        return ApiBase;
+    }());
+    ApiBase.$inject = ['services', 'settings'];
+    App.ApiBase = ApiBase;
+    var ApiBaseDefault = (function (_super) {
+        __extends(ApiBaseDefault, _super);
+        function ApiBaseDefault() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        ApiBaseDefault.prototype.getAll = function () { return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl).then(function (data) { return data.data; }); };
+        ApiBaseDefault.prototype.get = function (id) { return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/" + id).then(function (data) { return data.data; }); };
+        ApiBaseDefault.prototype.post = function (model) { return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl, model).then(function (data) { return data.data; }); };
+        ApiBaseDefault.prototype.put = function (id, model) { return this.services.http.put(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/" + id, model).then(function (data) { return data.data; }); };
+        ApiBaseDefault.prototype.delete = function (id) { return this.services.http.delete(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/" + id).then(function (data) { return data.data; }); };
+        return ApiBaseDefault;
+    }(ApiBase));
+    App.ApiBaseDefault = ApiBaseDefault;
+    angular
+        .module("app.api", [
+        'app.api.enrollment',
+        'app.api.enrollment-filters'
+    ])
+        .service("api", ApiService);
+})(App || (App = {}));
+/// <reference path="api.module.ts" />
+var App;
+(function (App) {
+    var Models;
+    (function (Models) {
+        var FilterModel = (function () {
+            function FilterModel() {
+            }
+            return FilterModel;
+        }());
+        Models.FilterModel = FilterModel;
+    })(Models = App.Models || (App.Models = {}));
+})(App || (App = {}));
+(function (App) {
+    var Api;
+    (function (Api) {
+        var EnrollmentFilters;
+        (function (EnrollmentFilters) {
+            var EnrollmentFiltersApi = (function (_super) {
+                __extends(EnrollmentFiltersApi, _super);
+                function EnrollmentFiltersApi() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.resourceUrl = 'enrollment-filters';
+                    return _this;
+                }
+                EnrollmentFiltersApi.prototype.getEnglishLanguageLearnerStatuses = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/english-learner-statuses").then(function (data) { return data.data; });
+                };
+                EnrollmentFiltersApi.prototype.getEthnicities = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/ethnicities").then(function (data) { return data.data; });
+                };
+                EnrollmentFiltersApi.prototype.getGrades = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/grades").then(function (data) { return data.data; });
+                };
+                EnrollmentFiltersApi.prototype.getLunchStatuses = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/lunch-statuses").then(function (data) { return data.data; });
+                };
+                EnrollmentFiltersApi.prototype.getSpecialEducationStatuses = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/special-education-statuses").then(function (data) { return data.data; });
+                };
+                EnrollmentFiltersApi.prototype.getSchoolYears = function () {
+                    return this.services.http.get(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/school-years").then(function (data) { return data.data; });
+                };
+                return EnrollmentFiltersApi;
+            }(App.ApiBase));
+            angular
+                .module("app.api.enrollment-filters", [])
+                .service("api.enrollment-filters", EnrollmentFiltersApi);
+        })(EnrollmentFilters = Api.EnrollmentFilters || (Api.EnrollmentFilters = {}));
+    })(Api = App.Api || (App.Api = {}));
+})(App || (App = {}));
+/// <reference path="api.module.ts" />
+var App;
+(function (App) {
+    var Models;
+    (function (Models) {
+        var EnrollmentChartModel = (function () {
+            function EnrollmentChartModel() {
+            }
+            return EnrollmentChartModel;
+        }());
+        Models.EnrollmentChartModel = EnrollmentChartModel;
+        var EnrollmentFilterModel = (function () {
+            function EnrollmentFilterModel(schoolYear) {
+                this.Grades = [];
+                this.Ethnicities = [];
+                this.SchoolYear = schoolYear;
+            }
+            return EnrollmentFilterModel;
+        }());
+        Models.EnrollmentFilterModel = EnrollmentFilterModel;
+    })(Models = App.Models || (App.Models = {}));
+})(App || (App = {}));
+(function (App) {
+    var Api;
+    (function (Api) {
+        var Enrollment;
+        (function (Enrollment) {
+            var EnrollmentApi = (function (_super) {
+                __extends(EnrollmentApi, _super);
+                function EnrollmentApi() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.resourceUrl = 'enrollment';
+                    return _this;
+                }
+                EnrollmentApi.prototype.byEnglishLanguageLearner = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-english-language-learner", model).then(function (data) { return data.data; });
+                };
+                EnrollmentApi.prototype.byEthnicity = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-ethnicity", model).then(function (data) { return data.data; });
+                };
+                EnrollmentApi.prototype.byGrade = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-grade", model).then(function (data) { return data.data; });
+                };
+                EnrollmentApi.prototype.byLunchStatus = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-lunch-status", model).then(function (data) { return data.data; });
+                };
+                EnrollmentApi.prototype.bySpecialEducation = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-special-education", model).then(function (data) { return data.data; });
+                };
+                return EnrollmentApi;
+            }(App.ApiBase));
+            angular
+                .module("app.api.enrollment", [])
+                .service("api.enrollment", EnrollmentApi);
+        })(Enrollment = Api.Enrollment || (Api.Enrollment = {}));
+    })(Api = App.Api || (App.Api = {}));
+})(App || (App = {}));
 angular
     .module('app.directives', [
     'app.directives.truncate-tooltip'
@@ -184,6 +346,19 @@ var App;
                 .directive('truncateTooltip', ['$timeout', truncateTooltipDirective]);
         })(TruncateTooltip = Directive.TruncateTooltip || (Directive.TruncateTooltip = {}));
     })(Directive = App.Directive || (App.Directive = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Reports;
+    (function (Reports) {
+        var PieChartModel = (function () {
+            function PieChartModel(chartCall) {
+                this.ChartCall = chartCall;
+            }
+            return PieChartModel;
+        }());
+        Reports.PieChartModel = PieChartModel;
+    })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
 var App;
 (function (App) {
@@ -253,84 +428,51 @@ var App;
         var Enrollment;
         (function (Enrollment) {
             var EnrollmentController = (function () {
-                function EnrollmentController($mdSidenav) {
+                function EnrollmentController(api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
                     var _this = this;
+                    this.api = api;
+                    this.services = services;
                     this.$mdSidenav = $mdSidenav;
-                    this.years = ['2005-2006', '2006-2007', '2007-2008', '2008-2009', '2009-2010', '2010-2011', '2011-2012', '2012-2013', '2013-2014', '2014-2015', '2015-2016', '2016-2017'];
-                    this.grades = ['Pre-Kindergarden', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12', 'Grade 12+/Adult'];
-                    this.ethnicities = ['American Indian', 'Asian', 'Black', 'Hispanic', 'Multiracial', 'Navite Hawaiian or Other Pacific Islander', 'White'];
-                    this.mealPlans = ['Free meals', 'Reduced price meals', 'Paid meals'];
-                    this.educationTypes = ['Special Education', 'General Education'];
-                    this.languageLearners = ['English Language Learner', 'Non-English Language Learner'];
-                    this.model = {
-                        SchoolYear: '2016-2017'
-                    };
+                    this.englishLanguageLearnerStatuses = englishLanguageLearnerStatuses;
+                    this.ethnicities = ethnicities;
+                    this.grades = grades;
+                    this.lunchStatuses = lunchStatuses;
+                    this.specialEducationStatuses = specialEducationStatuses;
+                    this.schoolYears = schoolYears;
+                    this.displaySchoolYears = {};
                     this.charts = [
-                        {
-                            title: 'Grade',
-                            headers: ['', 'Grade', 'Count'],
-                            labels: this.grades,
-                            data: [23097, 83263, 83750, 84596, 89159, 84813, 85383, 84284, 85791, 83981, 97023, 88652, 85913, 82367, 1308],
-                            colors: [
-                                '#003E69', '#124862', '#24525C',
-                                '#365C55', '#48664F', '#5A7148',
-                                '#6C7B42', '#7E853C', '#908F35',
-                                '#A2992F', '#B4A428', '#C6AE22',
-                                '#D8B81B', '#EAC215', '#FDCD0F'
-                                //'#E57373', '#F06292', '#BA68C8',
-                                //'#9575CD', '#7986CB', '#64B5F6',
-                                //'#4FC3F7', '#4DD0E1', '#4DB6AC',
-                                //'#81C784', '#AED581', '#DCE775', 
-                                //'#FFF176', '#FFD54F', '#FFB74D'
-                            ],
-                            options: { legend: { display: true, position: 'left' } }
-                        },
-                        {
-                            title: 'Ethnicity',
-                            headers: ['', 'Ethnicity', 'Count'],
-                            labels: this.ethnicities,
-                            data: [2301, 26090, 137338, 130842, 54109, 817, 781883],
-                            options: { legend: { display: true, position: 'left' } },
-                            colors: ['#003E69', '#2A555A', '#546D4B', '#7E853C', '#A89D2D', '#D2B51E', '#FDCD0F']
-                        },
-                        {
-                            title: 'Free/Reduced Price Meals',
-                            headers: ['', 'Meal Type', 'Count'],
-                            labels: this.mealPlans,
-                            data: [432677, 85564, 615139],
-                            options: { legend: { display: true, position: 'left' } },
-                            colors: ['#003E69', '#7E853C', '#FDCD0F']
-                        },
-                        {
-                            title: 'Special Education',
-                            headers: ['', 'Education', 'Count'],
-                            labels: this.educationTypes,
-                            data: [164706, 968674],
-                            options: { legend: { display: true, position: 'left' } },
-                            colors: ['#003E69', '#FDCD0F']
-                        },
-                        {
-                            title: 'English Language Learners',
-                            headers: ['', 'Language Learner', 'Count'],
-                            labels: this.languageLearners,
-                            data: [1082703, 50677],
-                            options: { legend: { display: true, position: 'left' } },
-                            colors: ['#003E69', '#FDCD0F']
-                        }
+                        new Reports.PieChartModel('byGrade'),
+                        new Reports.PieChartModel('byEthnicity'),
+                        new Reports.PieChartModel('byLunchStatus'),
+                        new Reports.PieChartModel('bySpecialEducation'),
+                        new Reports.PieChartModel('byEnglishLanguageLearner')
                     ];
-                    this.toggleFilters = function () {
-                        _this.$mdSidenav('filternav').toggle();
-                    };
+                    this.filters = new App.Models.EnrollmentFilterModel(this.schoolYears[0].Value);
+                    this.toggleFilters = function () { return _this.$mdSidenav('filternav').toggle(); };
                     this.reset = function () {
-                        _this.model = {
-                            SchoolYear: '2016-2017'
-                        };
+                        _this.filters = new App.Models.EnrollmentFilterModel(_this.schoolYears[0].Value);
                     };
-                    console.log('home app');
+                    this.apply = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            _this.api.enrollment[chart.ChartCall](_this.filters).then(function (result) {
+                                //Sets the current card state to default on the first call
+                                if (!chart.Chart)
+                                    chart.ShowChart = result.ShowChart;
+                                chart.Chart = result;
+                                chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
+                                chart.Options = { legend: { display: true, position: 'left' } };
+                            });
+                        });
+                    };
+                    angular.forEach(schoolYears, function (year) {
+                        _this.displaySchoolYears[year.Value] = year.Display;
+                    });
+                    this.apply();
                 }
                 return EnrollmentController;
             }());
-            EnrollmentController.$inject = ['$mdSidenav'];
+            EnrollmentController.$inject = ['api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+                'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
             var EnrollmentConfig = (function () {
                 function EnrollmentConfig($stateProvider, settings) {
                     $stateProvider.state('app.reports.enrollment', {
@@ -339,7 +481,27 @@ var App;
                             'report@app.reports': {
                                 templateUrl: settings.moduleBaseUri + "/reports/enrollment/enrollment.view.html",
                                 controller: EnrollmentController,
-                                controllerAs: 'ctrl'
+                                controllerAs: 'ctrl',
+                                resolve: {
+                                    englishLanguageLearnerStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getEnglishLanguageLearnerStatuses();
+                                        }],
+                                    ethnicities: ['api', function (api) {
+                                            return api.enrollmentFilters.getEthnicities();
+                                        }],
+                                    grades: ['api', function (api) {
+                                            return api.enrollmentFilters.getGrades();
+                                        }],
+                                    lunchStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getLunchStatuses();
+                                        }],
+                                    specialEducationStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getSpecialEducationStatuses();
+                                        }],
+                                    schoolYears: ['api', function (api) {
+                                            return api.enrollmentFilters.getSchoolYears();
+                                        }]
+                                }
                             }
                         }
                     });
@@ -387,6 +549,95 @@ var App;
                 .config(HomeConfig);
         })(Home = Reports.Home || (Reports.Home = {}));
     })(Reports = App.Reports || (App.Reports = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Services;
+    (function (Services) {
+        var ColorGradient = (function () {
+            function ColorGradient() {
+            }
+            ColorGradient.prototype.getColors = function (colorCount) {
+                var color1Hash = '#003E69';
+                var color2Hash = '#FDCD0F';
+                var color1Hex = color1Hash.split('#')[1];
+                var color2Hex = color2Hash.split('#')[1];
+                var color1Red = parseInt(color1Hex.substr(0, 2), 16);
+                var color1Green = parseInt(color1Hex.substr(2, 2), 16);
+                var color1Blue = parseInt(color1Hex.substr(4, 2), 16);
+                var color2Red = parseInt(color2Hex.substr(0, 2), 16);
+                var color2Green = parseInt(color2Hex.substr(2, 2), 16);
+                var color2Blue = parseInt(color2Hex.substr(4, 2), 16);
+                var redDiff = (color1Red > color2Red) ? color1Red - color2Red : color2Red - color1Red;
+                var greenDiff = (color1Green > color2Green) ? color1Green - color2Green : color2Green - color1Green;
+                var blueDiff = (color1Blue > color2Blue) ? color1Blue - color2Blue : color2Blue - color1Blue;
+                var redAvg = redDiff / (colorCount - 1);
+                var greenAvg = greenDiff / (colorCount - 1);
+                var blueAvg = blueDiff / (colorCount - 1);
+                var colors = [color1Hash];
+                var currentRed = color1Red;
+                var currentGreen = color1Green;
+                var currentBlue = color1Blue;
+                for (var i = 0; i < (colorCount - 1); i++) {
+                    if (color1Red > color2Red)
+                        currentRed -= redAvg;
+                    else
+                        currentRed += redAvg;
+                    if (color1Green > color2Green)
+                        currentGreen -= greenAvg;
+                    else
+                        currentGreen += greenAvg;
+                    if (color1Blue > color2Blue)
+                        currentBlue -= blueAvg;
+                    else
+                        currentBlue += blueAvg;
+                    var color = '#' +
+                        ((currentRed < 16) ? '0' : '') + Math.round(currentRed).toString(16) +
+                        ((currentGreen < 16) ? '0' : '') + Math.round(currentGreen).toString(16) +
+                        ((currentBlue < 16) ? '0' : '') + Math.round(currentBlue).toString(16);
+                    colors.push(color);
+                }
+                return colors;
+            };
+            return ColorGradient;
+        }());
+        angular
+            .module('app.services.color-gradient', [])
+            .service('app.services.color-gradient', ColorGradient);
+    })(Services = App.Services || (App.Services = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Services = (function () {
+        function Services(colorGradient, compile, document, filter, http, q, state, timeout, template, window) {
+            this.colorGradient = colorGradient;
+            this.compile = compile;
+            this.document = document;
+            this.filter = filter;
+            this.http = http;
+            this.q = q;
+            this.state = state;
+            this.timeout = timeout;
+            this.template = template;
+            this.window = window;
+        }
+        return Services;
+    }());
+    Services.$inject = [
+        'app.services.color-gradient',
+        '$compile',
+        '$document',
+        '$filter',
+        '$http',
+        '$q',
+        '$state',
+        '$timeout',
+        '$templateRequest',
+        '$window'
+    ];
+    angular
+        .module("app.services", ['app.services.color-gradient'])
+        .service("services", Services);
 })(App || (App = {}));
 var App;
 (function (App) {

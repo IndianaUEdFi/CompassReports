@@ -8,7 +8,7 @@ using System.Web;
 namespace CompassReports.Data.Entities
 {
     [Table("GraduationStatusJunkDimension", Schema = "cmp")]
-    public class GraduationStatusJunkDimension
+    public class GraduationStatusJunkDimension : EntityBase
     {
         [Key]
         public int GraduationStatusKey { get; set; }

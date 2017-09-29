@@ -177,6 +177,8 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\EnrollmentController.cs" />
+    <Compile Include="Controllers\EnrollmentFiltersController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -197,10 +199,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App\Api\" />
-    <Folder Include="App\Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CompassReports.Data\CompassReports.Data.csproj">
       <Project>{6FC00796-F511-4059-B705-5ECD0EDEB4BD}</Project>
@@ -215,6 +214,9 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\enrollment.api.ts" />
+    <TypeScriptCompile Include="App\Api\enrollment-filters.api.ts" />
     <TypeScriptCompile Include="App\app.config.ts" />
     <TypeScriptCompile Include="App\app.controller.ts" />
     <TypeScriptCompile Include="App\app.module.ts" />
@@ -223,8 +225,11 @@
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\chart-model.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\reports-layout.module.ts" />
     <TypeScriptCompile Include="App\ployfills.ts" />
+    <TypeScriptCompile Include="App\Services\color-gradient.service.ts" />
+    <TypeScriptCompile Include="App\Services\services.module.ts" />
     <TypeScriptCompile Include="App\Settings\settings.ts" />
     <None Include="tsconfig.json" />
     <TypeScriptCompile Include="Typings\angular-material\index.d.ts" />

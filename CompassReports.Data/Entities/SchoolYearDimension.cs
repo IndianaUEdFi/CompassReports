@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace CompassReports.Data.Entities
 {
+    [Table("SchoolYearDimension", Schema = "cmp")]
     public class SchoolYearDimension
     {
         [Key]
-        public short SchoolYear { get; set; }
+        public short SchoolYearKey { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string SchoolYearDescription { get; set; }
 

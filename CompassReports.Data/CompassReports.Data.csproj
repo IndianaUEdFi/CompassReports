@@ -61,9 +61,9 @@
     <Compile Include="Entities\PerformanceLevelDimension.cs" />
     <Compile Include="Entities\SchoolDimension.cs" />
     <Compile Include="Entities\SchoolYearDimension.cs" />
-    <Compile Include="Migrations\201709261443312_Init.cs" />
-    <Compile Include="Migrations\201709261443312_Init.Designer.cs">
-      <DependentUpon>201709261443312_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201709291637093_Initial.cs" />
+    <Compile Include="Migrations\201709291637093_Initial.Designer.cs">
+      <DependentUpon>201709291637093_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,8 +73,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709261443312_Init.resx">
-      <DependentUpon>201709261443312_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201709291637093_Initial.resx">
+      <DependentUpon>201709291637093_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

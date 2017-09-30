@@ -120,7 +120,6 @@
                     </div>
                 </md-toolbar>
                 <md-card-content>
-
                     <div ng-if="!chart.ShowChart">
                         <table class="material-table material-table-bordered">
                             <thead>
@@ -137,7 +136,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <canvas ng-if="chart.ShowChart" id="pie{{$index}}" class="chart chart-pie" chart-data="chart.Chart.Data" chart-labels="chart.Chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
+                    <div ng-if="chart.ShowChart">
+                        <canvas id="pie{{$index}}" class="chart chart-pie" chart-data="chart.Chart.Data" chart-labels="chart.Chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>                        
+                    </div>
                 </md-card-content>
             </md-card>
         </div>

@@ -467,10 +467,13 @@ var App;
                                     };
                                 }
                                 else {
-                                    chart.Chart.Labels = result.Labels;
+                                    chart.Options.animation = { duration: 1000 },
+                                        chart.Chart.Labels = result.Labels;
                                     chart.Chart.Data = result.Data;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
+                                // Workout around redrawing causes messup animation
+                                _this.services.timeout(function () { return chart.Options.animation = false; }, 1500);
                             });
                         });
                     };

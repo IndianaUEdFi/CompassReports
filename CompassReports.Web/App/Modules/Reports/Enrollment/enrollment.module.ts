@@ -36,11 +36,15 @@
                                 legend: { display: true, position: 'left' }
                             };
                         } else {
+                            chart.Options.animation = {duration: 1000},
                             chart.Chart.Labels = result.Labels;
                             chart.Chart.Data = result.Data;
                         }
 
                         chart.Colors = this.services.colorGradient.getColors(result.Data.length);
+
+                        // Workout around redrawing causes messup animation
+                         this.services.timeout(() => chart.Options.animation = false, 1500);
                     });
             });
 

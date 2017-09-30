@@ -1,7 +1,7 @@
 ﻿module App.Reports.Enrollment {
 
     class EnrollmentController {
-        static $inject = ['api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+        static $inject = ['$scope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
             'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
 
         displaySchoolYears: any = {};
@@ -22,19 +22,32 @@
         }
 
         apply = () => {
-            angular.forEach(this.charts, chart => {
-               this.api.enrollment[chart.ChartCall](this.filters).then((result: Models.EnrollmentChartModel<number>) => {
-                   //Sets the current card state to default on the first call
-                   if (!chart.Chart) chart.ShowChart = result.ShowChart;
 
-                   chart.Chart = result;
-                   chart.Colors = this.services.colorGradient.getColors(result.Data.length);
-                   chart.Options = { legend: { display: true, position: 'left' } };
-               });
+            angular.forEach(this.charts, chart => {
+
+                return this.api.enrollment[chart.ChartCall](this.filters)
+                    .then((result: Models.EnrollmentChartModel<number>) => {
+                        //Sets the current card state to default on the first call
+                        if (!chart.Chart) {
+                            chart.ShowChart = result.ShowChart;
+                            chart.Chart = result;
+                            chart.Options = {
+                                responsive: true,
+                                legend: { display: true, position: 'left' }
+                            };
+                        } else {
+                            chart.Chart.Labels = result.Labels;
+                            chart.Chart.Data = result.Data;
+                        }
+
+                        chart.Colors = this.services.colorGradient.getColors(result.Data.length);
+                    });
             });
+
         }
 
         constructor(
+            public $scope,
             private readonly api: IApi,
             private readonly services: IServices,
             private readonly $mdSidenav: ng.material.ISidenavService,
@@ -51,6 +64,10 @@
             });
 
             this.apply();
+
+            $scope.$on('chart-update', (evt, chart) => {
+                console.log(chart);
+            });
         }
     }
 

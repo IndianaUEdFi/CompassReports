@@ -428,8 +428,9 @@ var App;
         var Enrollment;
         (function (Enrollment) {
             var EnrollmentController = (function () {
-                function EnrollmentController(api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
+                function EnrollmentController($scope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
                     var _this = this;
+                    this.$scope = $scope;
                     this.api = api;
                     this.services = services;
                     this.$mdSidenav = $mdSidenav;
@@ -454,13 +455,22 @@ var App;
                     };
                     this.apply = function () {
                         angular.forEach(_this.charts, function (chart) {
-                            _this.api.enrollment[chart.ChartCall](_this.filters).then(function (result) {
+                            return _this.api.enrollment[chart.ChartCall](_this.filters)
+                                .then(function (result) {
                                 //Sets the current card state to default on the first call
-                                if (!chart.Chart)
+                                if (!chart.Chart) {
                                     chart.ShowChart = result.ShowChart;
-                                chart.Chart = result;
+                                    chart.Chart = result;
+                                    chart.Options = {
+                                        responsive: true,
+                                        legend: { display: true, position: 'left' }
+                                    };
+                                }
+                                else {
+                                    chart.Chart.Labels = result.Labels;
+                                    chart.Chart.Data = result.Data;
+                                }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
-                                chart.Options = { legend: { display: true, position: 'left' } };
                             });
                         });
                     };
@@ -468,10 +478,13 @@ var App;
                         _this.displaySchoolYears[year.Value] = year.Display;
                     });
                     this.apply();
+                    $scope.$on('chart-update', function (evt, chart) {
+                        console.log(chart);
+                    });
                 }
                 return EnrollmentController;
             }());
-            EnrollmentController.$inject = ['api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+            EnrollmentController.$inject = ['$scope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
                 'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
             var EnrollmentConfig = (function () {
                 function EnrollmentConfig($stateProvider, settings) {

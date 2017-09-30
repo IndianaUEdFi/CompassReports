@@ -16,7 +16,7 @@
             <li ng-if="ctrl.filters.Ethnicities.length">
                 Ethnicities<br />
                 <div style="font-size: 12px">
-                    <span ng-repeat="ethnicitiy in ctrl.model.Ethnicities">{{ethnicitiy}}<span ng-if="!$last">, </span></span>
+                    <span ng-repeat="ethnicitiy in ctrl.filters.Ethnicities">{{ethnicitiy}}<span ng-if="!$last">, </span></span>
                 </div>
             </li>
             <li ng-if="ctrl.filters.LunchStatuses.length">
@@ -31,7 +31,7 @@
                 </div>
             </li>
             <li ng-if="ctrl.filters.EnglishLanguageLearnerStatuses.length">
-                English Language Learners<br />
+               Language Learners<br />
                 <div style="font-size: 12px">
                     <span ng-repeat="status in ctrl.filters.EnglishLanguageLearnerStatuses">{{status}}<span ng-if="!$last">, </span></span>
                 </div>
@@ -137,9 +137,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div ng-if="chart.ShowChart">
-                        <canvas id="pie" class="chart chart-pie" chart-data="chart.Chart.Data" chart-labels="chart.Chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
-                    </div>
+                    <canvas ng-if="chart.ShowChart" id="pie{{$index}}" class="chart chart-pie" chart-data="chart.Chart.Data" chart-labels="chart.Chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
                 </md-card-content>
             </md-card>
         </div>

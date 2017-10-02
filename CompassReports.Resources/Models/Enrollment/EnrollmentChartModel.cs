@@ -14,5 +14,7 @@ namespace CompassReports.Resources.Models.Enrollment
         public List<T> Data { get; set; }
 
         public bool ShowChart { get; set; }
+
+        public int Total { get; set; }
     }
 }

@@ -2,7 +2,12 @@
 var App;
 (function (App) {
     var AppRun = (function () {
-        function AppRun($rootScope) {
+        function AppRun($rootScope, $templateRequest) {
+            //cache icon urls
+            var urls = ['fonts/fontawesome-webfont.svg'];
+            angular.forEach(urls, function (url) {
+                $templateRequest(url);
+            });
             $rootScope.currentTheme = 'compass-reports-theme';
             $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
             $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
@@ -23,7 +28,7 @@ var App;
         }
         return AppRun;
     }());
-    AppRun.$inject = ['$rootScope'];
+    AppRun.$inject = ['$rootScope', '$templateRequest'];
     angular
         .module('app')
         .run(AppRun);

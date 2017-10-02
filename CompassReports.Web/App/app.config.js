@@ -2,7 +2,7 @@
 var App;
 (function (App) {
     var AppConfig = (function () {
-        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider, $provide) {
+        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider, $provide) {
             $locationProvider.hashPrefix('');
             $mdThemingProvider.definePalette('dark-blue', {
                 '50': '#E0E8ED',
@@ -60,7 +60,7 @@ var App;
         }
         return AppConfig;
     }());
-    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$provide'];
+    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdIconProvider', '$mdThemingProvider', '$provide'];
     angular
         .module('app')
         .config(AppConfig);

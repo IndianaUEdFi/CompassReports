@@ -40,7 +40,8 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     EnglishLanguageLearnerStatus = x.Key.EnglishLanguageLearnerStatus,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
-                }).OrderBy(x => x.SchoolYear);
+                }).OrderBy(x => x.SchoolYear)
+                .ToList();
 
             var headers = new List<string> { "", "English Language Learner Statuses" };
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
@@ -67,7 +68,8 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = englishLanguageLearnerStatuses,
                 Data = data,
-                ShowChart = true
+                ShowChart = true,
+                Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
 
@@ -82,7 +84,8 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Ethnicity = x.Key.Ethnicity,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
-                }).OrderBy(x => x.SchoolYear);
+                }).OrderBy(x => x.SchoolYear)
+                .ToList();
 
             var headers = new List<string> { "", "Ethnicitys" };
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
@@ -109,7 +112,8 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = ethnicities,
                 Data = data,
-                ShowChart = true
+                ShowChart = true,
+                Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
         public EnrollmentTrendsChartModel<int> ByGrade(EnrollmentTrendsFilterModel model)
@@ -123,7 +127,8 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     GradeLevel = x.Key.GradeLevel,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
-                }).OrderBy(x => x.SchoolYear);
+                }).OrderBy(x => x.SchoolYear)
+                .ToList();
 
             var headers = new List<string> {"", "Grades"};
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
@@ -150,7 +155,8 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = gradeLevels,
                 Data = data,
-                ShowChart = false
+                ShowChart = false,
+                Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
 
@@ -165,7 +171,8 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     FreeReducedLunchStatus = x.Key.FreeReducedLunchStatus,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
-                }).OrderBy(x => x.SchoolYear);
+                }).OrderBy(x => x.SchoolYear)
+                .ToList();
 
             var headers = new List<string> { "", "Lunch Statuses" };
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
@@ -192,7 +199,8 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = freeReducedLunchStatuses,
                 Data = data,
-                ShowChart = true
+                ShowChart = true,
+                Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
 
@@ -207,7 +215,8 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     SpecialEducationStatus = x.Key.SpecialEducationStatus,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
-                }).OrderBy(x => x.SchoolYear);
+                }).OrderBy(x => x.SchoolYear)
+                .ToList();
 
             var headers = new List<string> { "", "Special Education Statuses" };
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
@@ -234,7 +243,8 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = specialEducationStatuses,
                 Data = data,
-                ShowChart = true
+                ShowChart = true,
+                Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
 

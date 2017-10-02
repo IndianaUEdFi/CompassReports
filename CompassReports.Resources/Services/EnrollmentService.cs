@@ -46,7 +46,8 @@ namespace CompassReports.Resources.Services
                 Headers = new List<string> { "", "English Language Learner Status", "Enrollment Count" },
                 Labels = results.Select(x => x.EnglishLanguageLearnerStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
-                ShowChart = true
+                ShowChart = true,
+                Total = results.Sum(x => x.Total)
             };
         }
 
@@ -67,7 +68,8 @@ namespace CompassReports.Resources.Services
                 Headers = new List<string> { "", "Ethnicity", "Enrollment Count" },
                 Labels = results.Select(x => x.Ethnicity).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
-                ShowChart = true
+                ShowChart = true,
+                Total = results.Sum(x => x.Total)
             };
         }
         public EnrollmentChartModel<int> ByGrade(EnrollmentFilterModel model)
@@ -87,7 +89,8 @@ namespace CompassReports.Resources.Services
                 Headers = new List<string> {"", "Grades", "Enrollment Count"},
                 Labels = results.Select(x => x.GradeLevel).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
-                ShowChart = false
+                ShowChart = false,
+                Total = results.Sum(x => x.Total)
             };
         }
 
@@ -108,7 +111,8 @@ namespace CompassReports.Resources.Services
                 Headers = new List<string> { "", "Lunch Status", "Enrollment Count" },
                 Labels = results.Select(x => x.LunchStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
-                ShowChart = true
+                ShowChart = true,
+                Total = results.Sum(x => x.Total)
             };
         }
 
@@ -129,7 +133,8 @@ namespace CompassReports.Resources.Services
                 Headers = new List<string> { "", "Special Education Status", "Enrollment Count" },
                 Labels = results.Select(x => x.SpecialEducationStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
-                ShowChart = true
+                ShowChart = true,
+                Total = results.Sum(x => x.Total)
             };
         }
 

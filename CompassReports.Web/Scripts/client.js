@@ -356,6 +356,9 @@ var App;
                 this.Grades = [];
                 this.Ethnicities = [];
                 this.SchoolYear = schoolYear;
+                this.EnglishLanguageLearnerStatuses = [];
+                this.LunchStatuses = [];
+                this.SpecialEducationStatuses = [];
             }
             return EnrollmentFilterModel;
         }());
@@ -648,6 +651,7 @@ var App;
                                     chart.Options.animation = { duration: 1000 },
                                         chart.Chart.Labels = result.Labels;
                                     chart.Chart.Data = result.Data;
+                                    chart.Chart.Total = result.Total;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
                                 // Workout around redrawing causes messup animation
@@ -779,6 +783,7 @@ var App;
                                     chart.Chart.Data = result.Data;
                                     chart.Chart.Headers = result.Headers;
                                     chart.Chart.Series = result.Series;
+                                    chart.Chart.Totals = result.Totals;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
                                 // Workout around redrawing causes messup animation

@@ -123,17 +123,24 @@
                     <div ng-if="!chart.ShowChart">
                         <table class="material-table material-table-bordered">
                             <thead>
-                            <tr>
-                                <th ng-repeat="header in chart.Chart.Headers">{{header}}</th>
-                            </tr>
+                                <tr>
+                                    <th ng-repeat="header in chart.Chart.Headers">{{header}}</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="label in chart.Chart.Labels" class="data-rows">
-                                <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
-                                <td>{{label}}</td>
-                                <td>{{chart.Chart.Data[$index]}}</td>
-                            </tr>
+                                <tr ng-repeat="label in chart.Chart.Labels" class="data-rows">
+                                    <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                                    <td>{{label}}</td>
+                                    <td>{{chart.Chart.Data[$index]}}</td>
+                                </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Enrollment Total</th>
+                                    <th>{{chart.Chart.Total}}</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <div ng-if="chart.ShowChart">

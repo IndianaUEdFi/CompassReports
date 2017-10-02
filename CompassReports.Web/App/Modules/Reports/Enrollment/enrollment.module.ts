@@ -48,6 +48,7 @@
                             chart.Options.animation = {duration: 1000},
                             chart.Chart.Labels = result.Labels;
                             chart.Chart.Data = result.Data;
+                            chart.Chart.Total = result.Total;
                         }
 
                         chart.Colors = this.services.colorGradient.getColors(result.Data.length);

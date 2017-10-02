@@ -8,6 +8,7 @@ module App.Models {
         Series: string[];
         Data: T[][];
         ShowChart: boolean;
+        Totals: number[];
     }
 
     export class EnrollmentTrendsFilterModel {

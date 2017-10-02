@@ -59,6 +59,7 @@
                             chart.Chart.Data = result.Data;
                             chart.Chart.Headers = result.Headers;
                             chart.Chart.Series = result.Series;
+                            chart.Chart.Totals = result.Totals;
                         }
 
                         chart.Colors = this.services.colorGradient.getColors(result.Data.length);

@@ -7,17 +7,24 @@ module App.Models {
         Labels: string[];
         Data: T[];
         ShowChart: boolean;
+        Total: number;
     }
 
     export class EnrollmentFilterModel {
         Ethnicities: string[];
         Grades: string[];
         SchoolYear: number;
+        EnglishLanguageLearnerStatuses: number[];
+        LunchStatuses: string[];
+        SpecialEducationStatuses: string[];
 
         constructor(schoolYear: number) {
             this.Grades = [];
             this.Ethnicities = [];
             this.SchoolYear = schoolYear;
+            this.EnglishLanguageLearnerStatuses = [];
+            this.LunchStatuses = [];
+            this.SpecialEducationStatuses = [];
         }
     }
 }

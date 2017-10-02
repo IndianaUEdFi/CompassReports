@@ -92,7 +92,8 @@ md-sidenav.toggleable-sidebar.right-add, .right-remove {
   text-align: left;
 }
 
-.material-table > thead > tr > th {
+.material-table > thead > tr > th,
+.material-table > tfoot > tr > th {
     padding: 10px;
     line-height:1.429
 }
@@ -100,7 +101,6 @@ md-sidenav.toggleable-sidebar.right-add, .right-remove {
 .material-table > thead > tr > td,
 .material-table > tbody > tr > th,
 .material-table > tbody > tr > td,
-.material-table > tfoot > tr > th,
 .material-table > tfoot > tr > td {
   padding: 0px 10px;
   line-height: 1.429;
@@ -109,6 +109,12 @@ md-sidenav.toggleable-sidebar.right-add, .right-remove {
   border-bottom: 2px solid rgba(0, 0, 0, 0.12);
   font-weight: 700;
 }
+
+.material-table > tfoot > tr > th {
+  border-top: 2px solid rgba(0, 0, 0, 0.12);
+  font-weight: 700;
+}
+
 .material-table > tbody + tbody {
   border-top: 2px solid rgba(0, 0, 0, 0.12);
 }

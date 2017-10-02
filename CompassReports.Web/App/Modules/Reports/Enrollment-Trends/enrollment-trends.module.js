@@ -30,6 +30,15 @@ var App;
                     this.reset = function () {
                         _this.filters = new App.Models.EnrollmentTrendsFilterModel();
                     };
+                    this.resetColors = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            if (chart.Chart) {
+                                chart.Options.animation = { duration: 1000 },
+                                    chart.Colors = _this.services.colorGradient.getColors(chart.Chart.Data.length);
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
+                            }
+                        });
+                    };
                     this.apply = function () {
                         angular.forEach(_this.charts, function (chart) {
                             return _this.api.enrollmentTrends[chart.ChartCall](_this.filters)
@@ -40,7 +49,8 @@ var App;
                                     chart.Chart = result;
                                     chart.Options = {
                                         responsive: true,
-                                        legend: { display: true, position: 'left' },
+                                        maintainAspectRatio: false,
+                                        legend: { display: true, position: 'bottom' },
                                         scales: {
                                             yAxes: [{
                                                     ticks: {
@@ -59,13 +69,13 @@ var App;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
                                 // Workout around redrawing causes messup animation
-                                _this.services.timeout(function () { return chart.Options.animation = false; }, 1500);
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
                             });
                         });
                     };
                     this.services.timeout(function () {
                         $rootScope.$on('theme-change', function () {
-                            _this.apply();
+                            _this.resetColors();
                         });
                     }, 1000);
                     angular.forEach(schoolYears, function (year) {

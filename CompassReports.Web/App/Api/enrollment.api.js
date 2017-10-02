@@ -24,6 +24,9 @@ var App;
                 this.Grades = [];
                 this.Ethnicities = [];
                 this.SchoolYear = schoolYear;
+                this.EnglishLanguageLearnerStatuses = [];
+                this.LunchStatuses = [];
+                this.SpecialEducationStatuses = [];
             }
             return EnrollmentFilterModel;
         }());

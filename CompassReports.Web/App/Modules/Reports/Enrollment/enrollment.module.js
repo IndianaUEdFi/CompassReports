@@ -30,6 +30,14 @@ var App;
                     this.reset = function () {
                         _this.filters = new App.Models.EnrollmentFilterModel(_this.schoolYears[0].Value);
                     };
+                    this.resetColors = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            if (chart.Chart) {
+                                chart.Options.animation = { duration: 1500 },
+                                    chart.Colors = _this.services.colorGradient.getColors(chart.Chart.Data.length);
+                            }
+                        });
+                    };
                     this.apply = function () {
                         angular.forEach(_this.charts, function (chart) {
                             return _this.api.enrollment[chart.ChartCall](_this.filters)
@@ -47,16 +55,17 @@ var App;
                                     chart.Options.animation = { duration: 1000 },
                                         chart.Chart.Labels = result.Labels;
                                     chart.Chart.Data = result.Data;
+                                    chart.Chart.Total = result.Total;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
                                 // Workout around redrawing causes messup animation
-                                _this.services.timeout(function () { return chart.Options.animation = false; }, 1500);
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
                             });
                         });
                     };
                     this.services.timeout(function () {
                         $rootScope.$on('theme-change', function () {
-                            _this.apply();
+                            _this.resetColors();
                         });
                     }, 1000);
                     angular.forEach(schoolYears, function (year) {

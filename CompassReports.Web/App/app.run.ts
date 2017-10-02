@@ -12,9 +12,17 @@ module App {
     }
 
     class AppRun {
-        static $inject = ['$rootScope'];
+        static $inject = ['$rootScope', '$templateRequest'];
 
-        constructor($rootScope: IAppRootScope) {
+        constructor($rootScope: IAppRootScope,
+            $templateRequest: ng.ITemplateRequestService) {
+
+            //cache icon urls
+            const urls = ['fonts/fontawesome-webfont.svg'];
+
+            angular.forEach(urls, function (url) {
+                $templateRequest(url);
+            });
 
             $rootScope.currentTheme = 'compass-reports-theme';
             $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };

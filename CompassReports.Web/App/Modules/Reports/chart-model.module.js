@@ -9,6 +9,13 @@ var App;
             return PieChartModel;
         }());
         Reports.PieChartModel = PieChartModel;
+        var BarChartModel = (function () {
+            function BarChartModel(chartCall) {
+                this.ChartCall = chartCall;
+            }
+            return BarChartModel;
+        }());
+        Reports.BarChartModel = BarChartModel;
     })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
 //# sourceMappingURL=chart-model.module.js.map

@@ -3,6 +3,9 @@ var App;
 (function (App) {
     var AppRun = (function () {
         function AppRun($rootScope) {
+            $rootScope.currentTheme = 'compass-reports-theme';
+            $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
+            $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
             var contentLoadedEvent = $rootScope.$on('$viewContentLoaded', function (event, view) {
                 if (event.targetScope && event.targetScope.ctrl)
                     console.log("Loaded controller " + event.targetScope.ctrl.constructor.name + " for view " + view);

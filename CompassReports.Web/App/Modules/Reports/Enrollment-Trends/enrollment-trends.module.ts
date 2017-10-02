@@ -1,31 +1,32 @@
-﻿module App.Reports.Enrollment {
+﻿module App.Reports.EnrollmentTrends {
 
-    class EnrollmentController {
+    class EnrollmentTrendsController {
         static $inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
             'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
 
         displaySchoolYears: any = {};
         charts = [
-            new PieChartModel<number>('byGrade'),
-            new PieChartModel<number>('byEthnicity'),
-            new PieChartModel<number>('byLunchStatus'),
-            new PieChartModel<number>('bySpecialEducation'),
-            new PieChartModel<number>('byEnglishLanguageLearner')
+            new BarChartModel<number>('byGrade'),
+            new BarChartModel<number>('byEthnicity'),
+            new BarChartModel<number>('byLunchStatus'),
+            new BarChartModel<number>('bySpecialEducation'),
+            new BarChartModel<number>('byEnglishLanguageLearner')
         ];
 
-        filters = new Models.EnrollmentFilterModel(this.schoolYears[0].Value);
+        filters = new Models.EnrollmentTrendsFilterModel();
 
         toggleFilters = () => this.$mdSidenav('filternav').toggle();
 
         reset = () => {
-            this.filters = new Models.EnrollmentFilterModel(this.schoolYears[0].Value);
+            this.filters = new Models.EnrollmentTrendsFilterModel();
         }
 
         resetColors = () => {
             angular.forEach(this.charts, chart => {
                 if (chart.Chart) {
-                    chart.Options.animation = { duration: 1500 },
+                    chart.Options.animation = { duration: 1000 },
                     chart.Colors = this.services.colorGradient.getColors(chart.Chart.Data.length);
+                    //this.services.timeout(() => chart.Options.animation = false, 1500);
                 }
             });
         }
@@ -34,26 +35,36 @@
 
             angular.forEach(this.charts, chart => {
 
-                return this.api.enrollment[chart.ChartCall](this.filters)
-                    .then((result: Models.EnrollmentChartModel<number>) => {
+                return this.api.enrollmentTrends[chart.ChartCall](this.filters)
+                    .then((result: Models.EnrollmentTrendsChartModel<number>) => {
                         //Sets the current card state to default on the first call
                         if (!chart.Chart) {
                             chart.ShowChart = result.ShowChart;
                             chart.Chart = result;
                             chart.Options = {
                                 responsive: true,
-                                legend: { display: true, position: 'left' }
+                                maintainAspectRatio: false,
+                                legend: { display: true, position: 'bottom' },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
                             };
                         } else {
                             chart.Options.animation = {duration: 1000},
                             chart.Chart.Labels = result.Labels;
                             chart.Chart.Data = result.Data;
+                            chart.Chart.Headers = result.Headers;
+                            chart.Chart.Series = result.Series;
                         }
 
                         chart.Colors = this.services.colorGradient.getColors(result.Data.length);
 
                         // Workout around redrawing causes messup animation
-                         //this.services.timeout(() => chart.Options.animation = false, 1500);
+                        //this.services.timeout(() => chart.Options.animation = false, 1500);
                     });
             });
 
@@ -72,10 +83,11 @@
             public schoolYears: Models.FilterModel<number>[]
         ) {
 
-            this.services.timeout(() => {
+            this.services.timeout(() =>
+            {
                 $rootScope.$on('theme-change', () => {
                     this.resetColors();
-                });
+                }); 
             }, 1000);
 
             angular.forEach(schoolYears, year => {
@@ -86,17 +98,17 @@
         }
     }
 
-    class EnrollmentConfig {
+    class EnrollmentTrendsConfig {
         static $inject = ['$stateProvider', 'settings'];
 
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
-            $stateProvider.state('app.reports.enrollment', {
-                url: '/enrollment',
+            $stateProvider.state('app.reports.enrollment-trends', {
+                url: '/enrollment-trends',
                 views: {
                     'report@app.reports': {
-                        templateUrl: `${settings.moduleBaseUri}/reports/enrollment/enrollment.view.html`,
-                        controller: EnrollmentController,
+                        templateUrl: `${settings.moduleBaseUri}/reports/enrollment-trends/enrollment-trends.view.html`,
+                        controller: EnrollmentTrendsController,
                         controllerAs: 'ctrl',
                         resolve: {
                             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
@@ -125,6 +137,6 @@
     }
 
     angular
-        .module('app.reports.enrollment', [])
-        .config(EnrollmentConfig);
+        .module('app.reports.enrollment-trends', [])
+        .config(EnrollmentTrendsConfig);
 }

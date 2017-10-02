@@ -57,6 +57,7 @@
     angular
         .module('app.reports', [
             'app.reports.enrollment',
+            'app.reports.enrollment-trends',
             'app.reports.home'
         ])
         .config(ReportsLayoutConfig);

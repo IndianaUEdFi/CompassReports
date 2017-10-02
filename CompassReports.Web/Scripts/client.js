@@ -34,7 +34,7 @@ var App;
 var App;
 (function (App) {
     var AppConfig = (function () {
-        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider, $provide) {
+        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider, $provide) {
             $locationProvider.hashPrefix('');
             $mdThemingProvider.definePalette('dark-blue', {
                 '50': '#E0E8ED',
@@ -92,7 +92,7 @@ var App;
         }
         return AppConfig;
     }());
-    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$provide'];
+    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdIconProvider', '$mdThemingProvider', '$provide'];
     angular
         .module('app')
         .config(AppConfig);
@@ -114,7 +114,12 @@ var App;
 var App;
 (function (App) {
     var AppRun = (function () {
-        function AppRun($rootScope) {
+        function AppRun($rootScope, $templateRequest) {
+            //cache icon urls
+            var urls = ['fonts/fontawesome-webfont.svg'];
+            angular.forEach(urls, function (url) {
+                $templateRequest(url);
+            });
             $rootScope.currentTheme = 'compass-reports-theme';
             $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
             $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
@@ -135,7 +140,7 @@ var App;
         }
         return AppRun;
     }());
-    AppRun.$inject = ['$rootScope'];
+    AppRun.$inject = ['$rootScope', '$templateRequest'];
     angular
         .module('app')
         .run(AppRun);
@@ -165,15 +170,17 @@ if (!(String.prototype).includes) {
 var App;
 (function (App) {
     var ApiService = (function () {
-        function ApiService(enrollment, enrollmentFilters) {
+        function ApiService(enrollment, enrollmentFilters, enrollmentTrends) {
             this.enrollment = enrollment;
             this.enrollmentFilters = enrollmentFilters;
+            this.enrollmentTrends = enrollmentTrends;
         }
         return ApiService;
     }());
     ApiService.$inject = [
         'api.enrollment',
-        'api.enrollment-filters'
+        'api.enrollment-filters',
+        'api.enrollment-trends'
     ];
     var ApiBase = (function () {
         function ApiBase(services, settings) {
@@ -201,7 +208,8 @@ var App;
     angular
         .module("app.api", [
         'app.api.enrollment',
-        'app.api.enrollment-filters'
+        'app.api.enrollment-filters',
+        'app.api.enrollment-trends'
     ])
         .service("api", ApiService);
 })(App || (App = {}));
@@ -254,6 +262,82 @@ var App;
                 .module("app.api.enrollment-filters", [])
                 .service("api.enrollment-filters", EnrollmentFiltersApi);
         })(EnrollmentFilters = Api.EnrollmentFilters || (Api.EnrollmentFilters = {}));
+    })(Api = App.Api || (App.Api = {}));
+})(App || (App = {}));
+/// <reference path="api.module.ts" />
+var App;
+(function (App) {
+    var Models;
+    (function (Models) {
+        var EnrollmentTrendsChartModel = (function () {
+            function EnrollmentTrendsChartModel() {
+            }
+            return EnrollmentTrendsChartModel;
+        }());
+        Models.EnrollmentTrendsChartModel = EnrollmentTrendsChartModel;
+        var EnrollmentTrendsFilterModel = (function () {
+            function EnrollmentTrendsFilterModel() {
+                var _this = this;
+                this.isFiltering = function () {
+                    if (_this.EnglishLanguageLearnerStatuses != null || _this.EnglishLanguageLearnerStatuses.length)
+                        return true;
+                    if (_this.Ethnicities != null || _this.Ethnicities.length)
+                        return true;
+                    if (_this.Grades != null || _this.Grades.length)
+                        return true;
+                    if (_this.SchoolYears != null || _this.SchoolYears.length)
+                        return true;
+                    if (_this.LunchStatuses != null || _this.LunchStatuses.length)
+                        return true;
+                    if (_this.SpecialEducationStatuses != null || _this.SpecialEducationStatuses.length)
+                        return true;
+                    return false;
+                };
+                this.Grades = [];
+                this.Ethnicities = [];
+                this.SchoolYears = [];
+                this.EnglishLanguageLearnerStatuses = [];
+                this.LunchStatuses = [];
+                this.SpecialEducationStatuses = [];
+            }
+            return EnrollmentTrendsFilterModel;
+        }());
+        Models.EnrollmentTrendsFilterModel = EnrollmentTrendsFilterModel;
+    })(Models = App.Models || (App.Models = {}));
+})(App || (App = {}));
+(function (App) {
+    var Api;
+    (function (Api) {
+        var EnrollmentTrends;
+        (function (EnrollmentTrends) {
+            var EnrollmentTrendsApi = (function (_super) {
+                __extends(EnrollmentTrendsApi, _super);
+                function EnrollmentTrendsApi() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.resourceUrl = 'enrollment-trends';
+                    return _this;
+                }
+                EnrollmentTrendsApi.prototype.byEnglishLanguageLearner = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-english-language-learner", model).then(function (data) { return data.data; });
+                };
+                EnrollmentTrendsApi.prototype.byEthnicity = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-ethnicity", model).then(function (data) { return data.data; });
+                };
+                EnrollmentTrendsApi.prototype.byGrade = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-grade", model).then(function (data) { return data.data; });
+                };
+                EnrollmentTrendsApi.prototype.byLunchStatus = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-lunch-status", model).then(function (data) { return data.data; });
+                };
+                EnrollmentTrendsApi.prototype.bySpecialEducation = function (model) {
+                    return this.services.http.post(this.settings.apiBaseUrl + "/" + this.resourceUrl + "/by-special-education", model).then(function (data) { return data.data; });
+                };
+                return EnrollmentTrendsApi;
+            }(App.ApiBase));
+            angular
+                .module("app.api.enrollment-trends", [])
+                .service("api.enrollment-trends", EnrollmentTrendsApi);
+        })(EnrollmentTrends = Api.EnrollmentTrends || (Api.EnrollmentTrends = {}));
     })(Api = App.Api || (App.Api = {}));
 })(App || (App = {}));
 /// <reference path="api.module.ts" />
@@ -434,6 +518,13 @@ var App;
             return PieChartModel;
         }());
         Reports.PieChartModel = PieChartModel;
+        var BarChartModel = (function () {
+            function BarChartModel(chartCall) {
+                this.ChartCall = chartCall;
+            }
+            return BarChartModel;
+        }());
+        Reports.BarChartModel = BarChartModel;
     })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
 var App;
@@ -494,6 +585,7 @@ var App;
         angular
             .module('app.reports', [
             'app.reports.enrollment',
+            'app.reports.enrollment-trends',
             'app.reports.home'
         ])
             .config(ReportsLayoutConfig);
@@ -531,6 +623,14 @@ var App;
                     this.reset = function () {
                         _this.filters = new App.Models.EnrollmentFilterModel(_this.schoolYears[0].Value);
                     };
+                    this.resetColors = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            if (chart.Chart) {
+                                chart.Options.animation = { duration: 1500 },
+                                    chart.Colors = _this.services.colorGradient.getColors(chart.Chart.Data.length);
+                            }
+                        });
+                    };
                     this.apply = function () {
                         angular.forEach(_this.charts, function (chart) {
                             return _this.api.enrollment[chart.ChartCall](_this.filters)
@@ -551,13 +651,13 @@ var App;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
                                 // Workout around redrawing causes messup animation
-                                _this.services.timeout(function () { return chart.Options.animation = false; }, 1500);
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
                             });
                         });
                     };
                     this.services.timeout(function () {
                         $rootScope.$on('theme-change', function () {
-                            _this.apply();
+                            _this.resetColors();
                         });
                     }, 1000);
                     angular.forEach(schoolYears, function (year) {
@@ -609,6 +709,137 @@ var App;
                 .module('app.reports.enrollment', [])
                 .config(EnrollmentConfig);
         })(Enrollment = Reports.Enrollment || (Reports.Enrollment = {}));
+    })(Reports = App.Reports || (App.Reports = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Reports;
+    (function (Reports) {
+        var EnrollmentTrends;
+        (function (EnrollmentTrends) {
+            var EnrollmentTrendsController = (function () {
+                function EnrollmentTrendsController($rootScope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
+                    var _this = this;
+                    this.$rootScope = $rootScope;
+                    this.api = api;
+                    this.services = services;
+                    this.$mdSidenav = $mdSidenav;
+                    this.englishLanguageLearnerStatuses = englishLanguageLearnerStatuses;
+                    this.ethnicities = ethnicities;
+                    this.grades = grades;
+                    this.lunchStatuses = lunchStatuses;
+                    this.specialEducationStatuses = specialEducationStatuses;
+                    this.schoolYears = schoolYears;
+                    this.displaySchoolYears = {};
+                    this.charts = [
+                        new Reports.BarChartModel('byGrade'),
+                        new Reports.BarChartModel('byEthnicity'),
+                        new Reports.BarChartModel('byLunchStatus'),
+                        new Reports.BarChartModel('bySpecialEducation'),
+                        new Reports.BarChartModel('byEnglishLanguageLearner')
+                    ];
+                    this.filters = new App.Models.EnrollmentTrendsFilterModel();
+                    this.toggleFilters = function () { return _this.$mdSidenav('filternav').toggle(); };
+                    this.reset = function () {
+                        _this.filters = new App.Models.EnrollmentTrendsFilterModel();
+                    };
+                    this.resetColors = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            if (chart.Chart) {
+                                chart.Options.animation = { duration: 1000 },
+                                    chart.Colors = _this.services.colorGradient.getColors(chart.Chart.Data.length);
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
+                            }
+                        });
+                    };
+                    this.apply = function () {
+                        angular.forEach(_this.charts, function (chart) {
+                            return _this.api.enrollmentTrends[chart.ChartCall](_this.filters)
+                                .then(function (result) {
+                                //Sets the current card state to default on the first call
+                                if (!chart.Chart) {
+                                    chart.ShowChart = result.ShowChart;
+                                    chart.Chart = result;
+                                    chart.Options = {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        legend: { display: true, position: 'bottom' },
+                                        scales: {
+                                            yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero: true
+                                                    }
+                                                }]
+                                        }
+                                    };
+                                }
+                                else {
+                                    chart.Options.animation = { duration: 1000 },
+                                        chart.Chart.Labels = result.Labels;
+                                    chart.Chart.Data = result.Data;
+                                    chart.Chart.Headers = result.Headers;
+                                    chart.Chart.Series = result.Series;
+                                }
+                                chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
+                                // Workout around redrawing causes messup animation
+                                //this.services.timeout(() => chart.Options.animation = false, 1500);
+                            });
+                        });
+                    };
+                    this.services.timeout(function () {
+                        $rootScope.$on('theme-change', function () {
+                            _this.resetColors();
+                        });
+                    }, 1000);
+                    angular.forEach(schoolYears, function (year) {
+                        _this.displaySchoolYears[year.Value] = year.Display;
+                    });
+                    this.apply();
+                }
+                return EnrollmentTrendsController;
+            }());
+            EnrollmentTrendsController.$inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+                'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
+            var EnrollmentTrendsConfig = (function () {
+                function EnrollmentTrendsConfig($stateProvider, settings) {
+                    $stateProvider.state('app.reports.enrollment-trends', {
+                        url: '/enrollment-trends',
+                        views: {
+                            'report@app.reports': {
+                                templateUrl: settings.moduleBaseUri + "/reports/enrollment-trends/enrollment-trends.view.html",
+                                controller: EnrollmentTrendsController,
+                                controllerAs: 'ctrl',
+                                resolve: {
+                                    englishLanguageLearnerStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getEnglishLanguageLearnerStatuses();
+                                        }],
+                                    ethnicities: ['api', function (api) {
+                                            return api.enrollmentFilters.getEthnicities();
+                                        }],
+                                    grades: ['api', function (api) {
+                                            return api.enrollmentFilters.getGrades();
+                                        }],
+                                    lunchStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getLunchStatuses();
+                                        }],
+                                    specialEducationStatuses: ['api', function (api) {
+                                            return api.enrollmentFilters.getSpecialEducationStatuses();
+                                        }],
+                                    schoolYears: ['api', function (api) {
+                                            return api.enrollmentFilters.getSchoolYears();
+                                        }]
+                                }
+                            }
+                        }
+                    });
+                }
+                return EnrollmentTrendsConfig;
+            }());
+            EnrollmentTrendsConfig.$inject = ['$stateProvider', 'settings'];
+            angular
+                .module('app.reports.enrollment-trends', [])
+                .config(EnrollmentTrendsConfig);
+        })(EnrollmentTrends = Reports.EnrollmentTrends || (Reports.EnrollmentTrends = {}));
     })(Reports = App.Reports || (App.Reports = {}));
 })(App || (App = {}));
 var App;

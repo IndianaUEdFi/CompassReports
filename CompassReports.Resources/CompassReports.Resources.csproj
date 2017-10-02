@@ -49,9 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Enrollment\EnrollmentTrendsChartModel.cs" />
     <Compile Include="Models\Enrollment\EnrollmentChartModel.cs" />
+    <Compile Include="Models\Enrollment\EnrollmentTrendsFilterModel.cs" />
     <Compile Include="Models\Enrollment\EnrollmentFilterModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Services\EnrollmentTrendsService.cs" />
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />
     <Compile Include="Services\SchoolService.cs" />

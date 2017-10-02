@@ -151,3 +151,7 @@ ul.filter-status li div {
   white-space: nowrap;
   font-weight: normal;
 }
+
+md-icon.fa {
+    font-size: 22px;
+}

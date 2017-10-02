@@ -35,7 +35,7 @@ var App;
             }
             return ReportsLayoutController;
         }());
-        ReportsLayoutController.$inject = ['$rootScope', '$mdSidenav', '$mdTheming', 'themeProvider'];
+        ReportsLayoutController.$inject = ['$mdSidenav'];
         var ReportsLayoutConfig = (function () {
             function ReportsLayoutConfig($stateProvider, settings) {
                 $stateProvider
@@ -56,6 +56,7 @@ var App;
         angular
             .module('app.reports', [
             'app.reports.enrollment',
+            'app.reports.enrollment-trends',
             'app.reports.home'
         ])
             .config(ReportsLayoutConfig);

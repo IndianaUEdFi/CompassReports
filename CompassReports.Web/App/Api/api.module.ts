@@ -5,18 +5,21 @@ module App {
     export interface IApi {
         enrollment: Api.Enrollment.IEnrollmentApi;
         enrollmentFilters: Api.EnrollmentFilters.IEnrollmentFiltersApi;
+        enrollmentTrends: Api.EnrollmentTrends.IEnrollmentTrendsApi;
     }
 
     class ApiService implements IApi {
 
         static $inject = [
             'api.enrollment',
-            'api.enrollment-filters'
+            'api.enrollment-filters',
+            'api.enrollment-trends'
         ];
 
         constructor(
             public enrollment: Api.Enrollment.IEnrollmentApi,
-            public enrollmentFilters: Api.EnrollmentFilters.IEnrollmentFiltersApi
+            public enrollmentFilters: Api.EnrollmentFilters.IEnrollmentFiltersApi,
+            public enrollmentTrends: Api.EnrollmentTrends.IEnrollmentTrendsApi
         ) {
         }
     }
@@ -52,7 +55,8 @@ module App {
     angular
         .module("app.api", [
             'app.api.enrollment',
-            'app.api.enrollment-filters'
+            'app.api.enrollment-filters',
+            'app.api.enrollment-trends'
         ])
         .service("api", ApiService);
 

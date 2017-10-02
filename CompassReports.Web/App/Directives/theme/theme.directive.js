@@ -48,9 +48,9 @@ var App;
                         _this.$mdThemingProvider.setDefaultTheme('compass-reports-theme' + _this.colorCount);
                     };
                     this.toggleThemes = function () { return _this.$mdSidenav('colornav').toggle(); };
-                    var primaryColor = { color: '#003E69', name: 'dark-blue' };
-                    var secondaryColor = { color: '#FDCD0F', name: 'dark-yellow' };
-                    this.setTheme(primaryColor, secondaryColor);
+                    $mdThemingProvider.generateThemesOnDemand(true);
+                    $mdThemingProvider.alwaysWatchTheme(true);
+                    this.setTheme($rootScope.defaultPrimary, $rootScope.defaultSecondary);
                 }
                 return ThemeController;
             }());

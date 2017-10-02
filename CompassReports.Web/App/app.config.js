@@ -50,8 +50,7 @@ var App;
                 'hue-3': '100'
             })
                 .warnPalette('red');
-            $mdThemingProvider.generateThemesOnDemand(true);
-            $mdThemingProvider.alwaysWatchTheme(true);
+            $mdThemingProvider.setDefaultTheme('compass-reports-theme');
             $provide.value('themeProvider', $mdThemingProvider);
             $urlRouterProvider.otherwise('/enrollment');
             $stateProvider

@@ -12,15 +12,17 @@ var __extends = (this && this.__extends) || (function () {
 var App;
 (function (App) {
     var ApiService = (function () {
-        function ApiService(enrollment, enrollmentFilters) {
+        function ApiService(enrollment, enrollmentFilters, enrollmentTrends) {
             this.enrollment = enrollment;
             this.enrollmentFilters = enrollmentFilters;
+            this.enrollmentTrends = enrollmentTrends;
         }
         return ApiService;
     }());
     ApiService.$inject = [
         'api.enrollment',
-        'api.enrollment-filters'
+        'api.enrollment-filters',
+        'api.enrollment-trends'
     ];
     var ApiBase = (function () {
         function ApiBase(services, settings) {
@@ -48,7 +50,8 @@ var App;
     angular
         .module("app.api", [
         'app.api.enrollment',
-        'app.api.enrollment-filters'
+        'app.api.enrollment-filters',
+        'app.api.enrollment-trends'
     ])
         .service("api", ApiService);
 })(App || (App = {}));

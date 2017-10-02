@@ -154,12 +154,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\Directives\theme\theme.view.html" />
+    <Content Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.view.html" />
     <Content Include="App\Modules\Reports\Enrollment\enrollment.view.html" />
     <Content Include="App\Modules\Reports\Home\home.view.html" />
     <Content Include="App\Modules\Reports\reports-layout.view.html" />
     <Content Include="Content\angular-material-sidemenu.min.css" />
     <Content Include="Content\angular-material.min.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\site.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="index.html" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.min.js" />
@@ -178,6 +181,7 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\EnrollmentTrendsController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\EnrollmentFiltersController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
@@ -193,6 +197,11 @@
     <Content Include="Typings\angular-ui-router\types-metadata.json" />
     <Content Include="Typings\angular\LICENSE" />
     <Content Include="Typings\angular\README.md" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -216,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\enrollment-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-filters.api.ts" />
     <TypeScriptCompile Include="App\app.config.ts" />
@@ -225,6 +235,7 @@
     <TypeScriptCompile Include="App\Directives\directive.module.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\chart-model.module.ts" />

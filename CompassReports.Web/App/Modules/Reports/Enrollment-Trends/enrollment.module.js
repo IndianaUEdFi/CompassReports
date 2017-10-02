@@ -54,11 +54,9 @@ var App;
                             });
                         });
                     };
-                    this.services.timeout(function () {
-                        $rootScope.$on('theme-change', function () {
-                            _this.apply();
-                        });
-                    }, 1000);
+                    $rootScope.$on('theme-change', function () {
+                        _this.apply();
+                    });
                     angular.forEach(schoolYears, function (year) {
                         _this.displaySchoolYears[year.Value] = year.Display;
                     });

@@ -4,18 +4,16 @@ var App;
     (function (Directive) {
         var TruncateTooltip;
         (function (TruncateTooltip) {
-            function truncateTooltipDirective($timeout) {
+            function truncateTooltipDirective() {
                 return {
                     restrict: 'A',
-                    tempate: '<md-tooltip class="overflow-tooltip">' +
+                    template: '<md-tooltip class="overflow-tooltip">' +
                         '<div style="max-width: 300px; line-height: 18px">{{value}}</div>' +
                         '</md-tooltip>',
                     scope: {},
                     link: function (scope, element) {
                         element.bind('mouseover', function () {
                             var el = element[0];
-                            console.log('moused over');
-                            console.log(element.text());
                             if (el.offsetWidth < el.scrollWidth) {
                                 console.log('showing tooltip');
                                 scope.showTooltip = true;

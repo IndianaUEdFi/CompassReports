@@ -2,15 +2,23 @@
 
 module App {
 
-    interface IAppRootScope extends ng.IRootScopeService {
+    export interface IAppRootScope extends ng.IRootScopeService {
         currentState: ng.ui.IState,
         title: string;
+        currentTheme: string;
+        defaultPrimary: {color: string, name: string};
+        defaultSecondary: { color: string, name: string };
+
     }
 
     class AppRun {
         static $inject = ['$rootScope'];
 
         constructor($rootScope: IAppRootScope) {
+
+            $rootScope.currentTheme = 'compass-reports-theme';
+            $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
+            $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
 
             var contentLoadedEvent = $rootScope.$on('$viewContentLoaded', (event: ng.IAngularEvent, view: string) => {
 

@@ -3,11 +3,12 @@ var App;
     var Services;
     (function (Services) {
         var ColorGradient = (function () {
-            function ColorGradient() {
+            function ColorGradient($rootScope) {
+                this.$rootScope = $rootScope;
             }
             ColorGradient.prototype.getColors = function (colorCount) {
-                var color1Hash = '#003E69';
-                var color2Hash = '#FDCD0F';
+                var color1Hash = this.$rootScope.primaryColor.color;
+                var color2Hash = this.$rootScope.secondaryColor.color;
                 var color1Hex = color1Hash.split('#')[1];
                 var color2Hex = color2Hash.split('#')[1];
                 var color1Red = parseInt(color1Hex.substr(0, 2), 16);
@@ -49,6 +50,7 @@ var App;
             };
             return ColorGradient;
         }());
+        ColorGradient.$inject = ['$rootScope'];
         angular
             .module('app.services.color-gradient', [])
             .service('app.services.color-gradient', ColorGradient);

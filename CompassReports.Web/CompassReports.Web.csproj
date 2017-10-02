@@ -153,6 +153,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Directives\theme\theme.view.html" />
     <Content Include="App\Modules\Reports\Enrollment\enrollment.view.html" />
     <Content Include="App\Modules\Reports\Home\home.view.html" />
     <Content Include="App\Modules\Reports\reports-layout.view.html" />
@@ -222,6 +223,7 @@
     <TypeScriptCompile Include="App\app.module.ts" />
     <TypeScriptCompile Include="App\app.run.ts" />
     <TypeScriptCompile Include="App\Directives\directive.module.ts" />
+    <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />

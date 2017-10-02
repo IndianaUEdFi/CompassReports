@@ -3,8 +3,9 @@ var App;
     var Reports;
     (function (Reports) {
         var ReportsLayoutController = (function () {
-            function ReportsLayoutController() {
+            function ReportsLayoutController($mdSidenav) {
                 var _this = this;
+                this.$mdSidenav = $mdSidenav;
                 this.isOpen = false;
                 this.menuId = 0;
                 this.toggleExpanded = function (selectedMenuId) {
@@ -30,10 +31,11 @@ var App;
                 this.isSelected = function (value) {
                     return _this.menuId === value;
                 };
+                this.toggleThemes = function () { return _this.$mdSidenav('colornav').toggle(); };
             }
             return ReportsLayoutController;
         }());
-        ReportsLayoutController.$inject = [];
+        ReportsLayoutController.$inject = ['$rootScope', '$mdSidenav', '$mdTheming', 'themeProvider'];
         var ReportsLayoutConfig = (function () {
             function ReportsLayoutConfig($stateProvider, settings) {
                 $stateProvider

@@ -6,7 +6,8 @@ module App {
 
         static $inject = [];
 
-        constructor() { }
+        constructor() {
+        }
     }
 
     angular

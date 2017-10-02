@@ -4,9 +4,11 @@
     }
 
     class ColorGradient {
+        static $inject = ['$rootScope'];
+
         getColors(colorCount: number) {
-            const color1Hash = '#003E69';
-            const color2Hash = '#FDCD0F';
+            const color1Hash = this.$rootScope.primaryColor.color;
+            const color2Hash = this.$rootScope.secondaryColor.color;
 
             const color1Hex = color1Hash.split('#')[1];
             const color2Hex = color2Hash.split('#')[1];
@@ -51,6 +53,10 @@
             }
             return colors;
         }
+
+        constructor(private readonly $rootScope) {
+        
+    }
     }
 
     angular

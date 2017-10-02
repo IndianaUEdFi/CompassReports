@@ -1,7 +1,7 @@
 ﻿module App.Reports.Enrollment {
 
     class EnrollmentController {
-        static $inject = ['$scope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+        static $inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
             'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
 
         displaySchoolYears: any = {};
@@ -51,7 +51,7 @@
         }
 
         constructor(
-            public $scope,
+            public $rootScope,
             private readonly api: IApi,
             private readonly services: IServices,
             private readonly $mdSidenav: ng.material.ISidenavService,
@@ -63,15 +63,18 @@
             public schoolYears: Models.FilterModel<number>[]
         ) {
 
+            this.services.timeout(() =>
+            {
+                $rootScope.$on('theme-change', () => {
+                    this.apply();
+                }); 
+            }, 1000);
+
             angular.forEach(schoolYears, year => {
                 this.displaySchoolYears[year.Value] = year.Display;
             });
 
             this.apply();
-
-            $scope.$on('chart-update', (evt, chart) => {
-                console.log(chart);
-            });
         }
     }
 

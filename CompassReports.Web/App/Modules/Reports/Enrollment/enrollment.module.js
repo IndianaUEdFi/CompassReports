@@ -5,9 +5,9 @@ var App;
         var Enrollment;
         (function (Enrollment) {
             var EnrollmentController = (function () {
-                function EnrollmentController($scope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
+                function EnrollmentController($rootScope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
                     var _this = this;
-                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.api = api;
                     this.services = services;
                     this.$mdSidenav = $mdSidenav;
@@ -44,24 +44,27 @@ var App;
                                     };
                                 }
                                 else {
-                                    chart.Chart.Labels = result.Labels;
+                                    chart.Options.animation = { duration: 1000 },
+                                        chart.Chart.Labels = result.Labels;
                                     chart.Chart.Data = result.Data;
                                 }
                                 chart.Colors = _this.services.colorGradient.getColors(result.Data.length);
+                                // Workout around redrawing causes messup animation
+                                _this.services.timeout(function () { return chart.Options.animation = false; }, 1500);
                             });
                         });
                     };
+                    $rootScope.$on('theme-change', function () {
+                        _this.apply();
+                    });
                     angular.forEach(schoolYears, function (year) {
                         _this.displaySchoolYears[year.Value] = year.Display;
                     });
                     this.apply();
-                    $scope.$on('chart-update', function (evt, chart) {
-                        console.log(chart);
-                    });
                 }
                 return EnrollmentController;
             }());
-            EnrollmentController.$inject = ['$scope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+            EnrollmentController.$inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
                 'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
             var EnrollmentConfig = (function () {
                 function EnrollmentConfig($stateProvider, settings) {

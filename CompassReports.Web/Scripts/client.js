@@ -34,7 +34,7 @@ var App;
 var App;
 (function (App) {
     var AppConfig = (function () {
-        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider) {
+        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider, $provide) {
             $locationProvider.hashPrefix('');
             $mdThemingProvider.definePalette('dark-blue', {
                 '50': '#E0E8ED',
@@ -82,6 +82,8 @@ var App;
                 'hue-3': '100'
             })
                 .warnPalette('red');
+            $mdThemingProvider.setDefaultTheme('compass-reports-theme');
+            $provide.value('themeProvider', $mdThemingProvider);
             $urlRouterProvider.otherwise('/enrollment');
             $stateProvider
                 .state('app', {
@@ -90,7 +92,7 @@ var App;
         }
         return AppConfig;
     }());
-    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
+    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$provide'];
     angular
         .module('app')
         .config(AppConfig);
@@ -113,6 +115,9 @@ var App;
 (function (App) {
     var AppRun = (function () {
         function AppRun($rootScope) {
+            $rootScope.currentTheme = 'compass-reports-theme';
+            $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
+            $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
             var contentLoadedEvent = $rootScope.$on('$viewContentLoaded', function (event, view) {
                 if (event.targetScope && event.targetScope.ctrl)
                     console.log("Loaded controller " + event.targetScope.ctrl.constructor.name + " for view " + view);
@@ -310,6 +315,7 @@ var App;
 })(App || (App = {}));
 angular
     .module('app.directives', [
+    'app.directives.theme',
     'app.directives.truncate-tooltip'
 ]);
 var App;
@@ -318,18 +324,16 @@ var App;
     (function (Directive) {
         var TruncateTooltip;
         (function (TruncateTooltip) {
-            function truncateTooltipDirective($timeout) {
+            function truncateTooltipDirective() {
                 return {
                     restrict: 'A',
-                    tempate: '<md-tooltip class="overflow-tooltip">' +
+                    template: '<md-tooltip class="overflow-tooltip">' +
                         '<div style="max-width: 300px; line-height: 18px">{{value}}</div>' +
                         '</md-tooltip>',
                     scope: {},
                     link: function (scope, element) {
                         element.bind('mouseover', function () {
                             var el = element[0];
-                            console.log('moused over');
-                            console.log(element.text());
                             if (el.offsetWidth < el.scrollWidth) {
                                 console.log('showing tooltip');
                                 scope.showTooltip = true;
@@ -345,6 +349,78 @@ var App;
                 .module('app.directives.truncate-tooltip', [])
                 .directive('truncateTooltip', ['$timeout', truncateTooltipDirective]);
         })(TruncateTooltip = Directive.TruncateTooltip || (Directive.TruncateTooltip = {}));
+    })(Directive = App.Directive || (App.Directive = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
+    var Directive;
+    (function (Directive) {
+        var Theme;
+        (function (Theme) {
+            var ThemeController = (function () {
+                function ThemeController($rootScope, $mdSidenav, $mdTheming, $mdThemingProvider) {
+                    var _this = this;
+                    this.$rootScope = $rootScope;
+                    this.$mdSidenav = $mdSidenav;
+                    this.$mdTheming = $mdTheming;
+                    this.$mdThemingProvider = $mdThemingProvider;
+                    this.colors = [
+                        { color: '#F44336', name: 'red' },
+                        { color: '#E91E63', name: 'pink' },
+                        { color: '#9C27B0', name: 'purple' },
+                        { color: '#673AB7', name: 'deep-purple' },
+                        { color: '#3F51B5', name: 'indigo' },
+                        { color: '#2196F3', name: 'blue' },
+                        { color: '#03A9F4', name: 'light-blue' },
+                        { color: '#00BCD4', name: 'cyan' },
+                        { color: '#009688', name: 'teal' },
+                        { color: '#4CAF50', name: 'green' },
+                        { color: '#8BC34A', name: 'light-green' },
+                        { color: '#CDDC39', name: 'lime' },
+                        { color: '#FFEB3B', name: 'yellow' },
+                        { color: '#FFC107', name: 'amber' },
+                        { color: '#FF9800', name: 'orange' },
+                        { color: '#FF5722', name: 'deep-orange' },
+                        { color: '#795548', name: 'brown' },
+                        { color: '#9E9E9E', name: 'grey' },
+                        { color: '#607D8B', name: 'blue-grey' }
+                    ];
+                    this.colorCount = 1;
+                    this.setTheme = function (primaryColor, secondaryColor) {
+                        _this.colorCount++;
+                        _this.$mdThemingProvider
+                            .theme('compass-reports-theme' + _this.colorCount)
+                            .primaryPalette(primaryColor.name)
+                            .accentPalette(secondaryColor.name)
+                            .warnPalette('red');
+                        _this.$rootScope.currentTheme = 'compass-reports-theme' + _this.colorCount;
+                        _this.$rootScope.primaryColor = primaryColor;
+                        _this.$rootScope.secondaryColor = secondaryColor;
+                        _this.$rootScope.$emit('theme-change');
+                        _this.$mdTheming.generateTheme('compass-reports-theme' + _this.colorCount);
+                        _this.$mdThemingProvider.setDefaultTheme('compass-reports-theme' + _this.colorCount);
+                    };
+                    this.toggleThemes = function () { return _this.$mdSidenav('colornav').toggle(); };
+                    $mdThemingProvider.generateThemesOnDemand(true);
+                    $mdThemingProvider.alwaysWatchTheme(true);
+                    this.setTheme($rootScope.defaultPrimary, $rootScope.defaultSecondary);
+                }
+                return ThemeController;
+            }());
+            ThemeController.$inject = ['$rootScope', '$mdSidenav', '$mdTheming', 'themeProvider'];
+            function themeDirective(settings) {
+                return {
+                    restrict: 'E',
+                    templateUrl: settings.directiveBaseUri + "/theme/theme.view.html",
+                    scope: {},
+                    controller: ThemeController,
+                    controllerAs: 'ctrl'
+                };
+            }
+            angular
+                .module('app.directives.theme', [])
+                .directive('themeNav', ['settings', themeDirective]);
+        })(Theme = Directive.Theme || (Directive.Theme = {}));
     })(Directive = App.Directive || (App.Directive = {}));
 })(App || (App = {}));
 var App;
@@ -365,8 +441,9 @@ var App;
     var Reports;
     (function (Reports) {
         var ReportsLayoutController = (function () {
-            function ReportsLayoutController() {
+            function ReportsLayoutController($mdSidenav) {
                 var _this = this;
+                this.$mdSidenav = $mdSidenav;
                 this.isOpen = false;
                 this.menuId = 0;
                 this.toggleExpanded = function (selectedMenuId) {
@@ -392,10 +469,11 @@ var App;
                 this.isSelected = function (value) {
                     return _this.menuId === value;
                 };
+                this.toggleThemes = function () { return _this.$mdSidenav('colornav').toggle(); };
             }
             return ReportsLayoutController;
         }());
-        ReportsLayoutController.$inject = [];
+        ReportsLayoutController.$inject = ['$mdSidenav'];
         var ReportsLayoutConfig = (function () {
             function ReportsLayoutConfig($stateProvider, settings) {
                 $stateProvider
@@ -428,9 +506,9 @@ var App;
         var Enrollment;
         (function (Enrollment) {
             var EnrollmentController = (function () {
-                function EnrollmentController($scope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
+                function EnrollmentController($rootScope, api, services, $mdSidenav, englishLanguageLearnerStatuses, ethnicities, grades, lunchStatuses, specialEducationStatuses, schoolYears) {
                     var _this = this;
-                    this.$scope = $scope;
+                    this.$rootScope = $rootScope;
                     this.api = api;
                     this.services = services;
                     this.$mdSidenav = $mdSidenav;
@@ -477,17 +555,19 @@ var App;
                             });
                         });
                     };
+                    this.services.timeout(function () {
+                        $rootScope.$on('theme-change', function () {
+                            _this.apply();
+                        });
+                    }, 1000);
                     angular.forEach(schoolYears, function (year) {
                         _this.displaySchoolYears[year.Value] = year.Display;
                     });
                     this.apply();
-                    $scope.$on('chart-update', function (evt, chart) {
-                        console.log(chart);
-                    });
                 }
                 return EnrollmentController;
             }());
-            EnrollmentController.$inject = ['$scope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
+            EnrollmentController.$inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'englishLanguageLearnerStatuses', 'ethnicities',
                 'grades', 'lunchStatuses', 'specialEducationStatuses', 'schoolYears'];
             var EnrollmentConfig = (function () {
                 function EnrollmentConfig($stateProvider, settings) {
@@ -571,11 +651,12 @@ var App;
     var Services;
     (function (Services) {
         var ColorGradient = (function () {
-            function ColorGradient() {
+            function ColorGradient($rootScope) {
+                this.$rootScope = $rootScope;
             }
             ColorGradient.prototype.getColors = function (colorCount) {
-                var color1Hash = '#003E69';
-                var color2Hash = '#FDCD0F';
+                var color1Hash = this.$rootScope.primaryColor.color;
+                var color2Hash = this.$rootScope.secondaryColor.color;
                 var color1Hex = color1Hash.split('#')[1];
                 var color2Hex = color2Hash.split('#')[1];
                 var color1Red = parseInt(color1Hex.substr(0, 2), 16);
@@ -617,6 +698,7 @@ var App;
             };
             return ColorGradient;
         }());
+        ColorGradient.$inject = ['$rootScope'];
         angular
             .module('app.services.color-gradient', [])
             .service('app.services.color-gradient', ColorGradient);

@@ -1,7 +1,7 @@
 ﻿module App.Reports {
 
     class ReportsLayoutController {
-        static $inject = [];
+        static $inject = ['$mdSidenav'];
 
         isOpen = false;
         menuId = 0;
@@ -29,6 +29,10 @@
             return this.menuId === value;
         }
 
+        toggleThemes = () => this.$mdSidenav('colornav').toggle();
+
+        constructor(private readonly $mdSidenav: ng.material.ISidenavService) {
+        }            
     }
 
     class ReportsLayoutConfig {

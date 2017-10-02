@@ -2,7 +2,7 @@
 var App;
 (function (App) {
     var AppConfig = (function () {
-        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider) {
+        function AppConfig($locationProvider, $stateProvider, $urlRouterProvider, $mdThemingProvider, $provide) {
             $locationProvider.hashPrefix('');
             $mdThemingProvider.definePalette('dark-blue', {
                 '50': '#E0E8ED',
@@ -50,6 +50,9 @@ var App;
                 'hue-3': '100'
             })
                 .warnPalette('red');
+            $mdThemingProvider.generateThemesOnDemand(true);
+            $mdThemingProvider.alwaysWatchTheme(true);
+            $provide.value('themeProvider', $mdThemingProvider);
             $urlRouterProvider.otherwise('/enrollment');
             $stateProvider
                 .state('app', {
@@ -58,7 +61,7 @@ var App;
         }
         return AppConfig;
     }());
-    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
+    AppConfig.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$provide'];
     angular
         .module('app')
         .config(AppConfig);

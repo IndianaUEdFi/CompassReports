@@ -3,17 +3,21 @@
         <md-button class="md-fab md-mini" ng-click="ctrl.toggleSidenav()">
             <md-icon md-font-set="material-icons">menu</md-icon>
         </md-button>
-        <h1 style="padding-left: 10px">DOE Compass</h1>
+        <h1 style="padding-left: 10px">IDOE Compass</h1>
+        <span flex></span>
+        <md-button class="md-fab md-mini" ng-click="ctrl.toggleThemes()">
+            <md-icon md-font-set="material-icons">more_vert</md-icon>
+        </md-button>
     </div>
 </md-toolbar>
 
 <div layout="row" flex="100" style="overflow-x: hidden">
     <md-sidenav md-component-id="l-sidenav" class="locked-sidebar" md-is-locked-open="true" md-whiteframe="4" style="z-index: 1">
         <md-list>
-            <md-list-item ng-click="ctrl.toggleExpanded(1)" ng-class="{ 'side-button-active': ctrl.isSelected(1) && ctrl.isOpen }">
+            <md-list-item ng-click="ctrl.toggleExpanded(1)" ng-style="{'background-color': (ctrl.isSelected(1) && ctrl.isOpen) ? $root.primaryColor.color : 'white'}">
                 <i class="material-icons" ng-class="{ 'side-icon-active': ctrl.isSelected(1) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(1)}">group</i>
             </md-list-item>
-            <md-list-item ng-click="ctrl.toggleExpanded(2)" ng-class="{ 'side-button-active': ctrl.isSelected(2) && ctrl.isOpen }">
+            <md-list-item ng-click="ctrl.toggleExpanded(2)" ng-style="{'background-color': (ctrl.isSelected(2) && ctrl.isOpen) ? $root.primaryColor.color : 'white'}">
                 <i ng-class="{ 'side-icon-active': ctrl.isSelected(2) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(2), 'material-icons': true}">school</i>
             </md-list-item>
         </md-list>
@@ -60,4 +64,6 @@
     </md-sidenav>
     
     <div layout="column" flex ui-view="report"></div>
+    
+    <theme-nav></theme-nav>
 </div>

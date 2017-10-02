@@ -2,13 +2,14 @@
 
 module App {
     class AppConfig {
-        static $inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider'];
+        static $inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider', '$mdThemingProvider', '$provide'];
 
         constructor(
             $locationProvider: ng.ILocationProvider,
             $stateProvider: ng.ui.IStateProvider,
             $urlRouterProvider: ng.ui.IUrlRouterProvider,
-            $mdThemingProvider: angular.material.IThemingProvider) {
+            $mdThemingProvider: angular.material.IThemingProvider,
+            $provide: angular.IModule) {
 
             $locationProvider.hashPrefix('');
 
@@ -64,6 +65,10 @@ module App {
                     'hue-3': '100'
                 })
                 .warnPalette('red');
+
+            $mdThemingProvider.setDefaultTheme('compass-reports-theme');
+
+            $provide.value('themeProvider', $mdThemingProvider);
 
             $urlRouterProvider.otherwise('/enrollment');
 

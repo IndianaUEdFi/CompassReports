@@ -1,0 +1,78 @@
+﻿<style>
+    .theme-square {
+        width: 20px; 
+        height: 20px;
+        padding: 1px;
+        border: 2px solid;
+        cursor: pointer;
+        border: 2px solid white;
+    }
+
+    .theme-square:hover {
+        height: 22px;
+        width: 22px;
+        padding: 0px;
+                border: 2px solid black;
+    }
+
+    .theme-square:focus {
+         outline:none;
+    }
+
+   .theme-square.selected {
+        opacity: 1;
+        border: 2px solid black;
+    }
+</style>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="colornav" id="colornav">
+    <md-toolbar class="md-toolbar-tools md-accent md-hue-2">
+        <h2>Themes</h2>
+        <span flex></span>
+        <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="ctrl.toggleThemes()">
+            <md-icon md-font-set="material-icons">keyboard_arrow_right</md-icon>
+        </md-button>
+    </md-toolbar>
+    <md-content layout-padding>
+        <div>
+            <label style="font-size: 16px; font-weight: bold">Primary</label>
+            <div layout="row" layout-wrap>
+                <div ng-repeat="color in ctrl.colors" flex="10" style="padding-bottom: 5px">
+                    <div style="margin:0 auto;" ng-style="{'background-color': color.color}"
+                         class="theme-square" ng-class="{'selected': color == $root.primaryColor }"
+                         ng-click="ctrl.setTheme(color, $root.secondaryColor)">
+                        <img />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label>Default: </label>
+                <div style="display: inline-block" ng-style="{'background-color': ctrl.defaultPrimary.color}"
+                     class="theme-square" ng-class="{'selected': ctrl.defaultPrimary == $root.primaryColor }"
+                     ng-click="ctrl.setTheme(ctrl.defaultPrimary, $root.secondaryColor)">
+                    <img />
+                </div>
+            </div>
+        </div>
+        <div>
+            <label style="font-size: 16px; font-weight: bold">Secondary</label>
+            <div layout="row" layout-wrap>
+                <div ng-repeat="color in ctrl.colors" flex="10" style="padding-bottom: 5px">
+                    <div style="margin:0 auto;" ng-style="{'background-color': color.color}" 
+                         class="theme-square"  ng-class="{'selected': color == $root.secondaryColor }"
+                         ng-click="ctrl.setTheme($root.primaryColor, color)">
+                        <img />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label>Default: </label> 
+                <div style="display: inline-block" ng-style="{'background-color': ctrl.defaultSecondary.color}" 
+                     class="theme-square" ng-class="{'selected': ctrl.defaultSecondary == $root.secondaryColor }"
+                     ng-click="ctrl.setTheme($root.primaryColor, ctrl.defaultSecondary)">
+                    <img/>
+                </div>
+            </div>
+        </div>
+    </md-content>
+</md-sidenav>

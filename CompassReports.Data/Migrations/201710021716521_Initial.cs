@@ -95,7 +95,7 @@ namespace CompassReports.Data.Migrations
                         PrincipalElectronicMailAddress = c.String(nullable: false, maxLength: 128),
                         GradeLevels = c.String(nullable: false, maxLength: 10),
                         AccreditationStatus = c.String(nullable: false, maxLength: 75),
-                        LocalEducationAgencyId = c.Int(nullable: false),
+                        LocalEducationAgencyKey = c.Int(nullable: false),
                         LEANameOfInstitution = c.String(nullable: false, maxLength: 75),
                         LEAStreetNumberName = c.String(nullable: false, maxLength: 150),
                         LEABuildingSiteNumber = c.String(maxLength: 20),

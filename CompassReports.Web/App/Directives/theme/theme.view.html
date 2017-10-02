@@ -47,9 +47,9 @@
             </div>
             <div>
                 <label>Default: </label>
-                <div style="display: inline-block" ng-style="{'background-color': ctrl.defaultPrimary.color}"
-                     class="theme-square" ng-class="{'selected': ctrl.defaultPrimary == $root.primaryColor }"
-                     ng-click="ctrl.setTheme(ctrl.defaultPrimary, $root.secondaryColor)">
+                <div style="display: inline-block" ng-style="{'background-color': $root.defaultPrimary.color}"
+                     class="theme-square" ng-class="{'selected': $root.defaultPrimary == $root.primaryColor }"
+                     ng-click="ctrl.setTheme($root.defaultPrimary, $root.secondaryColor)">
                     <img />
                 </div>
             </div>
@@ -67,9 +67,9 @@
             </div>
             <div>
                 <label>Default: </label> 
-                <div style="display: inline-block" ng-style="{'background-color': ctrl.defaultSecondary.color}" 
-                     class="theme-square" ng-class="{'selected': ctrl.defaultSecondary == $root.secondaryColor }"
-                     ng-click="ctrl.setTheme($root.primaryColor, ctrl.defaultSecondary)">
+                <div style="display: inline-block" ng-style="{'background-color': $root.defaultSecondary.color}" 
+                     class="theme-square" ng-class="{'selected': $root.defaultSecondary == $root.secondaryColor }"
+                     ng-click="ctrl.setTheme($root.primaryColor, $root.defaultSecondary)">
                     <img/>
                 </div>
             </div>

@@ -18,6 +18,10 @@ namespace CompassReports.Data.Entities
         public string GradeLevel { get; set; }
 
         [Required]
+        [MaxLength(10)]
+        public string GradeLevelSort { get; set; }
+
+        [Required]
         [MaxLength(50)]
         public string Ethnicity { get; set; }
 

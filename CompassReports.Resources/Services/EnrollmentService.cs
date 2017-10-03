@@ -57,7 +57,8 @@ namespace CompassReports.Resources.Services
                     {
                         Ethnicity = x.Key,
                         Total = x.Sum(y => y.EnrollmentStudentCount)
-                    }).OrderBy(x => x.Ethnicity);
+                    }).OrderBy(x => x.Ethnicity)
+                    .ToList();
 
             return new PieChartModel<int>
             {
@@ -73,12 +74,14 @@ namespace CompassReports.Resources.Services
         {
             var query = BaseQuery(model);
 
-            var results = query.GroupBy(x => x.Demographic.GradeLevel)
+            var results = query.GroupBy(x => new { x.Demographic.GradeLevel, x.Demographic.GradeLevelSort})
                     .Select(x => new
                     {
-                        GradeLevel = x.Key,
+                        GradeLevel = x.Key.GradeLevel,
+                        GradeLevelSort = x.Key.GradeLevelSort,
                         Total = x.Sum(y => y.EnrollmentStudentCount)
-                    }).OrderBy(x => x.GradeLevel);
+                    }).OrderBy(x => x.GradeLevelSort)
+                    .ToList();
 
             return new PieChartModel<int>
             {
@@ -100,7 +103,8 @@ namespace CompassReports.Resources.Services
                     {
                         LunchStatus = x.Key,
                         Total = x.Sum(y => y.EnrollmentStudentCount)
-                    }).OrderBy(x => x.LunchStatus);
+                    }).OrderBy(x => x.LunchStatus)
+                    .ToList();
 
             return new PieChartModel<int>
             {
@@ -122,7 +126,8 @@ namespace CompassReports.Resources.Services
                     {
                         SpecialEducationStatus = x.Key,
                         Total = x.Sum(y => y.EnrollmentStudentCount)
-                    }).OrderBy(x => x.SpecialEducationStatus);
+                    }).OrderBy(x => x.SpecialEducationStatus)
+                    .ToList();
 
             return new PieChartModel<int>
             {

@@ -117,12 +117,13 @@ namespace CompassReports.Resources.Services
         {
             var query = BaseQuery(model);
 
-            var results = query.GroupBy(x => new {x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Demographic.GradeLevel})
+            var results = query.GroupBy(x => new {x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Demographic.GradeLevel, x.Demographic.GradeLevelSort})
                 .Select(x => new
                 {
                     SchoolYear = x.Key.SchoolYearKey,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     GradeLevel = x.Key.GradeLevel,
+                    GradeLevelSort = x.Key.GradeLevelSort,
                     Total = x.Sum(y => y.EnrollmentStudentCount)
                 }).OrderBy(x => x.SchoolYear)
                 .ToList();
@@ -131,7 +132,7 @@ namespace CompassReports.Resources.Services
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
 
             var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
-            var gradeLevels = results.Select(x => x.GradeLevel).Distinct().OrderBy(x => x).ToList();
+            var gradeLevels = results.OrderBy(x => x.GradeLevelSort).Select(x => x.GradeLevel).Distinct().ToList();
 
             var data = new List<List<int>>();
             foreach (var grade in gradeLevels)

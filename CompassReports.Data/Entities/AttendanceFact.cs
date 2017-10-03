@@ -22,8 +22,8 @@ namespace CompassReports.Data.Entities
         public short SchoolYearKey { get; set; }
         public virtual SchoolYearDimension SchoolYearDimension { get; set; }
 
-        public int Absences { get; set; }
+        public int TotalAbsences { get; set; }
 
-        public int PossibleStudentAttendanceDays { get; set; }
+        public int TotalInstructionalDays { get; set; }
     }
 }

@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+CompassReports.Web/App/**/*.js
+CompassReports.Web/App/**/*.js.map
+
+CompassReports.Web/Scripts/client.js
+CompassReports.Web/Scripts/client.js.map
+
 # User-specific files
 *.suo
 *.user

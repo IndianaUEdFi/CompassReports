@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using CompassReports.Data;
-using CompassReports.Data.Context;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
-using CompassReports.Resources.Models.Enrollment;
 
 namespace CompassReports.Resources.Services
 {
     public interface IEnrollmentTrendsService
     {
-        EnrollmentTrendsChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentTrendsFilterModel model);
-        EnrollmentTrendsChartModel<int> ByEthnicity(EnrollmentTrendsFilterModel model);
-        EnrollmentTrendsChartModel<int> ByGrade(EnrollmentTrendsFilterModel model);
-        EnrollmentTrendsChartModel<int> ByLunchStatus(EnrollmentTrendsFilterModel model);
-        EnrollmentTrendsChartModel<int> BySpecialEducationStatus(EnrollmentTrendsFilterModel model);
+        BarChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model);
+        BarChartModel<int> ByEthnicity(EnrollmentFilterModel model);
+        BarChartModel<int> ByGrade(EnrollmentFilterModel model);
+        BarChartModel<int> ByLunchStatus(EnrollmentFilterModel model);
+        BarChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model);
     }
 
     public class EnrollmentTrendsService : IEnrollmentTrendsService
@@ -29,7 +26,7 @@ namespace CompassReports.Resources.Services
             _enrollmentRepository = enrollmentRepository;
         }
 
-        public EnrollmentTrendsChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentTrendsFilterModel model)
+        public BarChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -61,7 +58,7 @@ namespace CompassReports.Resources.Services
                 data.Add(values);
             }
 
-            return new EnrollmentTrendsChartModel<int>
+            return new BarChartModel<int>
             {
                 Title = "English Language Learner",
                 Headers = headers,
@@ -73,7 +70,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentTrendsChartModel<int> ByEthnicity(EnrollmentTrendsFilterModel model)
+        public BarChartModel<int> ByEthnicity(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -105,7 +102,7 @@ namespace CompassReports.Resources.Services
                 data.Add(values);
             }
 
-            return new EnrollmentTrendsChartModel<int>
+            return new BarChartModel<int>
             {
                 Title = "Ethnicity",
                 Headers = headers,
@@ -116,7 +113,7 @@ namespace CompassReports.Resources.Services
                 Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }
-        public EnrollmentTrendsChartModel<int> ByGrade(EnrollmentTrendsFilterModel model)
+        public BarChartModel<int> ByGrade(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -148,7 +145,7 @@ namespace CompassReports.Resources.Services
                 data.Add(values);
             }
 
-            return new EnrollmentTrendsChartModel<int>
+            return new BarChartModel<int>
             {
                 Title = "Grade",
                 Headers = headers,
@@ -160,7 +157,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentTrendsChartModel<int> ByLunchStatus(EnrollmentTrendsFilterModel model)
+        public BarChartModel<int> ByLunchStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -192,7 +189,7 @@ namespace CompassReports.Resources.Services
                 data.Add(values);
             }
 
-            return new EnrollmentTrendsChartModel<int>
+            return new BarChartModel<int>
             {
                 Title = "Free/Reduced Price Meals",
                 Headers = headers,
@@ -204,7 +201,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentTrendsChartModel<int> BySpecialEducationStatus(EnrollmentTrendsFilterModel model)
+        public BarChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -236,7 +233,7 @@ namespace CompassReports.Resources.Services
                 data.Add(values);
             }
 
-            return new EnrollmentTrendsChartModel<int>
+            return new BarChartModel<int>
             {
                 Title = "Special Education",
                 Headers = headers,
@@ -248,7 +245,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        private IQueryable<EnrollmentFact> BaseQuery(EnrollmentTrendsFilterModel model)
+        private IQueryable<EnrollmentFact> BaseQuery(EnrollmentFilterModel model)
         {
             var query = _enrollmentRepository
                 .GetAll()

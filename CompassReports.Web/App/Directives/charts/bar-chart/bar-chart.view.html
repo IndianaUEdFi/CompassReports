@@ -1,0 +1,44 @@
+﻿<md-card>
+    <md-toolbar class="md-accent md-hue-1" style="height: 50px">
+        <div class="md-toolbar-tools">
+            <h3>{{chart.Title}}</h3>
+            <span flex></span>
+            <div>
+                <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.ShowChart = !chart.ShowChart">
+                    <md-icon ng-if="chart.ShowChart" md-font-set="material-icons">grid_on</md-icon>
+                    <md-icon ng-if="!chart.ShowChart" md-font-set="material-icons">equalizer</md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+    <md-card-content>
+        <div ng-if="!chart.ShowChart">
+            <table class="material-table material-table-bordered">
+                <thead>
+                    <tr>
+                        <th ng-repeat="header in chart.Headers">{{header}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="label in chart.Series" class="data-rows">
+                        <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                        <td>{{label}}</td>
+                        <td ng-repeat="value in chart.Data[$index] track by $index">
+                            {{value}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Enrollment Total</th>
+                        <th ng-repeat="total in chart.Totals track by $index">{{total}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div ng-if="chart.ShowChart" style="position: relative; height: 50vh">
+            <canvas class="chart chart-bar" chart-data="chart.Data" chart-series="chart.Series" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
+        </div>
+    </md-card-content>
+</md-card>

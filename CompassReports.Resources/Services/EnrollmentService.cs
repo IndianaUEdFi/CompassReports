@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using CompassReports.Data;
-using CompassReports.Data.Context;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
-using CompassReports.Resources.Models.Enrollment;
 
 namespace CompassReports.Resources.Services
 {
     public interface IEnrollmentService
     {
-        EnrollmentChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model);
-        EnrollmentChartModel<int> ByEthnicity(EnrollmentFilterModel model);
-        EnrollmentChartModel<int> ByGrade(EnrollmentFilterModel model);
-        EnrollmentChartModel<int> ByLunchStatus(EnrollmentFilterModel model);
-        EnrollmentChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model);
+        PieChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model);
+        PieChartModel<int> ByEthnicity(EnrollmentFilterModel model);
+        PieChartModel<int> ByGrade(EnrollmentFilterModel model);
+        PieChartModel<int> ByLunchStatus(EnrollmentFilterModel model);
+        PieChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model);
     }
 
     public class EnrollmentService : IEnrollmentService
@@ -29,7 +26,7 @@ namespace CompassReports.Resources.Services
             _enrollmentRepository = enrollmentRepository;
         }
 
-        public EnrollmentChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model)
+        public PieChartModel<int> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -40,7 +37,7 @@ namespace CompassReports.Resources.Services
                         Total = x.Sum(y => y.EnrollmentStudentCount)
                     }).OrderBy(x => x.EnglishLanguageLearnerStatus);
 
-            return new EnrollmentChartModel<int>
+            return new PieChartModel<int>
             {
                 Title = "English Language Learner",
                 Headers = new List<string> { "", "English Language Learner Status", "Enrollment Count" },
@@ -51,7 +48,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentChartModel<int> ByEthnicity(EnrollmentFilterModel model)
+        public PieChartModel<int> ByEthnicity(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -62,7 +59,7 @@ namespace CompassReports.Resources.Services
                         Total = x.Sum(y => y.EnrollmentStudentCount)
                     }).OrderBy(x => x.Ethnicity);
 
-            return new EnrollmentChartModel<int>
+            return new PieChartModel<int>
             {
                 Title = "Ethnicity",
                 Headers = new List<string> { "", "Ethnicity", "Enrollment Count" },
@@ -72,7 +69,7 @@ namespace CompassReports.Resources.Services
                 Total = results.Sum(x => x.Total)
             };
         }
-        public EnrollmentChartModel<int> ByGrade(EnrollmentFilterModel model)
+        public PieChartModel<int> ByGrade(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -83,7 +80,7 @@ namespace CompassReports.Resources.Services
                         Total = x.Sum(y => y.EnrollmentStudentCount)
                     }).OrderBy(x => x.GradeLevel);
 
-            return new EnrollmentChartModel<int>
+            return new PieChartModel<int>
             {
                 Title = "Grade",
                 Headers = new List<string> {"", "Grades", "Enrollment Count"},
@@ -94,7 +91,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentChartModel<int> ByLunchStatus(EnrollmentFilterModel model)
+        public PieChartModel<int> ByLunchStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -105,7 +102,7 @@ namespace CompassReports.Resources.Services
                         Total = x.Sum(y => y.EnrollmentStudentCount)
                     }).OrderBy(x => x.LunchStatus);
 
-            return new EnrollmentChartModel<int>
+            return new PieChartModel<int>
             {
                 Title = "Free/Reduced Price Meals",
                 Headers = new List<string> { "", "Lunch Status", "Enrollment Count" },
@@ -116,7 +113,7 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public EnrollmentChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model)
+        public PieChartModel<int> BySpecialEducationStatus(EnrollmentFilterModel model)
         {
             var query = BaseQuery(model);
 
@@ -127,7 +124,7 @@ namespace CompassReports.Resources.Services
                         Total = x.Sum(y => y.EnrollmentStudentCount)
                     }).OrderBy(x => x.SpecialEducationStatus);
 
-            return new EnrollmentChartModel<int>
+            return new PieChartModel<int>
             {
                 Title = "Special Education",
                 Headers = new List<string> { "", "Special Education Status", "Enrollment Count" },

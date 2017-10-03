@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CompassReports.Resources.Models.Enrollment
+namespace CompassReports.Resources.Models
 {
-    public class EnrollmentTrendsChartModel<T>
+    public class BarChartModel<T>
     {
         public string Title { get; set; }
 

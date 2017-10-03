@@ -153,10 +153,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Directives\charts\pie-chart\pie-chart.view.html" />
+    <Content Include="App\Directives\filters\multi-select\multi-select.view.html" />
+    <Content Include="App\Directives\filters\select\select.view.html" />
     <Content Include="App\Directives\theme\theme.view.html" />
-    <Content Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.view.html" />
-    <Content Include="App\Modules\Reports\Enrollment\enrollment.view.html" />
     <Content Include="App\Modules\Reports\Home\home.view.html" />
+    <Content Include="App\Modules\Reports\Report-Base\report-base.view.html" />
     <Content Include="App\Modules\Reports\reports-layout.view.html" />
     <Content Include="Content\angular-material-sidemenu.min.css" />
     <Content Include="Content\angular-material.min.css" />
@@ -232,13 +234,28 @@
     <TypeScriptCompile Include="App\app.controller.ts" />
     <TypeScriptCompile Include="App\app.module.ts" />
     <TypeScriptCompile Include="App\app.run.ts" />
+    <TypeScriptCompile Include="App\Directives\charts\pie-chart\pie.chart.ts" />
+    <TypeScriptCompile Include="App\Directives\charts\charts.directive.ts" />
+    <Content Include="App\Directives\charts\bar-chart\bar-chart.view.html" />
+    <TypeScriptCompile Include="App\Directives\charts\bar-chart\bar.chart.ts" />
     <TypeScriptCompile Include="App\Directives\directive.module.ts" />
+    <TypeScriptCompile Include="App\Directives\filters\filters.directive.ts" />
+    <TypeScriptCompile Include="App\Directives\filters\multi-select\multi-select.filter.ts" />
+    <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\base-report.model.ts" />
+    <TypeScriptCompile Include="App\Models\report-filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\filter-value.model.ts" />
+    <TypeScriptCompile Include="App\Models\filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\pie-chart.model.ts" />
+    <TypeScriptCompile Include="App\Models\enrollment-filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\bar-chart.model.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />
-    <TypeScriptCompile Include="App\Modules\Reports\chart-model.module.ts" />
+    <TypeScriptCompile Include="App\Models\chart.model.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Report-Base\report-base.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\reports-layout.module.ts" />
     <TypeScriptCompile Include="App\ployfills.ts" />
     <TypeScriptCompile Include="App\Services\color-gradient.service.ts" />

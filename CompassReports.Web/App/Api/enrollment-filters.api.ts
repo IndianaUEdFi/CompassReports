@@ -1,12 +1,5 @@
 ﻿/// <reference path="api.module.ts" />
 
-module App.Models {
-    export class FilterModel<T> {
-        Display: string;
-        Value: T;
-    }
-}
-
 module App.Api.EnrollmentFilters {
 
     export interface IEnrollmentFiltersApi {
@@ -15,7 +8,7 @@ module App.Api.EnrollmentFilters {
         getGrades(): angular.IPromise<string[]>;
         getLunchStatuses(): angular.IPromise<string[]>;
         getSpecialEducationStatuses(): angular.IPromise<string[]>;
-        getSchoolYears(): angular.IPromise<Models.FilterModel<number>[]>;
+        getSchoolYears(): angular.IPromise<Models.FilterValueModel[]>;
     }
 
     class EnrollmentFiltersApi extends ApiBase implements IEnrollmentFiltersApi {
@@ -41,8 +34,8 @@ module App.Api.EnrollmentFilters {
             return this.services.http.get<string[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/special-education-statuses`).then((data) => { return data.data; });
         }
 
-        getSchoolYears(): angular.IPromise<Models.FilterModel<number>[]> {
-            return this.services.http.get<Models.FilterModel<number>[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/school-years`).then((data) => { return data.data; });
+        getSchoolYears(): angular.IPromise<Models.FilterValueModel[]> {
+            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/school-years`).then((data) => { return data.data; });
         }
     }
 

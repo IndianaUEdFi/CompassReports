@@ -1,0 +1,6 @@
+﻿<md-input-container style="width: 100%">
+    <label>{{filter.Title}}</label>
+    <md-select ng-model="model[filter.ModelParam]" multiple>
+        <md-option ng-repeat="value in filter.Values" ng-value="value.Value">{{value.Display}}</md-option>
+    </md-select>
+</md-input-container>

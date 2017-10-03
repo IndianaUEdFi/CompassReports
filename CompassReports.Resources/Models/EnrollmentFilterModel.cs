@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CompassReports.Resources.Models.Enrollment
+namespace CompassReports.Resources.Models
 {
     public class EnrollmentFilterModel
     {
@@ -10,5 +10,6 @@ namespace CompassReports.Resources.Models.Enrollment
         public List<string> LunchStatuses { get; set; }
         public List<string> SpecialEducationStatuses { get; set; }
         public short SchoolYear { get; set; }
+        public List<short> SchoolYears { get; set; }
     }
 }

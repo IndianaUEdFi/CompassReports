@@ -1,0 +1,57 @@
+﻿<md-toolbar class="md-hue-1">
+    <div class="md-toolbar-tools" style="max-height: none;" ng-style="{'height': ctrl.isFiltering() ? 'inherit' : ''}">
+        <h3 style="padding-right: 50px; white-space: nowrap">{{ctrl.report.title}}</h3>
+
+        <ul class="filter-status">
+            <li ng-repeat="filter in ctrl.report.filters" ng-if="filter.Multiple ? ctrl.report.model[filter.ModelParam].length : ctrl.report.model[filter.ModelParam]">
+                {{filter.Title}}
+                <div style="font-size: 12px">
+                    <span ng-if="filter.Multiple">
+                        <span ng-repeat="value in ctrl.report.model[filter.ModelParam]">{{filter.Display[value]}}<span ng-if="!$last">, </span></span>
+                    </span>
+                    <span ng-if="!filter.Multiple">
+                        {{filter.Display[ctrl.report.model[filter.ModelParam]]}}
+                    </span>
+                </div>
+            </li>
+        </ul>
+        <span flex></span>
+        <div style="padding-left: 30px">
+            <md-button class="md-raised md-accent md-hue-2" ng-click="ctrl.toggleFilters()">
+                Filters
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filternav" id="filternav">
+    <md-toolbar class="md-toolbar-tools md-accent md-hue-2">
+        <h2>Filters</h2>
+        <span flex></span>
+        <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="ctrl.toggleFilters()">
+            <md-icon md-font-set="material-icons">keyboard_arrow_right</md-icon>
+        </md-button>
+    </md-toolbar>
+    <md-content layout-padding>
+        <div layout="row" layout-align="center">
+            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.apply()">Apply</md-button>
+            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.reset()">Reset</md-button>
+        </div>
+        <form name="ctrl.filterForm">
+            <div layout="column" layout-wrap>
+                <div flex="100" ng-repeat="filter in ctrl.report.filters">
+                    <filter filter="filter" model="ctrl.report.model"></filter>
+                </div>
+            </div>
+        </form>
+    </md-content>
+</md-sidenav>
+
+<md-content flex style="overflow-x: hidden">
+
+    <div layout="row" layout-wrap flex>
+        <div ng-repeat="chart in ctrl.report.charts" flex-xl="{{::chart.FlexXL}}" flex-lg="{{::chart.FlexLG}}" flex-md="{{::chart.FlexMD}}" flex-sm="{{::chart.FlexSM}}">
+            <chart chart="chart"></chart>
+        </div>
+    </div>
+</md-content>

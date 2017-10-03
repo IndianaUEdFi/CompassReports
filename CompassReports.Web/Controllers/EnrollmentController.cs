@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
-using CompassReports.Resources.Models.Enrollment;
+using CompassReports.Resources.Models;
 using CompassReports.Resources.Services;
 
 namespace CompassReports.Web.Controllers

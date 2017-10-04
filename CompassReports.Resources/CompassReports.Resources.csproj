@@ -56,6 +56,7 @@
     <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Services\AttendanceService.cs" />
     <Compile Include="Services\AttendanceTrendsService.cs" />
+    <Compile Include="Services\AssessmentFiltersService.cs" />
     <Compile Include="Services\EnrollmentTrendsService.cs" />
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />

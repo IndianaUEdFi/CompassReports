@@ -3,6 +3,7 @@
 module App {
 
     export interface IApi {
+        assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi;
         attendance: Api.Attendance.IAttendanceApi;
         attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi;
         enrollment: Api.Enrollment.IEnrollmentApi;
@@ -13,6 +14,7 @@ module App {
     class ApiService implements IApi {
 
         static $inject = [
+            'api.assessment-filters',
             'api.attendance',
             'api.attendance-trends',
             'api.enrollment',
@@ -21,6 +23,7 @@ module App {
         ];
 
         constructor(
+            public assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi,
             public attendance: Api.Attendance.IAttendanceApi,
             public attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi,
             public enrollment: Api.Enrollment.IEnrollmentApi,
@@ -60,6 +63,7 @@ module App {
 
     angular
         .module("app.api", [
+            'app.api.assessment-filters',
             'app.api.attendance',
             'app.api.attendance-trends',
             'app.api.enrollment',

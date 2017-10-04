@@ -56,6 +56,8 @@
 
     angular
         .module('app.reports', [
+            'app.reports.assessment',
+            'app.reports.assessment-trends',
             'app.reports.attendance',
             'app.reports.attendance-trends',
             'app.reports.enrollment',

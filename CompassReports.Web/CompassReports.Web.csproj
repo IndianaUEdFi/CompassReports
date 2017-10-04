@@ -186,6 +186,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AttendanceTrendsController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
+    <Compile Include="Controllers\AssessmentFiltersController.cs" />
     <Compile Include="Controllers\EnrollmentTrendsController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\EnrollmentFiltersController.cs" />
@@ -231,6 +232,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
     <TypeScriptCompile Include="App\Api\attendance-trends.api.ts" />
+    <TypeScriptCompile Include="App\Api\assessment-filters.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment.api.ts" />
@@ -258,6 +260,8 @@
     <TypeScriptCompile Include="App\Models\pie-chart.model.ts" />
     <TypeScriptCompile Include="App\Models\enrollment-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\bar-chart.model.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Assessment-Trends\assessment-trends.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Assessment\assessment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance-Trends\attendance-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance\attendance.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />

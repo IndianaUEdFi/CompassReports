@@ -153,6 +153,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Directives\charts\line-chart\line-chart.view.html" />
     <Content Include="App\Directives\charts\pie-chart\pie-chart.view.html" />
     <Content Include="App\Directives\filters\multi-select\multi-select.view.html" />
     <Content Include="App\Directives\filters\select\select.view.html" />
@@ -183,6 +184,7 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AttendanceTrendsController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\EnrollmentTrendsController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
@@ -228,6 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\attendance-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment.api.ts" />
@@ -236,6 +239,7 @@
     <TypeScriptCompile Include="App\app.controller.ts" />
     <TypeScriptCompile Include="App\app.module.ts" />
     <TypeScriptCompile Include="App\app.run.ts" />
+    <TypeScriptCompile Include="App\Directives\charts\line-chart\line.chart.ts" />
     <TypeScriptCompile Include="App\Directives\charts\pie-chart\pie.chart.ts" />
     <TypeScriptCompile Include="App\Directives\charts\charts.directive.ts" />
     <Content Include="App\Directives\charts\bar-chart\bar-chart.view.html" />
@@ -246,6 +250,7 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\line-chart.model.ts" />
     <TypeScriptCompile Include="App\Models\base-report.model.ts" />
     <TypeScriptCompile Include="App\Models\report-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\filter-value.model.ts" />
@@ -253,6 +258,7 @@
     <TypeScriptCompile Include="App\Models\pie-chart.model.ts" />
     <TypeScriptCompile Include="App\Models\enrollment-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\bar-chart.model.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Attendance-Trends\attendance-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance\attendance.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />

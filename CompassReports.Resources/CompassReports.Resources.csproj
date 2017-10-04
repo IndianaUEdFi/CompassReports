@@ -49,11 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\LineChartModel.cs" />
     <Compile Include="Models\BarChartModel.cs" />
     <Compile Include="Models\PieChartModel.cs" />
     <Compile Include="Models\EnrollmentFilterModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Services\AttendanceService.cs" />
+    <Compile Include="Services\AttendanceTrendsService.cs" />
     <Compile Include="Services\EnrollmentTrendsService.cs" />
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />

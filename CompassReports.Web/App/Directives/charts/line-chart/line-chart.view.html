@@ -6,7 +6,7 @@
             <div>
                 <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.ShowChart = !chart.ShowChart">
                     <md-icon ng-if="chart.ShowChart" md-font-set="material-icons">grid_on</md-icon>
-                    <md-icon ng-if="!chart.ShowChart" md-font-set="material-icons">pie_chart</md-icon>
+                    <md-icon ng-if="!chart.ShowChart" md-font-set="material-icons">trending_up</md-icon>
                 </md-button>
             </div>
         </div>
@@ -15,28 +15,30 @@
         <div ng-if="!chart.ShowChart">
             <table class="material-table material-table-bordered">
                 <thead>
-                    <tr>
-                        <th ng-repeat="header in chart.Headers">{{header}}</th>
-                    </tr>
+                <tr>
+                    <th ng-repeat="header in chart.Headers">{{header}}</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="label in chart.Labels" class="data-rows">
+                    <tr ng-repeat="series in chart.Series" class="data-rows">
                         <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
-                        <td>{{label}}</td>
-                        <td>{{chart.Data[$index]}}</td>
+                        <td>{{series}}</td>
+                        <td ng-repeat="value in chart.Data[$index] track by $index">
+                            {{value}}<span ng-if="chart.Percentage">%</span>
+                        </td>
                     </tr>
                 </tbody>
-                <tfoot>
+                <tfoot ng-hide="chart.HideTotal">
                     <tr>
                         <th></th>
                         <th>Enrollment Total</th>
-                        <th>{{chart.Total}}</th>
+                        <th ng-repeat="total in chart.Totals track by $index">{{total}}</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
-        <div ng-if="chart.ShowChart">
-            <canvas id="pie{{$index}}" class="chart chart-pie" chart-data="chart.Data" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors" chart-dataset-override="dataSetOverride"></canvas>
+        <div ng-if="chart.ShowChart" style="position: relative; height: 50vh">
+            <canvas class="chart chart-line" chart-data="chart.Data" chart-series="chart.Series" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors" chart-dataset-override="dataSetOverride"></canvas>
         </div>
     </md-card-content>
 </md-card>

@@ -21,6 +21,9 @@
     }
 
     angular
-        .module('app.directives.charts', ['app.directives.charts.bar', 'app.directives.charts.pie'])
+        .module('app.directives.charts', [
+            'app.directives.charts.bar',
+            'app.directives.charts.line',
+            'app.directives.charts.pie'])
         .directive('chart', ['services', chartDirective]);
 }

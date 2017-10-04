@@ -3,14 +3,16 @@
     interface IPieChartScope extends ng.IScope {
         chart: Models.PieChartModel<number>,
         model: Models.IReportFilterModel;
+        dataSetOverride: any;
     }
 
     class PieChartController {
         static $inject = ['$rootScope', '$scope', 'api', 'services'];
 
         resetColors = () => {
-            if (this.scope.chart.Data && this.scope.chart.Data.length)
+            if (this.scope.chart.Data && this.scope.chart.Data.length) {
                 this.scope.chart.Colors = this.services.colorGradient.getHexColors(this.scope.chart.Data.length);
+            }
         }
 
         updateChart = () => {

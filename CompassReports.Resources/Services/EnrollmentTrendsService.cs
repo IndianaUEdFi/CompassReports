@@ -84,7 +84,7 @@ namespace CompassReports.Resources.Services
                 }).OrderBy(x => x.SchoolYear)
                 .ToList();
 
-            var headers = new List<string> { "", "Ethnicitys" };
+            var headers = new List<string> { "", "Ethncities" };
             headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
 
             var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();

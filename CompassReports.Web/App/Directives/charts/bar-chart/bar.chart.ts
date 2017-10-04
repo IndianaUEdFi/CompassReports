@@ -26,6 +26,7 @@
                         borderColor: hexColors,
                         backgroundColor: backgroundColors
                     }];
+
                 } else {
                     hexColors = this.services.colorGradient.getHexColors(this.scope.chart.Data.length);
                 }

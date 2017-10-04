@@ -1,9 +1,9 @@
 ﻿/// <reference path="../Report-Base/report-base.module.ts" />
 
-module App.Reports.EnrollmentTrends {
+module App.Reports.Attendance {
     import BarChartModel = Models.BarChartModel;
 
-    class EnrollmentTrendsView extends ReportBaseView {
+    class AttendanceReportView extends ReportBaseView {
         resolve = {
             report: ['englishLanguageLearnerStatuses', 'ethnicities', 'grades',
                 'lunchStatuses', 'specialEducationStatuses', 'schoolYears', (
@@ -11,7 +11,7 @@ module App.Reports.EnrollmentTrends {
                     lunchStatuses: string[], specialEducationStatuses: string[], schoolYears: Models.FilterValueModel[]
                 ) => {
                     var filters = [
-                        new Models.FilterModel<number>(schoolYears, 'School Years', 'SchoolYears', true),
+                        new Models.FilterModel<number>(schoolYears, 'School Year', 'SchoolYear', false),
                         new Models.FilterModel<number>(grades, 'Grade Levels', 'Grades', true),
                         new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                         new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),
@@ -20,18 +20,18 @@ module App.Reports.EnrollmentTrends {
                     ];
 
                     var charts = [
-                        new BarChartModel<number>('enrollmentTrends', 'byGrade'),
-                        new BarChartModel<number>('enrollmentTrends', 'byEthnicity'),
-                        new BarChartModel<number>('enrollmentTrends', 'byLunchStatus'),
-                        new BarChartModel<number>('enrollmentTrends', 'bySpecialEducation'),
-                        new BarChartModel<number>('enrollmentTrends', 'byEnglishLanguageLearner')
+                        new BarChartModel<number>('attendance', 'byGrade'),
+                        new BarChartModel<number>('attendance','byEthnicity'),
+                        new BarChartModel<number>('attendance','byLunchStatus'),
+                        new BarChartModel<number>('attendance','bySpecialEducation'),
+                        new BarChartModel<number>('attendance','byEnglishLanguageLearner')
                     ];
 
                     return {
                         filters: filters,
                         charts: charts,
-                        title: 'Enrollment Trends',
-                        model: new Models.EnrollmentFilterModel()
+                        title: 'Attendance',
+                        model: new Models.EnrollmentFilterModel(schoolYears[0].Value as number)
                     }
                 }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
@@ -55,22 +55,22 @@ module App.Reports.EnrollmentTrends {
         }
     }
 
-    class EnrollmentTrendsConfig {
+    class AttendanceConfig {
         static $inject = ['$stateProvider', 'settings'];
 
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
-            $stateProvider.state('app.reports.enrollment-trends',
+            $stateProvider.state('app.reports.attendance',
                 {
-                    url: '/enrollment-trends',
+                    url: '/attendance',
                     views: {
-                        'report@app.reports': new EnrollmentTrendsView(settings)
+                        'report@app.reports': new AttendanceReportView(settings)
                     }
                 });
         }
     }
 
     angular
-        .module('app.reports.enrollment-trends', [])
-        .config(EnrollmentTrendsConfig);
+        .module('app.reports.attendance', [])
+        .config(AttendanceConfig);
 }

@@ -14,8 +14,8 @@
                 this.ShowChart = model.ShowChart;
         };
 
-        constructor(chartCall: string) {
-            super(chartCall);
+        constructor(apiCall: string, chartCall: string) {
+            super(apiCall, chartCall);
 
             this.FlexXL = 33;
             this.FlexLG = 50;

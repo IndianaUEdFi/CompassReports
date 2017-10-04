@@ -15,20 +15,29 @@
         <div ng-if="!chart.ShowChart">
             <table class="material-table material-table-bordered">
                 <thead>
-                    <tr>
-                        <th ng-repeat="header in chart.Headers">{{header}}</th>
-                    </tr>
+                <tr>
+                    <th ng-repeat="header in chart.Headers">{{header}}</th>
+                </tr>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="label in chart.Series" class="data-rows">
+                <tbody ng-if="chart.SingleSeries">
+                    <tr ng-repeat="label in chart.Labels" class="data-rows">
                         <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
                         <td>{{label}}</td>
-                        <td ng-repeat="value in chart.Data[$index] track by $index">
-                            {{value}}
+                        <td>
+                            {{chart.Data[0][$index]}}<span ng-if="chart.Percentage">%</span>
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
+                <tbody ng-if="!chart.SingleSeries">
+                    <tr ng-repeat="series in chart.Series" class="data-rows">
+                        <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                        <td>{{series}}</td>
+                        <td ng-repeat="value in chart.Data[$index] track by $index">
+                            {{value}}<span ng-if="chart.Percentage">%</span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot ng-hide="chart.HideTotal">
                     <tr>
                         <th></th>
                         <th>Enrollment Total</th>
@@ -38,7 +47,7 @@
             </table>
         </div>
         <div ng-if="chart.ShowChart" style="position: relative; height: 50vh">
-            <canvas class="chart chart-bar" chart-data="chart.Data" chart-series="chart.Series" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors"></canvas>
+            <canvas class="chart chart-bar" chart-data="chart.Data" chart-series="chart.Series" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors" chart-dataset-override="dataSetOverride"></canvas>
         </div>
     </md-card-content>
 </md-card>

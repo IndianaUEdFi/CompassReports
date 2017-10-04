@@ -20,17 +20,16 @@ module App.Reports.Enrollment {
                     ];
 
                     var charts = [
-                        new PieChartModel<number>('byGrade'),
-                        new PieChartModel<number>('byEthnicity'),
-                        new PieChartModel<number>('byLunchStatus'),
-                        new PieChartModel<number>('bySpecialEducation'),
-                        new PieChartModel<number>('byEnglishLanguageLearner')
+                        new PieChartModel<number>('enrollment', 'byGrade'),
+                        new PieChartModel<number>('enrollment', 'byEthnicity'),
+                        new PieChartModel<number>('enrollment', 'byLunchStatus'),
+                        new PieChartModel<number>('enrollment', 'bySpecialEducation'),
+                        new PieChartModel<number>('enrollment', 'byEnglishLanguageLearner')
                     ];
 
                     return {
                         filters: filters,
                         charts: charts,
-                        api: 'enrollment',
                         title: 'Enrollment',
                         model: new Models.EnrollmentFilterModel(schoolYears[0].Value as number)
                     }

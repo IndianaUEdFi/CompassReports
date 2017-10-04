@@ -8,10 +8,11 @@
         return {
             restrict: 'E',
             scope: {
-                chart: '='
+                chart: '=',
+                model: '='
             },
             link: (scope: IChartScope, element: JQuery) => {
-                var template = `<${scope.chart.Type}-chart chart="chart"></${scope.chart.Type}-chart`;
+                var template = `<${scope.chart.Type}-chart chart="chart" model="model"></${scope.chart.Type}-chart`;
                 var templateElement = angular.element(template);
                 element.append(templateElement);
                 services.compile(templateElement)(scope);

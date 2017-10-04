@@ -53,6 +53,7 @@
     <Compile Include="Models\PieChartModel.cs" />
     <Compile Include="Models\EnrollmentFilterModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Services\AttendanceService.cs" />
     <Compile Include="Services\EnrollmentTrendsService.cs" />
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />

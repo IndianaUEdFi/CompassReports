@@ -1,12 +1,13 @@
 ﻿module App.Services {
     export interface IColorGradient {
-        getColors: (colorCount: number) => string[];
+        getHexColors: (colorCount: number) => string[];
+        getRgbColors: (colorCount: number) => any[];
     }
 
-    class ColorGradient {
+    class ColorGradient implements IColorGradient {
         static $inject = ['$rootScope'];
 
-        getColors(colorCount: number) {
+        private getColor(colorCount: number, asRGB: boolean) {
             const color1Hash = this.$rootScope.primaryColor.color;
             const color2Hash = this.$rootScope.secondaryColor.color;
 
@@ -29,10 +30,19 @@
             const greenAvg = greenDiff / (colorCount - 1);
             const blueAvg = blueDiff / (colorCount - 1);
 
-            const colors = [color1Hash];
             let currentRed = color1Red;
             let currentGreen = color1Green;
             let currentBlue = color1Blue;
+
+            const colors = [];
+            if (asRGB) {
+                colors.push({
+                    r: Math.round(color1Red),
+                    g: Math.round(color1Green),
+                    b: Math.round(color1Blue)
+                });
+            }
+            else { colors.push(color1Hash) }
 
             for (let i = 0; i < (colorCount - 1); i++) {
                 if (color1Red > color2Red) currentRed -= redAvg;
@@ -44,15 +54,26 @@
                 if (color1Blue > color2Blue) currentBlue -= blueAvg;
                 else currentBlue += blueAvg;
 
-                const color = '#' +
-                    ((currentRed < 16) ? '0' : '') + Math.round(currentRed).toString(16) +
-                    ((currentGreen < 16) ? '0' : '') +Math.round(currentGreen).toString(16) +
-                    ((currentBlue < 16) ? '0' : '') +Math.round(currentBlue).toString(16);
+                if (!asRGB) {
+                    const color = '#' +
+                        ((currentRed < 16) ? '0' : '') + Math.round(currentRed).toString(16) +
+                        ((currentGreen < 16) ? '0' : '') + Math.round(currentGreen).toString(16) +
+                        ((currentBlue < 16) ? '0' : '') + Math.round(currentBlue).toString(16);
 
-                colors.push(color);
+                    colors.push(color);
+                } else {
+                    colors.push({
+                        r: Math.round(currentRed),
+                        g: Math.round(currentGreen),
+                        b: Math.round(currentBlue)
+                    });
+                }
             }
             return colors;
         }
+
+        getHexColors(colorCount: number) { return this.getColor(colorCount, false); }
+        getRgbColors(colorCount: number) { return this.getColor(colorCount, true); }
 
         constructor(private readonly $rootScope) {
         

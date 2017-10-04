@@ -13,34 +13,22 @@
     }
 
     export class ReportBaseController implements ng.IController{
-        static $inject = ['$rootScope', 'api', 'services', '$mdSidenav', 'report'];
+        static $inject = ['$rootScope', '$mdSidenav', 'report'];
 
-        toggleFilters = () => this.$mdSidenav('filternav').toggle();
+        apply = () => this.$rootScope.$emit('update-charts');
 
         isFiltering = () => this.report.model.isFiltering();
 
         reset = () => this.report.model.reset();
 
-        apply = () => {
-            angular.forEach(this.report.charts, chart => {
-                return this.api[this.report.api][chart.ChartCall](this.report.model)
-                    .then((result: Models.ChartModel<number>) => {
-                        chart.Update(result);
-                        chart.Colors = this.services.colorGradient.getColors(result.Data.length);
-                    });
-            });
-
-        }
+        toggleFilters = () => this.$mdSidenav('filternav').toggle();
 
         constructor(
             public $rootScope,
-            private readonly api: IApi,
-            private readonly services: IServices,
             private readonly $mdSidenav: ng.material.ISidenavService,
             private readonly report: Models.BaseReport
         ) {
             this.reset();
-            this.apply();
         }
     }
 }

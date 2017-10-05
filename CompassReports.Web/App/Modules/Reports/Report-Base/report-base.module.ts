@@ -27,8 +27,6 @@
             public $rootScope,
             private readonly $mdSidenav: ng.material.ISidenavService,
             private readonly report: Models.BaseReport
-        ) {
-            this.reset();
-        }
+        ) { }
     }
 }

@@ -6,6 +6,9 @@ module App.Reports.Assessment {
     import PieChartModel = Models.PieChartModel;
     import PercentageTotalBarChartModel = Models.PercentageTotalBarChartModel
 
+    const DefaultAssessmentTitle = 'ISTAR';
+    const DefaultSubject = 'English/Language Arts Only';
+
     function onAssessmentChange(model: Models.AssessmentFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
         if (model.AssessmentTitle) {
 
@@ -64,17 +67,22 @@ module App.Reports.Assessment {
 
     class AssessmentReportView extends ReportBaseView {
         resolve = {
-            report: ['assessments', 'englishLanguageLearnerStatuses', 'ethnicities',
-                'lunchStatuses', 'specialEducationStatuses',
-                (assessments: Models.FilterValueModel[], englishLanguageLearnerStatuses: string[], ethnicities: string[],
-                    lunchStatuses: string[], specialEducationStatuses: string[]) => {
+            report: ['assessments', 'subjects', 'schoolYears',
+                'grades', 'performanceLevels', 'goodCauseExcemptions',
+                'englishLanguageLearnerStatuses', 'ethnicities', 'lunchStatuses',
+                'specialEducationStatuses',
+                (assessments: Models.FilterValueModel[], subjects: string[], schoolYears: Models.FilterValueModel[],
+                    grades: Models.FilterValueModel[], peformanceLevels: string[], goodCauseExcemptions: string[],
+                    englishLanguageLearnerStatuses: string[], ethnicities: string[], lunchStatuses: string[],
+                    specialEducationStatuses: string[]) => {
+
                 var filters = [
                     new Models.FilterModel<string>(assessments, 'Assessment', 'AssessmentTitle', false, true, onAssessmentChange),
-                    new Models.FilterModel<number>([] as Models.FilterValueModel[], 'Subject', 'Subject', false, true, onSubjectChange),
-                    new Models.FilterModel<number>([] as Models.FilterValueModel[], 'School Year', 'SchoolYear', false, true),
-                    new Models.FilterModel<number>([] as Models.FilterValueModel[], 'Grades', 'Assessments', true, true),
-                    new Models.FilterModel<number>([] as Models.FilterValueModel[], 'Performance Levels', 'PerformanceLevels', true),
-                    new Models.FilterModel<number>([] as Models.FilterValueModel[], 'Good Cause Excemptions', 'GoodCauseExcemptions', true),
+                    new Models.FilterModel<number>(subjects, 'Subject', 'Subject', false, true, onSubjectChange),
+                    new Models.FilterModel<number>(schoolYears, 'School Year', 'SchoolYear', false, true),
+                    new Models.FilterModel<number>(grades, 'Grades', 'Assessments', true, true),
+                    new Models.FilterModel<number>(peformanceLevels, 'Performance Levels', 'PerformanceLevels', true),
+                    new Models.FilterModel<number>(goodCauseExcemptions, 'Good Cause Excemptions', 'GoodCauseExcemptions', true),
                     new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                     new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),
                     new Models.FilterModel<number>(specialEducationStatuses, 'Education Types', 'SpecialEducationStatuses', true),
@@ -82,23 +90,44 @@ module App.Reports.Assessment {
                 ];
 
                 var charts = [
-                    new PieChartModel('assessment', 'byPerformanceLevel', true),
-                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByEthnicity', true),
-                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByLunchStatus', true),
-                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByEnglishLanguageLearner', true),
-                    new PercentageTotalBarChartModel('assessment', 'performanceLevelBySpecialEducation', true),
-                    new PercentageTotalBarChartModel('assessment', 'byGoodCause', true)
+                    new PieChartModel('assessment', 'byPerformanceLevel'),
+                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByEthnicity'),
+                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByLunchStatus'),
+                    new PercentageTotalBarChartModel('assessment', 'performanceLevelByEnglishLanguageLearner'),
+                    new PercentageTotalBarChartModel('assessment', 'performanceLevelBySpecialEducation'),
+                    new PercentageTotalBarChartModel('assessment', 'byGoodCause')
                 ];
 
+                var model = new Models.AssessmentFilterModel();
+                model.AssessmentTitle = DefaultAssessmentTitle;
+                model.Subject = DefaultSubject;
+                model.SchoolYear = (schoolYears && schoolYears.length) ? schoolYears[0].Value as number : null;
+
+                console.log(model);
                 return {
                     filters: filters,
                     charts: charts,
                     title: 'Assessment',
-                    model: new Models.AssessmentFilterModel()
+                    model: model
                 }
             }],
             assessments: ['api', (api: IApi) => {
                 return api.assessmentFilters.getAssessments();
+            }],
+            subjects: ['api', (api: IApi) => {
+                return api.assessmentFilters.getSubjects(DefaultAssessmentTitle);
+            }],
+            schoolYears: ['api', (api: IApi) => {
+                return api.assessmentFilters.getSchoolYears(DefaultAssessmentTitle, DefaultSubject);
+            }],
+            grades: ['api', (api: IApi) => {
+                return api.assessmentFilters.getGrades(DefaultAssessmentTitle, DefaultSubject);
+            }],
+            performanceLevels: ['api', (api: IApi) => {
+                return api.assessmentFilters.getPerformanceLevels(DefaultAssessmentTitle, DefaultSubject);
+            }],
+            goodCauseExcemptions: ['api', (api: IApi) => {
+                return api.assessmentFilters.getGoodCauseExcemptions(DefaultAssessmentTitle, DefaultSubject);
             }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
                 return api.assessmentFilters.getEnglishLanguageLearnerStatuses();

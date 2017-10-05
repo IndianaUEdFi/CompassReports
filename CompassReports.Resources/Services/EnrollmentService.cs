@@ -35,17 +35,22 @@ namespace CompassReports.Resources.Services
                     {
                         EnglishLanguageLearnerStatus = x.Key,
                         Total = x.Sum(y => y.EnrollmentStudentCount)
-                    }).OrderBy(x => x.EnglishLanguageLearnerStatus);
+                    }).OrderBy(x => x.EnglishLanguageLearnerStatus)
+                    .ToList();
+
+            var total = results.Sum(x => x.Total);
 
             return new PieChartModel<int>
             {
                 Title = "English Language Learner",
                 Headers = new List<string> { "", "English Language Learner Status", "Enrollment Count" },
+                PercentageHeaders = new List<string> { "", "English Language Learner Status", "Enrollment Percentage" },
                 Labels = results.Select(x => x.EnglishLanguageLearnerStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = true,
                 TotalRowTitle = "Enrollment Total",
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
 
@@ -61,15 +66,19 @@ namespace CompassReports.Resources.Services
                     }).OrderBy(x => x.Ethnicity)
                     .ToList();
 
+            var total = results.Sum(x => x.Total);
+
             return new PieChartModel<int>
             {
                 Title = "Ethnicity",
                 Headers = new List<string> { "", "Ethnicity", "Enrollment Count" },
+                PercentageHeaders = new List<string> { "", "Ethnicity", "Enrollment Percentage" },
                 Labels = results.Select(x => x.Ethnicity).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = true,
                 TotalRowTitle = "Enrollment Total",
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
         public PieChartModel<int> ByGrade(EnrollmentFilterModel model)
@@ -85,15 +94,19 @@ namespace CompassReports.Resources.Services
                     }).OrderBy(x => x.GradeLevelSort)
                     .ToList();
 
+            var total = results.Sum(x => x.Total);
+
             return new PieChartModel<int>
             {
                 Title = "Grade",
                 Headers = new List<string> {"", "Grades", "Enrollment Count"},
+                PercentageHeaders = new List<string> { "", "Grades", "Enrollment Percentage" },
                 Labels = results.Select(x => x.GradeLevel).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = false,
                 TotalRowTitle = "Enrollment Total",
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
 
@@ -109,15 +122,19 @@ namespace CompassReports.Resources.Services
                     }).OrderBy(x => x.LunchStatus)
                     .ToList();
 
+            var total = results.Sum(x => x.Total);
+
             return new PieChartModel<int>
             {
                 Title = "Free/Reduced Price Meals",
                 Headers = new List<string> { "", "Lunch Status", "Enrollment Count" },
+                PercentageHeaders = new List<string> { "", "Lunch Status", "Enrollment Percentage" },
                 Labels = results.Select(x => x.LunchStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = true,
                 TotalRowTitle = "Enrollment Total",
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
 
@@ -133,15 +150,19 @@ namespace CompassReports.Resources.Services
                     }).OrderBy(x => x.SpecialEducationStatus)
                     .ToList();
 
+            var total = results.Sum(x => x.Total);
+
             return new PieChartModel<int>
             {
                 Title = "Special Education",
                 Headers = new List<string> { "", "Special Education Status", "Enrollment Count" },
+                PercentageHeaders = new List<string> { "", "Special Education Status", "Enrollment Percentage" },
                 Labels = results.Select(x => x.SpecialEducationStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = true,
                 TotalRowTitle = "Enrollment Total",
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
 
@@ -167,6 +188,11 @@ namespace CompassReports.Resources.Services
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
 
             return query;
+        }
+
+        private static double GetPercentage(int subTotal, int total)
+        {
+            return Math.Round(100 * ((double)subTotal / (double)total), 2);
         }
 
     }

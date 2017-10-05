@@ -4,6 +4,10 @@
             <h3>{{chart.Title}}</h3>
             <span flex></span>
             <div>
+                <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.Percentages.length && !chart.ShowChart" ng-click="togglePercentage()">
+                    <md-icon ng-if="!chart.ShowPercentage" md-font-set="fa" md-font-icon="fa-percent"></md-icon>
+                    <md-icon ng-if="chart.ShowPercentage" md-font-set="material-icons">people</md-icon>
+                </md-button>
                 <md-button class="md-fab md-mini md-primary md-hue-1" ng-click="chart.ShowChart = !chart.ShowChart">
                     <md-icon ng-if="chart.ShowChart" md-font-set="material-icons">grid_on</md-icon>
                     <md-icon ng-if="!chart.ShowChart" md-font-set="material-icons">pie_chart</md-icon>
@@ -16,17 +20,19 @@
             <table class="material-table material-table-bordered">
                 <thead>
                     <tr>
-                        <th ng-repeat="header in chart.Headers">{{header}}</th>
+                        <th ng-if="!chart.ShowPercentage" ng-repeat="header in chart.Headers">{{header}}</th>
+                        <th ng-if="chart.ShowPercentage" ng-repeat="header in chart.PercentageHeaders">{{header}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="label in chart.Labels" class="data-rows">
                         <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
                         <td>{{label}}</td>
-                        <td>{{chart.Data[$index]}}</td>
+                        <td ng-if="!chart.ShowPercentage">{{chart.Data[$index]}}</td>
+                        <td ng-if="chart.ShowPercentage">{{chart.Percentages[$index]}}%</td>
                     </tr>
                 </tbody>
-                <tfoot>
+                <tfoot ng-if="!chart.ShowPercentage">
                     <tr>
                         <th></th>
                         <th>{{chart.TotalRowTitle}}</th>
@@ -35,7 +41,7 @@
                 </tfoot>
             </table>
         </div>
-        <div ng-if="chart.ShowChart">
+        <div ng-if="chart.ShowChart" style="position: relative; height: 50vh">
             <canvas id="pie{{$index}}" class="chart chart-pie" chart-data="chart.Data" chart-labels="chart.Labels" chart-options="chart.Options" chart-colors="chart.Colors" chart-dataset-override="dataSetOverride"></canvas>
         </div>
     </md-card-content>

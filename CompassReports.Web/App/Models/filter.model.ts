@@ -33,6 +33,19 @@
             this.createDisplay();
         }
 
+        findByValue = (value: string | number) => {
+            let returnValue: FilterValueModel;
+
+            for (let i = 0; i < this.Values.length; i++) {
+                if (this.Values[i].Value === value) {
+                    returnValue = this.Values[i];
+                    break;
+                }   
+            }
+
+            return returnValue;
+        }
+
         constructor(values: FilterValueModel[] | string[] | number[],
             title: string,
             modelParam: string,

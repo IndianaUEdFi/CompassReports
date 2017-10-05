@@ -42,15 +42,19 @@ namespace CompassReports.Resources.Services
                 }).OrderBy(x => x.PerformanceLevel)
                 .ToList();
 
+            var total = results.Sum(x => x.Total);
+
             return new PieChartModel<int>
             {
                 Title = "Performance Level",
                 TotalRowTitle = "Assessment Participation Total",
                 Headers = new List<string> { "", "Performance Level", "Performance Count" },
+                PercentageHeaders = new List<string> { "", "Performance Level", "Performance Percentage" },
                 Labels = results.Select(x => x.PerformanceLevel).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
+                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
                 ShowChart = true,
-                Total = results.Sum(x => x.Total)
+                Total = total
             };
         }
 

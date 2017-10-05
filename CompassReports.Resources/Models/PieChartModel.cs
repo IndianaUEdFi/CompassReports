@@ -11,11 +11,16 @@ namespace CompassReports.Resources.Models
 
         public List<string> Labels { get; set; }
 
+        public List<string> PercentageHeaders { get; set; }
+
+        public List<double> Percentages { get; set; }
+
         public bool ShowChart { get; set; }
 
         public string Title { get; set; }
 
         public int Total { get; set; }
+
         public string TotalRowTitle { get; set; }
     }
 }

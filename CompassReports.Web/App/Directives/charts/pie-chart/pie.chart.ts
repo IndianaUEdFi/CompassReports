@@ -4,6 +4,7 @@
         chart: Models.PieChartModel,
         model: Models.IReportFilterModel;
         dataSetOverride: any;
+        togglePercentage: () => void;
     }
 
     class PieChartController {
@@ -14,6 +15,8 @@
                 this.scope.chart.Colors = this.services.colorGradient.getHexColors(this.scope.chart.Data.length);
             }
         }
+
+        togglePercentage = () => this.scope.chart.ShowPercentage = !this.scope.chart.ShowPercentage;
 
         updateChart = () => {
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
@@ -30,6 +33,8 @@
 
             rootScope.$on('theme-change', this.resetColors);
             rootScope.$on('update-charts', this.updateChart);
+
+            this.scope.togglePercentage = this.togglePercentage;
 
             if (!scope.chart.DelayDataCall)
                 this.updateChart();

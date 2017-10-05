@@ -45,6 +45,7 @@ namespace CompassReports.Resources.Services
             return new PieChartModel<int>
             {
                 Title = "Performance Level",
+                TotalRowTitle = "Assessment Participation Total",
                 Headers = new List<string> { "", "Performance Level", "Performance Count" },
                 Labels = results.Select(x => x.PerformanceLevel).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
@@ -55,22 +56,262 @@ namespace CompassReports.Resources.Services
 
         public PercentageTotalBarChartModel PerformanceLevelByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            return PerformanceLevelBy("Performance Level by English Language Learners", "Language Statuses", model, "EnglishLanguageLearnerStatus");
+            var query = BaseQuery(model).ToList();
+
+            var results = query.GroupBy(x => new { x.PerformanceLevel.PerformanceLevelKey, x.PerformanceLevel.PerformanceLevel, Property = x.Demographic.EnglishLanguageLearnerStatus })
+                .Select(x => new
+                {
+                    PerformanceLevel = x.Key.PerformanceLevel,
+                    PerformanceLevelKey = x.Key.PerformanceLevelKey,
+                    Property = x.Key.Property,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                }).ToList();
+
+            var performanceLevels = results.Select(x => x.PerformanceLevel).Distinct().OrderBy(x => x).ToList();
+            var performanceLevelKeys = results.OrderBy(x => x.PerformanceLevel).Select(x => x.PerformanceLevelKey).Distinct().ToList();
+
+            var headers = new List<string> { "", "Language Statuses" };
+            headers.AddRange(performanceLevels);
+
+            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
+
+            var data = new List<List<PercentageTotalDataModel>>();
+            foreach (var value in propertyValues)
+            {
+                var values = new List<PercentageTotalDataModel>();
+                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
+                var properties = results.Where(x => x.Property == value).ToList();
+
+                foreach (var performanceLevelKey in performanceLevelKeys)
+                {
+                    var rows = properties.Where(x => x.PerformanceLevelKey == performanceLevelKey);
+                    var row = rows.FirstOrDefault();
+                    var rowTotal = row == null ? 0 : row.Total;
+                    values.Add(new PercentageTotalDataModel
+                    {
+                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
+                        Total = rowTotal
+                    });
+                }
+                data.Add(values);
+            }
+
+            var total = results.Sum(x => x.Total);
+            var totals = results.GroupBy(x => x.PerformanceLevel)
+                .OrderBy(x => x.Key)
+                .Select(x => new PercentageTotalDataModel
+                {
+                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
+                    Total = x.Sum(y => y.Total)
+                }).ToList();
+
+            return new PercentageTotalBarChartModel
+            {
+                Title = "Performance Level by English Language Learners",
+                Headers = headers,
+                Labels = performanceLevels,
+                Series = propertyValues.Select(x => x.ToString()).ToList(),
+                Data = data,
+                ShowChart = true,
+                ShowPercentage = true,
+                TotalRowTitle = "Performance Level",
+                Totals = totals
+            };
         }
 
         public PercentageTotalBarChartModel PerformanceLevelByEthnicity(AssessmentFilterModel model)
         {
-            return PerformanceLevelBy("Performance Level by Ethnicity", "Ethnicities", model, "Ethnicity");
+            var query = BaseQuery(model).ToList();
+
+            var results = query.GroupBy(x => new { x.PerformanceLevel.PerformanceLevelKey, x.PerformanceLevel.PerformanceLevel, Property = x.Demographic.Ethnicity })
+                .Select(x => new
+                {
+                    PerformanceLevel = x.Key.PerformanceLevel,
+                    PerformanceLevelKey = x.Key.PerformanceLevelKey,
+                    Property = x.Key.Property,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                }).ToList();
+
+            var performanceLevels = results.Select(x => x.PerformanceLevel).Distinct().OrderBy(x => x).ToList();
+            var performanceLevelKeys = results.OrderBy(x => x.PerformanceLevel).Select(x => x.PerformanceLevelKey).Distinct().ToList();
+
+            var headers = new List<string> { "", "Ethnicities" };
+            headers.AddRange(performanceLevels);
+
+            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
+
+            var data = new List<List<PercentageTotalDataModel>>();
+            foreach (var value in propertyValues)
+            {
+                var values = new List<PercentageTotalDataModel>();
+                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
+                var properties = results.Where(x => x.Property == value).ToList();
+
+                foreach (var performanceLevelKey in performanceLevelKeys)
+                {
+                    var rows = properties.Where(x => x.PerformanceLevelKey == performanceLevelKey);
+                    var row = rows.FirstOrDefault();
+                    var rowTotal = row == null ? 0 : row.Total;
+                    values.Add(new PercentageTotalDataModel
+                    {
+                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
+                        Total = rowTotal
+                    });
+                }
+                data.Add(values);
+            }
+
+            var total = results.Sum(x => x.Total);
+            var totals = results.GroupBy(x => x.PerformanceLevel)
+                .OrderBy(x => x.Key)
+                .Select(x => new PercentageTotalDataModel
+                {
+                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
+                    Total = x.Sum(y => y.Total)
+                }).ToList();
+
+            return new PercentageTotalBarChartModel
+            {
+                Title = "Performance Level by Ethnicity",
+                Headers = headers,
+                Labels = performanceLevels,
+                Series = propertyValues.Select(x => x.ToString()).ToList(),
+                Data = data,
+                ShowChart = true,
+                ShowPercentage = true,
+                TotalRowTitle = "Performance Level",
+                Totals = totals
+            };
         }
 
         public PercentageTotalBarChartModel PerformanceLevelByLunchStatus(AssessmentFilterModel model)
         {
-            return PerformanceLevelBy("Performance Level by Free/Reduced Price Meals", "Lunch Statuses", model, "FreeReducedLunchStatus");
+            var query = BaseQuery(model).ToList();
+
+            var results = query.GroupBy(x => new { x.PerformanceLevel.PerformanceLevelKey, x.PerformanceLevel.PerformanceLevel, Property = x.Demographic.FreeReducedLunchStatus })
+                .Select(x => new
+                {
+                    PerformanceLevel = x.Key.PerformanceLevel,
+                    PerformanceLevelKey = x.Key.PerformanceLevelKey,
+                    Property = x.Key.Property,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                }).ToList();
+
+            var performanceLevels = results.Select(x => x.PerformanceLevel).Distinct().OrderBy(x => x).ToList();
+            var performanceLevelKeys = results.OrderBy(x => x.PerformanceLevel).Select(x => x.PerformanceLevelKey).Distinct().ToList();
+
+            var headers = new List<string> { "", "Lunch Statuses" };
+            headers.AddRange(performanceLevels);
+
+            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
+
+            var data = new List<List<PercentageTotalDataModel>>();
+            foreach (var value in propertyValues)
+            {
+                var values = new List<PercentageTotalDataModel>();
+                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
+                var properties = results.Where(x => x.Property == value).ToList();
+
+                foreach (var performanceLevelKey in performanceLevelKeys)
+                {
+                    var rows = properties.Where(x => x.PerformanceLevelKey == performanceLevelKey);
+                    var row = rows.FirstOrDefault();
+                    var rowTotal = row == null ? 0 : row.Total;
+                    values.Add(new PercentageTotalDataModel
+                    {
+                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
+                        Total = rowTotal
+                    });
+                }
+                data.Add(values);
+            }
+
+            var total = results.Sum(x => x.Total);
+            var totals = results.GroupBy(x => x.PerformanceLevel)
+                .OrderBy(x => x.Key)
+                .Select(x => new PercentageTotalDataModel
+                {
+                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
+                    Total = x.Sum(y => y.Total)
+                }).ToList();
+
+            return new PercentageTotalBarChartModel
+            {
+                Title = "Performance Level by Free/Reduced Price Meals",
+                Headers = headers,
+                Labels = performanceLevels,
+                Series = propertyValues.Select(x => x.ToString()).ToList(),
+                Data = data,
+                ShowChart = true,
+                ShowPercentage = true,
+                TotalRowTitle = "Performance Level",
+                Totals = totals
+            };
         }
 
         public PercentageTotalBarChartModel PerformanceLevelBySpecialEducation(AssessmentFilterModel model)
         {
-            return PerformanceLevelBy("Performance Level by Special Education", "Education Statuses", model, "SpecialEducationStatus");
+            var query = BaseQuery(model).ToList();
+
+            var results = query.GroupBy(x => new { x.PerformanceLevel.PerformanceLevelKey, x.PerformanceLevel.PerformanceLevel, Property = x.Demographic.SpecialEducationStatus })
+                .Select(x => new
+                {
+                    PerformanceLevel = x.Key.PerformanceLevel,
+                    PerformanceLevelKey = x.Key.PerformanceLevelKey,
+                    Property = x.Key.Property,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                }).ToList();
+
+            var performanceLevels = results.Select(x => x.PerformanceLevel).Distinct().OrderBy(x => x).ToList();
+            var performanceLevelKeys = results.OrderBy(x => x.PerformanceLevel).Select(x => x.PerformanceLevelKey).Distinct().ToList();
+
+            var headers = new List<string> { "", "Education Statuses" };
+            headers.AddRange(performanceLevels);
+
+            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
+
+            var data = new List<List<PercentageTotalDataModel>>();
+            foreach (var value in propertyValues)
+            {
+                var values = new List<PercentageTotalDataModel>();
+                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
+                var properties = results.Where(x => x.Property == value).ToList();
+
+                foreach (var performanceLevelKey in performanceLevelKeys)
+                {
+                    var rows = properties.Where(x => x.PerformanceLevelKey == performanceLevelKey);
+                    var row = rows.FirstOrDefault();
+                    var rowTotal = row == null ? 0 : row.Total;
+                    values.Add(new PercentageTotalDataModel
+                    {
+                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
+                        Total = rowTotal
+                    });
+                }
+                data.Add(values);
+            }
+
+            var total = results.Sum(x => x.Total);
+            var totals = results.GroupBy(x => x.PerformanceLevel)
+                .OrderBy(x => x.Key)
+                .Select(x => new PercentageTotalDataModel
+                {
+                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
+                    Total = x.Sum(y => y.Total)
+                }).ToList();
+
+            return new PercentageTotalBarChartModel
+            {
+                Title = "Performance Level by Special Education",
+                Headers = headers,
+                Labels = performanceLevels,
+                Series = propertyValues.Select(x => x.ToString()).ToList(),
+                Data = data,
+                ShowChart = true,
+                ShowPercentage = true,
+                TotalRowTitle = "Performance Level",
+                Totals = totals
+            };
         }
 
         public PercentageTotalBarChartModel ByGoodCauseExcemption(AssessmentFilterModel model)
@@ -157,72 +398,6 @@ namespace CompassReports.Resources.Services
         private static double GetPercentage(int subTotal, int total)
         {
             return Math.Round(100 * ((double) subTotal / (double) total), 2);
-        }
-
-        private static object GetPropertyValue(object obj, string propertyName)
-        {
-            return obj.GetType().GetProperty(propertyName).GetValue(obj, null);
-        }
-
-        private PercentageTotalBarChartModel PerformanceLevelBy(string title, string header, AssessmentFilterModel model, string by)
-        {
-            var query = BaseQuery(model).ToList();
-
-            var results = query.GroupBy(x => new { x.PerformanceLevel.PerformanceLevel, Property = GetPropertyValue(x.Demographic, by) })
-                .Select(x => new
-                {
-                    PerformanceLevel = x.Key.PerformanceLevel,
-                    Property = x.Key.Property,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                }).ToList();
-
-            var performanceLevels = results.Select(x => x.PerformanceLevel).Distinct().OrderBy(x => x).ToList();
-
-            var headers = new List<string> { "", header };
-            headers.AddRange(performanceLevels);
-
-            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var value in propertyValues)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
-
-                foreach (var performanceLevel in performanceLevels)
-                {
-                    var row = results.FirstOrDefault(x => x.Property == value && x.PerformanceLevel == performanceLevel);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            var total = results.Sum(x => x.Total);
-            var totals = results.GroupBy(x => x.PerformanceLevel)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
-                    Total = x.Sum(y => y.Total)
-                }).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = title,
-                Headers = headers,
-                Labels = performanceLevels,
-                Series = propertyValues.Select(x => x.ToString()).ToList(),
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = "Performance Level",
-                Totals = totals
-            };
         }
     }
 }

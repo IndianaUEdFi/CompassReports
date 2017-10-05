@@ -16,5 +16,6 @@ namespace CompassReports.Resources.Models
         public string Title { get; set; }
 
         public int Total { get; set; }
+        public string TotalRowTitle { get; set; }
     }
 }

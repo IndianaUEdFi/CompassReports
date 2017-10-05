@@ -14,6 +14,7 @@
             this.Headers = model.Headers;
             this.Labels = model.Labels;
             this.Data = model.Data;
+            this.TotalRowTitle = model.TotalRowTitle;
             this.Total = model.Total;
 
             if(this.ShowChart === undefined)

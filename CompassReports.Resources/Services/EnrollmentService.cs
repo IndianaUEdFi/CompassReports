@@ -44,6 +44,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.EnglishLanguageLearnerStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 ShowChart = true,
+                TotalRowTitle = "Enrollment Total",
                 Total = results.Sum(x => x.Total)
             };
         }
@@ -67,6 +68,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.Ethnicity).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 ShowChart = true,
+                TotalRowTitle = "Enrollment Total",
                 Total = results.Sum(x => x.Total)
             };
         }
@@ -90,6 +92,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.GradeLevel).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 ShowChart = false,
+                TotalRowTitle = "Enrollment Total",
                 Total = results.Sum(x => x.Total)
             };
         }
@@ -113,6 +116,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.LunchStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 ShowChart = true,
+                TotalRowTitle = "Enrollment Total",
                 Total = results.Sum(x => x.Total)
             };
         }
@@ -136,6 +140,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SpecialEducationStatus).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 ShowChart = true,
+                TotalRowTitle = "Enrollment Total",
                 Total = results.Sum(x => x.Total)
             };
         }

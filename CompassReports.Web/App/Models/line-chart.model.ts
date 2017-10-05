@@ -20,6 +20,7 @@ module App.Models {
             this.Data = model.Data;
             this.Percentage = model.Percentage;
             this.Series = model.Series;
+            this.TotalRowTitle = model.TotalRowTitle;
             this.Totals = model.Totals;
 
             if (this.ShowChart === undefined)
@@ -42,8 +43,14 @@ module App.Models {
                 maintainAspectRatio: false,
                 legend: { display: true, position: 'bottom' },
                 scales: {
-                    xAxes: [
-                    {
+                    yAxes: [{
+                        ticks: {
+                            callback: (value: number) => {
+                                return this.Percentage ? (Math.round(value * 100) / 100) + '%' : value;
+                            }
+                        }
+                    }],
+                    xAxes: [{
                         ticks: {
                             autoSkip: false
                         }

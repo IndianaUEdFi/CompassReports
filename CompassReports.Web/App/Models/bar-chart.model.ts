@@ -24,6 +24,7 @@ module App.Models {
             this.Percentage = model.Percentage;
             this.Series = model.Series;
             this.SingleSeries = model.SingleSeries;
+            this.TotalRowTitle = model.TotalRowTitle;
             this.Totals = model.Totals;
 
             if (this.ShowChart === undefined)
@@ -46,7 +47,10 @@ module App.Models {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            callback: (value) => {
+                                return this.Percentage ? value + '%' : value;
+                            }
                         }
                     }],
                     xAxes: [

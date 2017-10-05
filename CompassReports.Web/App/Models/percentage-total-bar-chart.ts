@@ -51,7 +51,10 @@ module App.Models {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            callback: (value) => {
+                                return this.ShowPercentage ? value + '%' : value;
+                            }
                         }
                     }],
                     xAxes: [

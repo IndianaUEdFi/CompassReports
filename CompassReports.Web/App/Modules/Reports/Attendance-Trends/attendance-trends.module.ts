@@ -20,11 +20,11 @@ module App.Reports.AttendanceTrends {
                     ];
 
                     var charts = [
-                        new LineChartModel<number>('attendanceTrends', 'byGrade'),
-                        new LineChartModel<number>('attendanceTrends','byEthnicity'),
-                        new LineChartModel<number>('attendanceTrends','byLunchStatus'),
-                        new LineChartModel<number>('attendanceTrends','bySpecialEducation'),
-                        new LineChartModel<number>('attendanceTrends','byEnglishLanguageLearner')
+                        new LineChartModel('attendanceTrends', 'byGrade'),
+                        new LineChartModel('attendanceTrends','byEthnicity'),
+                        new LineChartModel('attendanceTrends','byLunchStatus'),
+                        new LineChartModel('attendanceTrends','bySpecialEducation'),
+                        new LineChartModel('attendanceTrends','byEnglishLanguageLearner')
                     ];
 
                     return {

@@ -44,17 +44,17 @@ namespace CompassReports.Web.Controllers
 
         [Route("good-cause-excemptions")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetGoodCauseExcemptions(int assessmentKey)
+        public IHttpActionResult GetGoodCauseExcemptions(string assessmentTitle, string subject)
         {
-            var statuses = _assessmentFiltersService.GetGoodCauseExcemptions(assessmentKey);
+            var statuses = _assessmentFiltersService.GetGoodCauseExcemptions(assessmentTitle, subject);
             return Ok(statuses);
         }
 
         [Route("grades")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetGrades(int assessmentKey)
+        public IHttpActionResult GetGrades(string assessmentTitle, string subject)
         {
-            var grades = _assessmentFiltersService.GetGrades(assessmentKey);
+            var grades = _assessmentFiltersService.GetGrades(assessmentTitle, subject);
             return Ok(grades);
         }
 
@@ -68,10 +68,10 @@ namespace CompassReports.Web.Controllers
 
         [Route("performance-levels")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetPerformanceLevels(int assessmentKey)
+        public IHttpActionResult GetPerformanceLevels(string assessmentTitle, string subject)
         {
-            var statuses = _assessmentFiltersService.GetPerformanceLevels(assessmentKey);
-            return Ok(statuses);
+            var levels = _assessmentFiltersService.GetPerformanceLevels(assessmentTitle, subject);
+            return Ok(levels);
         }
 
         [Route("special-education-statuses")]
@@ -92,9 +92,9 @@ namespace CompassReports.Web.Controllers
 
         [Route("school-years")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetSchoolYears()
+        public IHttpActionResult GetSchoolYears(string assessmentTitle, string subject)
         {
-            var years = _assessmentFiltersService.GetSchoolYears();
+            var years = _assessmentFiltersService.GetSchoolYears(assessmentTitle, subject);
             return Ok(years);
         }
     }

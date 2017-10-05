@@ -13,24 +13,24 @@ module App.Api.Enrollment {
     class EnrollmentApi extends ApiBase implements IEnrollmentApi {
         resourceUrl = 'enrollment';
 
-        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel<number>> {
-            return this.services.http.post<Models.PieChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
+        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel> {
+            return this.services.http.post<Models.PieChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
         }
 
-        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel<number>> {
-            return this.services.http.post<Models.PieChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
+        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel> {
+            return this.services.http.post<Models.PieChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
         }
 
-        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel<number>> {
-            return this.services.http.post<Models.PieChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
+        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel> {
+            return this.services.http.post<Models.PieChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
         }
 
-        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel<number>> {
-            return this.services.http.post<Models.PieChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
+        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel> {
+            return this.services.http.post<Models.PieChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
         }
 
-        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel<number>> {
-            return this.services.http.post<Models.PieChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
+        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.PieChartModel> {
+            return this.services.http.post<Models.PieChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
         }
     }
 

@@ -1,35 +1,38 @@
 ﻿module App.Models {
-    export abstract class ChartModel<T> {
+    export abstract class ChartModel {
         Type: string;
         ApiCall: string;
         ChartCall: string;
         Colors: string[];
         Title: string;
+        TotalRowTitle: string;
         Headers: string[];
         Labels: string[];
         ShowChart: boolean;
         HideTotal: boolean;
+        HideChart: boolean;
         Options: any;
-        Data: T[] | T[][];
         FlexXL: number;
         FlexLG: number;
         FlexMD: number;
         FlexSM: number;
 
-        Update = (model: ChartModel<T>) => {
+        DelayDataCall: boolean;
+
+        Update = (model: ChartModel) => {
             this.Title = model.Title;
             this.Headers = model.Headers;
             this.HideTotal = model.HideTotal;
             this.Labels = model.Labels;
-            this.Data = model.Data;
 
             if (this.ShowChart === undefined)
                 this.ShowChart = model.ShowChart;
         }
 
-        protected constructor(apiCall: string, chartCall: string) {
+        protected constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
             this.ApiCall = apiCall;
             this.ChartCall = chartCall;
+            this.DelayDataCall = delayDataCall;
         }
     }
 }

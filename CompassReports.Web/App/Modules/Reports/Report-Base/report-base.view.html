@@ -34,13 +34,13 @@
     </md-toolbar>
     <md-content layout-padding>
         <div layout="row" layout-align="center">
-            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.apply()">Apply</md-button>
+            <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.apply()" ng-disabled="ctrl.filterForm.$invalid">Apply</md-button>
             <md-button flex="40" class="md-raised md-primary md-hue-1" ng-click="ctrl.reset()">Reset</md-button>
         </div>
         <form name="ctrl.filterForm">
             <div layout="column" layout-wrap>
                 <div flex="100" ng-repeat="filter in ctrl.report.filters">
-                    <filter filter="filter" model="ctrl.report.model"></filter>
+                    <filter filter="filter" report="ctrl.report"></filter>
                 </div>
             </div>
         </form>
@@ -50,7 +50,7 @@
 <md-content flex style="overflow-x: hidden">
 
     <div layout="row" layout-wrap flex>
-        <div ng-repeat="chart in ctrl.report.charts" flex-xl="{{::chart.FlexXL}}" flex-lg="{{::chart.FlexLG}}" flex-md="{{::chart.FlexMD}}" flex-sm="{{::chart.FlexSM}}">
+        <div ng-show="!chart.HideChart && chart.Data.length" ng-repeat="chart in ctrl.report.charts" flex-xl="{{::chart.FlexXL}}" flex-lg="{{::chart.FlexLG}}" flex-md="{{::chart.FlexMD}}" flex-sm="{{::chart.FlexSM}}">
             <chart chart="chart" model="ctrl.report.model"></chart>
         </div>
     </div>

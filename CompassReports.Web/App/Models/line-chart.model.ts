@@ -1,13 +1,18 @@
 ﻿/// <reference path="chart.model.ts" />
 
 module App.Models {
-    export class LineChartModel<T> extends ChartModel<T>{
+    export class LineChartModel extends ChartModel{
         Percentage: boolean;
         Series: string[];
-        Data: T[][];
+        Data: number[][];
         Totals: number[];
 
-        Update = (model: BarChartModel<T>) => {
+        Update = (model: LineChartModel) => {
+            if (!model) {
+                this.HideChart = true;
+                return;
+            }
+
             this.Title = model.Title;
             this.Headers = model.Headers;
             this.HideTotal = model.HideTotal;
@@ -21,8 +26,8 @@ module App.Models {
                 this.ShowChart = model.ShowChart;
         };
 
-        constructor(apiCall: string, chartCall: string) {
-            super(apiCall, chartCall);
+        constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
+            super(apiCall, chartCall, delayDataCall);
 
             this.FlexXL = 50;
             this.FlexLG = 50;

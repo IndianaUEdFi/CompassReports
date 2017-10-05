@@ -15,35 +15,32 @@ namespace CompassReports.Resources.Services
         List<string> GetAssessments();
         List<string> GetEnglishLanguageLearnerStatuses();
         List<string> GetEthnicities();
-        List<FilterModel<int>> GetGoodCauseExcemptions(int assessmentKey);
-        List<string> GetGrades(int assessmentKey);
+        List<FilterModel<int>> GetGoodCauseExcemptions(string assessmentTitle, string subject);
+        List<FilterModel<int>> GetGrades(string assessmentTitle, string subject);
         List<string> GetLunchStatuses();
-        List<FilterModel<int>> GetPerformanceLevels(int assessmentKey);
-        List<FilterModel<int>> GetSubjects(string assessmentTitle);
+        List<FilterModel<int>> GetPerformanceLevels(string assessmentTitle, string subject);
+        List<string> GetSubjects(string assessmentTitle);
         List<string> GetSpecialEducationStatuses();
-        List<FilterModel<short>> GetSchoolYears();
+        List<FilterModel<short>> GetSchoolYears(string assessmentTitle, string subject);
     }
 
     public class AssessmentFiltersService: IAssessmentFiltersService
     {
         private readonly IRepository<DemographicJunkDimension> _demographicJunkRepository;
         private readonly IRepository<AssessmentDimension> _assessmentDimensionRepository;
-        private readonly IRepository<AssessmentFact> _assessmentRepository;
 
         public AssessmentFiltersService(
             IRepository<DemographicJunkDimension> demographicJunkRepository,
-            IRepository<AssessmentDimension> assessmentDimensionRepository,
-            IRepository<AssessmentFact> assessmentRepository)
+            IRepository<AssessmentDimension> assessmentDimensionRepository)
         {
             _demographicJunkRepository = demographicJunkRepository;
-            _assessmentDimensionRepository = assessmentDimensionRepository;
-            _assessmentRepository = assessmentRepository;
+            _assessmentDimensionRepository = assessmentDimensionRepository;;
         }
 
         public List<string> GetAssessments()
         {
             return _assessmentDimensionRepository.GetAll()
-            .Select(x => x.AcademicSubject)
+            .Select(x => x.AssessmentTitle)
             .Distinct()
             .OrderBy(x => x)
             .ToList();
@@ -58,23 +55,23 @@ namespace CompassReports.Resources.Services
             return _demographicJunkRepository.GetAll().Select(x => x.Ethnicity).Distinct().OrderBy(x => x).ToList();
         }
 
-        public  List<FilterModel<int>> GetGoodCauseExcemptions(int assessmentKey)
+        public  List<FilterModel<int>> GetGoodCauseExcemptions(string assessmentTitle, string subject)
         {
-            return _assessmentRepository.GetAll()
-                .Where(x => x.AssessmentKey == assessmentKey)
-                .Select(x => new FilterModel<int> { Display = x.GoodCauseExemption.GoodCauseExemptionGranted, Value = x.GoodCauseExemptionKey })
+            return _assessmentDimensionRepository.GetAll()
+                .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
+                .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<int> { Display = y.GoodCauseExemption.GoodCauseExemption, Value = y.GoodCauseExemptionKey }))
                 .Distinct()
                 .OrderBy(x => x.Display)
                 .ToList();
         }
 
-        public List<string> GetGrades(int assessmentKey)
+        public List<FilterModel<int>> GetGrades(string assessmentTitle, string subject)
         {
             return _assessmentDimensionRepository.GetAll()
-                .Where(x => x.AssessmentKey == assessmentKey)
-                .Select(x => x.AssessedGradeLevel)
+                .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
+                .Select(x => new FilterModel<int> { Display = x.AssessedGradeLevel, Value = x.AssessmentKey })
                 .Distinct()
-                .OrderBy(x => x)
+                .OrderBy(x => x.Display)
                 .ToList();
         }
         public List<string> GetLunchStatuses()
@@ -82,23 +79,23 @@ namespace CompassReports.Resources.Services
             return _demographicJunkRepository.GetAll().Select(x => x.FreeReducedLunchStatus).Distinct().OrderBy(x => x).ToList();
         }
 
-        public List<FilterModel<int>> GetPerformanceLevels(int assessmentKey)
+        public List<FilterModel<int>> GetPerformanceLevels(string assessmentTitle, string subject)
         {
-            return _assessmentRepository.GetAll()
-                .Where(x => x.AssessmentKey == assessmentKey)
-                .Select(x => new FilterModel<int> { Display = x.PerformanceLevel.PerformanceLevel, Value = x.PerformanceLevelKey })
+            return _assessmentDimensionRepository.GetAll()
+                .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
+                .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<int> { Display = y.PerformanceLevel.PerformanceLevel, Value = y.PerformanceLevelKey }))
                 .Distinct()
                 .OrderBy(x => x.Display)
                 .ToList();
         }
 
-        public List<FilterModel<int>> GetSubjects(string assessmentTitle)
+        public List<string> GetSubjects(string assessmentTitle)
         {
             return _assessmentDimensionRepository.GetAll()
                 .Where(x => x.AssessmentTitle == assessmentTitle)
-                .Select(x => new FilterModel<int> { Display = x.AcademicSubject, Value = x.AssessmentKey })
+                .Select(x => x.AcademicSubject)
                 .Distinct()
-                .OrderBy(x => x.Display)
+                .OrderBy(x => x)
                 .ToList();
         }
 
@@ -107,15 +104,11 @@ namespace CompassReports.Resources.Services
             return _demographicJunkRepository.GetAll().Select(x => x.SpecialEducationStatus).Distinct().OrderBy(x => x).ToList();
         }
 
-        public List<FilterModel<short>> GetSchoolYears()
+        public List<FilterModel<short>> GetSchoolYears(string assessmentTitle, string subject)
         {
-            return _assessmentRepository
-                .GetAll()
-                .Select(x => new FilterModel<short>
-                {
-                    Display = x.SchoolYearDimension.SchoolYearDescription,
-                    Value = x.SchoolYearKey
-                })
+            return _assessmentDimensionRepository.GetAll()
+                .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
+                .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<short> { Display = y.SchoolYearDimension.SchoolYearDescription, Value = y.SchoolYearKey }))
                 .Distinct()
                 .OrderByDescending(x => x.Value)
                 .ToList();

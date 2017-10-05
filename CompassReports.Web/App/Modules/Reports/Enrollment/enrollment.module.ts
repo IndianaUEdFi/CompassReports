@@ -20,11 +20,11 @@ module App.Reports.Enrollment {
                     ];
 
                     var charts = [
-                        new PieChartModel<number>('enrollment', 'byGrade'),
-                        new PieChartModel<number>('enrollment', 'byEthnicity'),
-                        new PieChartModel<number>('enrollment', 'byLunchStatus'),
-                        new PieChartModel<number>('enrollment', 'bySpecialEducation'),
-                        new PieChartModel<number>('enrollment', 'byEnglishLanguageLearner')
+                        new PieChartModel('enrollment', 'byGrade'),
+                        new PieChartModel('enrollment', 'byEthnicity'),
+                        new PieChartModel('enrollment', 'byLunchStatus'),
+                        new PieChartModel('enrollment', 'bySpecialEducation'),
+                        new PieChartModel('enrollment', 'byEnglishLanguageLearner')
                     ];
 
                     return {

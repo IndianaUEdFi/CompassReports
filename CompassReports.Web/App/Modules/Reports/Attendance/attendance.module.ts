@@ -20,11 +20,11 @@ module App.Reports.Attendance {
                     ];
 
                     var charts = [
-                        new BarChartModel<number>('attendance', 'byGrade'),
-                        new BarChartModel<number>('attendance','byEthnicity'),
-                        new BarChartModel<number>('attendance','byLunchStatus'),
-                        new BarChartModel<number>('attendance','bySpecialEducation'),
-                        new BarChartModel<number>('attendance','byEnglishLanguageLearner')
+                        new BarChartModel('attendance', 'byGrade'),
+                        new BarChartModel('attendance','byEthnicity'),
+                        new BarChartModel('attendance','byLunchStatus'),
+                        new BarChartModel('attendance','bySpecialEducation'),
+                        new BarChartModel('attendance','byEnglishLanguageLearner')
                     ];
 
                     return {

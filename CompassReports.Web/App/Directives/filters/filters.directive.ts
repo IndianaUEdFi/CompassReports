@@ -10,11 +10,11 @@
             restrict: 'E',
             scope: {
                 filter: '=',
-                model: '='
+                report: '=',
             },
             link: (scope: IFilterScope, element: JQuery) => {
                 var type = scope.filter.Multiple ? 'multi-select': 'select';
-                var template = `<${type}-filter filter="filter" model="model"></${type}-filter`;
+                var template = `<${type}-filter filter="filter" report="report"></${type}-filter`;
                 var templateElement = angular.element(template);
                 element.append(templateElement);
                 services.compile(templateElement)(scope);

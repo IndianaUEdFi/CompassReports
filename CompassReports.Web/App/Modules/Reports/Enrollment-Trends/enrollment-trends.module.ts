@@ -20,11 +20,11 @@ module App.Reports.EnrollmentTrends {
                     ];
 
                     var charts = [
-                        new BarChartModel<number>('enrollmentTrends', 'byGrade'),
-                        new BarChartModel<number>('enrollmentTrends', 'byEthnicity'),
-                        new BarChartModel<number>('enrollmentTrends', 'byLunchStatus'),
-                        new BarChartModel<number>('enrollmentTrends', 'bySpecialEducation'),
-                        new BarChartModel<number>('enrollmentTrends', 'byEnglishLanguageLearner')
+                        new BarChartModel('enrollmentTrends', 'byGrade'),
+                        new BarChartModel('enrollmentTrends', 'byEthnicity'),
+                        new BarChartModel('enrollmentTrends', 'byLunchStatus'),
+                        new BarChartModel('enrollmentTrends', 'bySpecialEducation'),
+                        new BarChartModel('enrollmentTrends', 'byEnglishLanguageLearner')
                     ];
 
                     return {

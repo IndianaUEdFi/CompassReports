@@ -13,24 +13,24 @@ module App.Api.EnrollmentTrends {
     class EnrollmentTrendsApi extends ApiBase implements IEnrollmentTrendsApi {
         resourceUrl = 'enrollment-trends';
 
-        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel<number>> {
-            return this.services.http.post<Models.BarChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
+        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel> {
+            return this.services.http.post<Models.BarChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
         }
 
-        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel<number>> {
-            return this.services.http.post<Models.BarChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
+        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel> {
+            return this.services.http.post<Models.BarChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
         }
 
-        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel<number>> {
-            return this.services.http.post<Models.BarChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
+        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel> {
+            return this.services.http.post<Models.BarChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
         }
 
-        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel<number>> {
-            return this.services.http.post<Models.BarChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
+        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel> {
+            return this.services.http.post<Models.BarChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
         }
 
-        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel<number>> {
-            return this.services.http.post<Models.BarChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
+        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.BarChartModel> {
+            return this.services.http.post<Models.BarChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
         }
     }
 

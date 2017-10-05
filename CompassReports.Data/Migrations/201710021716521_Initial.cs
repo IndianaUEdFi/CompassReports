@@ -173,7 +173,7 @@ namespace CompassReports.Data.Migrations
                 c => new
                     {
                         GoodCauseExemptionKey = c.Int(nullable: false, identity: true),
-                        GoodCauseExemptionGranted = c.String(nullable: false, maxLength: 50),
+                        GoodCauseExemption = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.GoodCauseExemptionKey);
             

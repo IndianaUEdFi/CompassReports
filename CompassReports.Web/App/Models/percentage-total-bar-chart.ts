@@ -1,15 +1,18 @@
 ﻿/// <reference path="chart.model.ts" />
 
 module App.Models {
-    export class BarChartModel extends ChartModel{
-        Percentage: boolean;
+    export class PercentageTotalData {
+        Percentage: number;
+        Total: number;
+    }
+    
+    export class PercentageTotalBarChartModel extends ChartModel {
         Series: string[];
-        SingleSeries: boolean;
-        Data: number[][];
-        PercentageData: number[][];
-        Totals: number[];
+        Data: PercentageTotalData[][];
+        Totals: PercentageTotalData;
+        ShowPercentage: boolean;
 
-        Update = (model: BarChartModel) => {
+        Update = (model: PercentageTotalBarChartModel) => {
             if (!model) {
                 this.HideChart = true;
                 return;
@@ -18,16 +21,18 @@ module App.Models {
             this.Title = model.Title;
             this.Headers = model.Headers;
             this.HideTotal = model.HideTotal;
+            this.TotalRowTitle = model.TotalRowTitle;
             this.Labels = model.Labels;
             this.Data = model.Data;
-            this.PercentageData = model.PercentageData;
-            this.Percentage = model.Percentage;
             this.Series = model.Series;
-            this.SingleSeries = model.SingleSeries;
             this.Totals = model.Totals;
+            this.HideChart = false;
 
             if (this.ShowChart === undefined)
                 this.ShowChart = model.ShowChart;
+
+            if (this.ShowPercentage === undefined)
+                this.ShowPercentage = model.ShowPercentage;
         };
 
         constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
@@ -38,7 +43,7 @@ module App.Models {
             this.FlexMD = 100;
             this.FlexSM = 100;
 
-            this.Type = 'bar';
+            this.Type = 'percentage-total';
             this.Options = {
                 responsive: true,
                 maintainAspectRatio: false,

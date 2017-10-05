@@ -153,6 +153,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Directives\charts\percentage-total-chart\percentage-total-chart.view.html" />
     <Content Include="App\Directives\charts\line-chart\line-chart.view.html" />
     <Content Include="App\Directives\charts\pie-chart\pie-chart.view.html" />
     <Content Include="App\Directives\filters\multi-select\multi-select.view.html" />
@@ -184,6 +185,7 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\AttendanceTrendsController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\AssessmentFiltersController.cs" />
@@ -235,12 +237,14 @@
     <TypeScriptCompile Include="App\Api\assessment-filters.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance.api.ts" />
+    <TypeScriptCompile Include="App\Api\assessment.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-filters.api.ts" />
     <TypeScriptCompile Include="App\app.config.ts" />
     <TypeScriptCompile Include="App\app.controller.ts" />
     <TypeScriptCompile Include="App\app.module.ts" />
     <TypeScriptCompile Include="App\app.run.ts" />
+    <TypeScriptCompile Include="App\Directives\charts\percentage-total-chart\percentage-total.chart.ts" />
     <TypeScriptCompile Include="App\Directives\charts\line-chart\line.chart.ts" />
     <TypeScriptCompile Include="App\Directives\charts\pie-chart\pie.chart.ts" />
     <TypeScriptCompile Include="App\Directives\charts\charts.directive.ts" />
@@ -252,6 +256,8 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\assessment-filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\percentage-total-bar-chart.ts" />
     <TypeScriptCompile Include="App\Models\line-chart.model.ts" />
     <TypeScriptCompile Include="App\Models\base-report.model.ts" />
     <TypeScriptCompile Include="App\Models\report-filter.model.ts" />

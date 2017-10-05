@@ -13,24 +13,24 @@ module App.Api.AttendanceTrends {
     class AttendanceTrendsApi extends ApiBase implements IAttendanceTrendsApi {
         resourceUrl = 'attendance-trends';
 
-        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel<number>> {
-            return this.services.http.post<Models.LineChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
+        byEnglishLanguageLearner(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel> {
+            return this.services.http.post<Models.LineChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-english-language-learner`, model).then((data) => { return data.data; });
         }
 
-        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel<number>> {
-            return this.services.http.post<Models.LineChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
+        byEthnicity(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel> {
+            return this.services.http.post<Models.LineChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-ethnicity`, model).then((data) => { return data.data; });
         }
 
-        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel<number>> {
-            return this.services.http.post<Models.LineChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
+        byGrade(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel> {
+            return this.services.http.post<Models.LineChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-grade`, model).then((data) => { return data.data; });
         }
 
-        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel<number>> {
-            return this.services.http.post<Models.LineChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
+        byLunchStatus(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel> {
+            return this.services.http.post<Models.LineChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-lunch-status`, model).then((data) => { return data.data; });
         }
 
-        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel<number>> {
-            return this.services.http.post<Models.LineChartModel<number>>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
+        bySpecialEducation(model: Models.EnrollmentFilterModel): angular.IPromise<Models.LineChartModel> {
+            return this.services.http.post<Models.LineChartModel>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/by-special-education`, model).then((data) => { return data.data; });
         }
     }
 

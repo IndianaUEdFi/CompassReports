@@ -1,7 +1,7 @@
 ﻿module App.Directive.Charts {
 
     interface IPieChartScope extends ng.IScope {
-        chart: Models.PieChartModel<number>,
+        chart: Models.PieChartModel,
         model: Models.IReportFilterModel;
         dataSetOverride: any;
     }
@@ -17,7 +17,7 @@
 
         updateChart = () => {
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
-                .then((result: Models.PieChartModel<number>) => {
+                .then((result: Models.PieChartModel) => {
                     this.scope.chart.Update(result);
                     this.resetColors();
                 });
@@ -31,7 +31,8 @@
             rootScope.$on('theme-change', this.resetColors);
             rootScope.$on('update-charts', this.updateChart);
 
-            this.updateChart();
+            if (!scope.chart.DelayDataCall)
+                this.updateChart();
         }
     }
 

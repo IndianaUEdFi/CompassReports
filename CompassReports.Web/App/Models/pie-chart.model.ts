@@ -1,9 +1,15 @@
 ﻿module App.Models {
-    export class PieChartModel<T> extends ChartModel<T>{
-        Data: T[];
+    export class PieChartModel extends ChartModel{
+        Data: number[];
         Total: number;
+        DelayDataCall: boolean;
 
-        Update = (model: PieChartModel<T>) => {
+        Update = (model: PieChartModel) => {
+            if (!model) {
+                this.HideChart = true;
+                return;
+            }
+
             this.Title = model.Title;
             this.Headers = model.Headers;
             this.Labels = model.Labels;
@@ -14,8 +20,8 @@
                 this.ShowChart = model.ShowChart;
         };
 
-        constructor(apiCall: string, chartCall: string) {
-            super(apiCall, chartCall);
+        constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
+            super(apiCall, chartCall, delayDataCall);
 
             this.FlexXL = 33;
             this.FlexLG = 50;

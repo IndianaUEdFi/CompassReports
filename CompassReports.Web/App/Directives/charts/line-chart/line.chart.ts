@@ -1,7 +1,7 @@
 ﻿module App.Directive.Charts {
 
     interface ILineChartScope extends ng.IScope {
-        chart: Models.BarChartModel<number>,
+        chart: Models.BarChartModel,
         dataSetOverride: any;
         model: Models.IReportFilterModel;
     }
@@ -26,7 +26,7 @@
 
         updateChart = () => {
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
-                .then((result: Models.BarChartModel<number>) => {
+                .then((result: Models.BarChartModel) => {
                     this.scope.chart.Update(result);
                     this.setDataSetOverrride();
                     this.resetColors();
@@ -41,7 +41,8 @@
             rootScope.$on('theme-change', this.resetColors);
             rootScope.$on('update-charts', this.updateChart);
 
-            this.updateChart();
+            if (!scope.chart.DelayDataCall)
+                this.updateChart();
         }
     }
 

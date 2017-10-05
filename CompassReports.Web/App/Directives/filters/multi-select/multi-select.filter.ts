@@ -2,7 +2,7 @@
 
     interface IMultiSelectFitlerScope {
         filter: Models.FilterModel<number>;
-        model:  any;
+        report:  Models.BaseReport;
     }
 
     function multiSelectFilterDirective(settings: ISystemSettings) {
@@ -10,7 +10,7 @@
             restrict: 'E',
             scope: {
                 filter: '=',
-                model: '='
+                report: '='
             },
             templateUrl: `${settings.directiveBaseUri}/filters/multi-select/multi-select.view.html`
        }

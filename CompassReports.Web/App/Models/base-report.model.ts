@@ -2,7 +2,7 @@
     export class BaseReport {
         title: string;
         api: string;
-        charts: Models.ChartModel<number>[];
+        charts: Models.ChartModel[];
         filters: Models.FilterModel<any>[];
         model: IReportFilterModel;
     }

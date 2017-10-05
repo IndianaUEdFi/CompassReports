@@ -15,7 +15,7 @@ namespace CompassReports.Data.Entities
 
         [Required]
         [MaxLength(50)]
-        public string GoodCauseExemptionGranted { get; set; }
+        public string GoodCauseExemption { get; set; }
 
         public ICollection<AssessmentFact> AssessmentFacts { get; set; }
     }

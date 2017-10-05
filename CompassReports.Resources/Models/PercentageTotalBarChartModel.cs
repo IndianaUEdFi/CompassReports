@@ -3,12 +3,16 @@ using System.Collections.Generic;
 
 namespace CompassReports.Resources.Models
 {
-    public class BarChartModel<T>
+    public class PercentageTotalDataModel
     {
-        public List<List<double>> PercentageData { get; set; }
-        public List<List<T>> TotalData { get; set; }
+        public double Percentage { get; set; }
 
-        public List<List<T>> Data { get; set; }
+        public int Total { get; set; }
+    }
+
+    public class PercentageTotalBarChartModel
+    {
+        public List<List<PercentageTotalDataModel>> Data { get; set; }
 
         public List<string> Headers { get; set; }
 
@@ -16,19 +20,19 @@ namespace CompassReports.Resources.Models
 
         public List<string> Labels { get; set; }
 
-        public bool Percentage { get; set; }
-
         public List<string> Series { get; set; }
 
         public bool ShowChart { get; set; }
 
+        public bool ShowPercentage { get; set; }
+
         public bool SingleSeries { get; set; }
 
         public string Title { get; set; }
-
+        
         public string TotalRowTitle { get; set; }
 
-        public List<int> Totals { get; set; }
+        public List<PercentageTotalDataModel> Totals { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿module App.Directive.Charts {
 
     interface IChartScope extends angular.IScope {
-        chart: Models.ChartModel<number>;
+        chart: Models.ChartModel;
     }
 
     function chartDirective(services: IServices) {
@@ -24,6 +24,7 @@
         .module('app.directives.charts', [
             'app.directives.charts.bar',
             'app.directives.charts.line',
+            'app.directives.charts.percentage-total',
             'app.directives.charts.pie'])
         .directive('chart', ['services', chartDirective]);
 }

@@ -48,7 +48,6 @@
 </md-sidenav>
 
 <md-content flex style="overflow-x: hidden">
-
     <div layout="row" layout-wrap flex>
         <div ng-show="!chart.HideChart && chart.Data.length" ng-repeat="chart in ctrl.report.charts" flex-xl="{{::chart.FlexXL}}" flex-lg="{{::chart.FlexLG}}" flex-md="{{::chart.FlexMD}}" flex-sm="{{::chart.FlexSM}}">
             <chart chart="chart" model="ctrl.report.model"></chart>

@@ -10,6 +10,7 @@
 	<files>
 	  <file src="bin\**" target="bin" />
     <file src="Content\**" target="Content" />
+    <file src="fonts\**" target="fonts" />
     <file src="Scripts\**" target="Scripts" />
     <file src="App\**\*.html" target="App" />
     <file src="index.html" target="index.html" />

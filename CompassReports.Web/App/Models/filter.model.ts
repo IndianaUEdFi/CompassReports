@@ -4,6 +4,7 @@
         ModelParam: string;
         Multiple: boolean;
         Required: boolean;
+        Disabled: boolean;
 
         Values: FilterValueModel[];
         Display: any;

@@ -1,7 +1,7 @@
 ﻿module App.Reports {
 
     class ReportsLayoutController {
-        static $inject = ['$mdSidenav'];
+        static $inject = ['assessments', '$mdSidenav'];
 
         isOpen = false;
         menuId = 0;
@@ -31,7 +31,9 @@
 
         toggleThemes = () => this.$mdSidenav('colornav').toggle();
 
-        constructor(private readonly $mdSidenav: ng.material.ISidenavService) {
+        constructor(
+            public assessments: Models.FilterValueModel[],
+            private readonly $mdSidenav: ng.material.ISidenavService) {
         }            
     }
 
@@ -47,7 +49,12 @@
                         'content@': {
                             templateUrl: `${settings.moduleBaseUri}/reports/reports-layout.view.html`,
                             controller: ReportsLayoutController,
-                            controllerAs: 'ctrl'
+                            controllerAs: 'ctrl',
+                            resolve: {
+                                assessments: ['api', (api: IApi) => {
+                                    return api.assessmentFilters.getAssessments();
+                                }]
+                            }
                         }
                     }
                 });

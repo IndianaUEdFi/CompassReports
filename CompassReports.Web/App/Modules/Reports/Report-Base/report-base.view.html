@@ -1,5 +1,5 @@
 ﻿<md-toolbar class="md-hue-1">
-    <div class="md-toolbar-tools" style="max-height: none;" ng-style="{'height': ctrl.isFiltering() ? 'inherit' : ''}">
+    <div class="md-toolbar-tools" ng-style="{'height': ctrl.isFiltering() ? 'inherit' : 'max-height': ctrl.filteringCount() > 4 ? 'none': ''}">
         <md-button ng-if="ctrl.report.backState" class="md-raised md-accent md-hue-2 md-mini" ng-click="ctrl.goBack()">
             Back
         </md-button>

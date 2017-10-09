@@ -31,11 +31,14 @@ namespace CompassReports.Resources.Services
 
         public List<string> GetAssessments()
         {
+            var hideAssessments = new[] {"ACT", "AP", "SAT"};
+
             return _assessmentDimensionRepository.GetAll()
-            .Select(x => x.AssessmentTitle)
-            .Distinct()
-            .OrderBy(x => x)
-            .ToList();
+                .Where(x => !hideAssessments.Contains(x.AssessmentTitle))
+                .Select(x => x.AssessmentTitle)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
         }
 
         public  List<FilterModel<int>> GetGoodCauseExcemptions(string assessmentTitle, string subject)

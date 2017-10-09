@@ -9,6 +9,20 @@
         LunchStatuses: string[];
         SpecialEducationStatuses: string[];
 
+        filteringCount = () => {
+            let count = 0;
+
+            if (this.ExpectedGraduationYear) count++;
+            if (this.CohortYear) count++;
+            if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) count++;
+            if (this.Ethnicities != null && this.Ethnicities.length) count++;
+            if (this.ExpectedGraduationYears != null && this.ExpectedGraduationYears.length) count++;
+            if (this.LunchStatuses != null && this.LunchStatuses.length) count++;
+            if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) count++;
+
+            return count;
+        }
+
         isFiltering = () => {
             if (this.ExpectedGraduationYear) return true;
             if (this.CohortYear) return true;

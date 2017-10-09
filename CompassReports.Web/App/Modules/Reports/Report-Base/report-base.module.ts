@@ -17,6 +17,8 @@
 
         apply = () => this.$rootScope.$emit('update-charts');
 
+        filteringCount = () => this.report.model.isFiltering();
+
         goBack = () => {
             this.$rootScope.filterModel = this.report.model;
             this.services.state.go(this.report.backState);

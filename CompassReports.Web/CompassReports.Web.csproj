@@ -185,6 +185,7 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AssessmentPerformanceController.cs" />
     <Compile Include="Controllers\GraduateDiplomaTypeController.cs" />
     <Compile Include="Controllers\GraduateWaiversController.cs" />
     <Compile Include="Controllers\GraduateStatusController.cs" />
@@ -238,6 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\assessment-performance.ts" />
     <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-waviers.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-status.api.ts" />

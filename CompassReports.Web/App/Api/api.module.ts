@@ -5,6 +5,7 @@ module App {
     export interface IApi {
         assessment: Api.Assessment.IAssessmentApi;
         assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi;
+        assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi;
         attendance: Api.Attendance.IAttendanceApi;
         attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi;
         demographicFilters: Api.DemographicFilters.IDemographicFiltersApi;
@@ -22,6 +23,7 @@ module App {
         static $inject = [
             'api.assessment',
             'api.assessment-filters',
+            'api.assessment-performance',
             'api.attendance',
             'api.attendance-trends',
             'api.demographic-filters',
@@ -37,6 +39,7 @@ module App {
         constructor(
             public assessment: Api.Assessment.IAssessmentApi,
             public assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi,
+            public assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi,
             public attendance: Api.Attendance.IAttendanceApi,
             public attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi,
             public demographicFilters: Api.DemographicFilters.IDemographicFiltersApi,
@@ -83,6 +86,7 @@ module App {
         .module("app.api", [
             'app.api.assessment',
             'app.api.assessment-filters',
+            'app.api.assessment-performance',
             'app.api.attendance',
             'app.api.attendance-trends',
             'app.api.demographic-filters',

@@ -12,11 +12,21 @@
         AssessmentTitle: string;
         Subject: string;
 
-        //GoodCauseExcemptions: number[];
-        //PerformanceLevels: number[];
+        filteringCount = () => {
+            let count = 0;
+
+            if (this.Subject) count++;
+            if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) count++;
+            if (this.Ethnicities != null && this.Ethnicities.length) count++;
+            if (this.SchoolYears != null && this.SchoolYears.length) count++;
+            if (this.LunchStatuses != null && this.LunchStatuses.length) count++;
+            if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) count++;
+            if (this.Assessments != null && this.Assessments.length) count++;
+
+            return count;
+        }
 
         isFiltering = () => {
-            if (this.AssessmentTitle) return true;
             if (this.Subject) return true;
             if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) return true;
             if (this.Ethnicities != null && this.Ethnicities.length) return true;
@@ -24,9 +34,6 @@
             if (this.LunchStatuses != null && this.LunchStatuses.length) return true;
             if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) return true;
             if (this.Assessments != null && this.Assessments.length) return true;
-
-            //if (this.PerformanceLevels != null && this.PerformanceLevels.length) return true;
-            //if (this.GoodCauseExcemptions != null && this.GoodCauseExcemptions.length) return true;
 
             return false;
         }
@@ -38,12 +45,8 @@
             this.LunchStatuses = [];
             this.SpecialEducationStatuses = [];
             this.Assessments = [];
-            this.AssessmentTitle = null;
             this.SchoolYear = null;
             this.Subject = null;
-
-            //this.PerformanceLevels = [];
-            //this.GoodCauseExcemptions = [];
         }
 
         constructor() {

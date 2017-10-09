@@ -18,7 +18,13 @@
                 <i class="material-icons" ng-class="{ 'side-icon-active': ctrl.isSelected(1) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(1)}">group</i>
             </md-list-item>
             <md-list-item ng-click="ctrl.toggleExpanded(2)" ng-style="{'background-color': (ctrl.isSelected(2) && ctrl.isOpen) ? $root.primaryColor.color : 'white'}">
-                <i ng-class="{ 'side-icon-active': ctrl.isSelected(2) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(2), 'material-icons': true}">school</i>
+                <i ng-class="{ 'side-icon-active': ctrl.isSelected(2) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(2), 'material-icons': true}">assignment</i>
+            </md-list-item>
+            <md-list-item ng-click="ctrl.toggleExpanded(3)" ng-style="{'background-color': (ctrl.isSelected(3) && ctrl.isOpen) ? $root.primaryColor.color : 'white'}">
+                <i ng-class="{ 'side-icon-active': ctrl.isSelected(3) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(3), 'material-icons': true}">school</i>
+            </md-list-item>
+            <md-list-item ng-click="ctrl.toggleExpanded(4)" ng-style="{'background-color': (ctrl.isSelected(4) && ctrl.isOpen) ? $root.primaryColor.color : 'white'}">
+                <i ng-class="{ 'side-icon-active': ctrl.isSelected(4) && ctrl.isOpen,'side-icon-inactive': !ctrl.isSelected(4), 'material-icons': true}">account_balance</i>
             </md-list-item>
         </md-list>
     </md-sidenav>
@@ -53,17 +59,51 @@
             <md-content layout-padding>
                 <md-sidemenu>
                     <md-sidemenu-group>
-                        <md-sidemenu-content md-icon="assignment" md-heading="Assessments" md-arrow="true">
-                            <md-sidemenu-button ui-sref="app.reports.assessment">Assessment</md-sidemenu-button>
-                            <md-sidemenu-button ui-sref="app.reports.assessment-trends">Asessment Trends</md-sidemenu-button>
+                        <md-sidemenu-content ng-repeat="assessment in ::ctrl.assessments" md-icon="assessment" md-arrow="true" on-hover="true" md-heading="{{assessment}}">
+                            <md-sidemenu-button ui-sref="app.reports.assessment({assessmentTitle: assessment})">{{assessment}}</md-sidemenu-button>
+                            <md-sidemenu-button ui-sref="app.reports.assessment-trends">Trends</md-sidemenu-button>
                         </md-sidemenu-content>
                     </md-sidemenu-group>
+                </md-sidemenu>
+            </md-content>
+        </section>
+        
+
+        <section ng-show="ctrl.isSelected(3)" layout="column">
+            <md-toolbar class="md-toolbar-tools md-accent md-hue-2">
+                <h2>Graduates</h2>
+            </md-toolbar>
+            <md-content layout-padding>
+                <md-sidemenu>
                     <md-sidemenu-group>
                         <md-sidemenu-content md-icon="school" md-heading="Graduates" md-arrow="true">
                             <md-sidemenu-button ui-sref="app.reports.graduates">Graduates</md-sidemenu-button>
                             <md-sidemenu-button ui-sref="app.reports.graduate-status">Graduation Status</md-sidemenu-button>
                             <md-sidemenu-button ui-sref="app.reports.graduate-waivers">Graduation Waviers</md-sidemenu-button>
                             <md-sidemenu-button ui-sref="app.reports.graduate-diploma-type">Diploma Types</md-sidemenu-button>
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                </md-sidemenu>
+            </md-content>
+        </section>
+        
+
+        <section ng-show="ctrl.isSelected(4)" layout="column">
+            <md-toolbar class="md-toolbar-tools md-accent md-hue-2">
+                <h2>College/Career Readiness</h2>
+            </md-toolbar>
+            <md-content layout-padding>
+                <md-sidemenu>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="assignment" md-heading="AP Exams" md-arrow="true">
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="assignment" md-heading="SAT" md-arrow="true">
+                        </md-sidemenu-content>
+                    </md-sidemenu-group>
+                    <md-sidemenu-group>
+                        <md-sidemenu-content md-icon="assignment" md-heading="ACT" md-arrow="true">
                         </md-sidemenu-content>
                     </md-sidemenu-group>
                 </md-sidemenu>

@@ -4,6 +4,10 @@
             <h3>{{chart.Title}}</h3>
             <span flex></span>
             <div>
+                <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.DetailState" ng-click="viewDetails()">
+                    <md-tooltip md-direction="left">More Details</md-tooltip>
+                    <md-icon md-font-set="material-icons">dashboard</md-icon>
+                </md-button>
                 <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.Percentages.length && !chart.ShowChart" ng-click="togglePercentage()">
                     <md-icon ng-if="!chart.ShowPercentage" md-font-set="fa" md-font-icon="fa-percent"></md-icon>
                     <md-icon ng-if="chart.ShowPercentage" md-font-set="material-icons">people</md-icon>

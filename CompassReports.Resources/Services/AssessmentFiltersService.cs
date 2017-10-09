@@ -13,27 +13,19 @@ namespace CompassReports.Resources.Services
     public interface IAssessmentFiltersService
     {
         List<string> GetAssessments();
-        List<string> GetEnglishLanguageLearnerStatuses();
-        List<string> GetEthnicities();
         List<FilterModel<int>> GetGoodCauseExcemptions(string assessmentTitle, string subject);
         List<FilterModel<int>> GetGrades(string assessmentTitle, string subject);
-        List<string> GetLunchStatuses();
         List<FilterModel<int>> GetPerformanceLevels(string assessmentTitle, string subject);
         List<string> GetSubjects(string assessmentTitle);
-        List<string> GetSpecialEducationStatuses();
         List<FilterModel<short>> GetSchoolYears(string assessmentTitle, string subject);
     }
 
     public class AssessmentFiltersService: IAssessmentFiltersService
     {
-        private readonly IRepository<DemographicJunkDimension> _demographicJunkRepository;
         private readonly IRepository<AssessmentDimension> _assessmentDimensionRepository;
 
-        public AssessmentFiltersService(
-            IRepository<DemographicJunkDimension> demographicJunkRepository,
-            IRepository<AssessmentDimension> assessmentDimensionRepository)
+        public AssessmentFiltersService(IRepository<AssessmentDimension> assessmentDimensionRepository)
         {
-            _demographicJunkRepository = demographicJunkRepository;
             _assessmentDimensionRepository = assessmentDimensionRepository;;
         }
 
@@ -44,15 +36,6 @@ namespace CompassReports.Resources.Services
             .Distinct()
             .OrderBy(x => x)
             .ToList();
-        }
-
-        public List<string> GetEnglishLanguageLearnerStatuses()
-        {
-            return _demographicJunkRepository.GetAll().Select(x => x.EnglishLanguageLearnerStatus).Distinct().OrderBy(x => x).ToList();
-        }
-        public List<string> GetEthnicities()
-        {
-            return _demographicJunkRepository.GetAll().Select(x => x.Ethnicity).Distinct().OrderBy(x => x).ToList();
         }
 
         public  List<FilterModel<int>> GetGoodCauseExcemptions(string assessmentTitle, string subject)
@@ -74,10 +57,6 @@ namespace CompassReports.Resources.Services
                 .OrderBy(x => x.Display)
                 .ToList();
         }
-        public List<string> GetLunchStatuses()
-        {
-            return _demographicJunkRepository.GetAll().Select(x => x.FreeReducedLunchStatus).Distinct().OrderBy(x => x).ToList();
-        }
 
         public List<FilterModel<int>> GetPerformanceLevels(string assessmentTitle, string subject)
         {
@@ -97,11 +76,6 @@ namespace CompassReports.Resources.Services
                 .Distinct()
                 .OrderBy(x => x)
                 .ToList();
-        }
-
-        public List<string> GetSpecialEducationStatuses()
-        {
-            return _demographicJunkRepository.GetAll().Select(x => x.SpecialEducationStatus).Distinct().OrderBy(x => x).ToList();
         }
 
         public List<FilterModel<short>> GetSchoolYears(string assessmentTitle, string subject)

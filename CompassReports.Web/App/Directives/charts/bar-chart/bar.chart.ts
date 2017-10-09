@@ -51,8 +51,7 @@
             rootScope.$on('theme-change', this.resetColors);
             rootScope.$on('update-charts', this.updateChart);
 
-            if(!scope.chart.DelayDataCall)
-                this.updateChart();
+            this.updateChart();
         }
     }
 

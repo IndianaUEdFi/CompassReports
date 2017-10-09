@@ -35,19 +35,19 @@ module App.Reports.Attendance {
                     }
                 }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
-                return api.enrollmentFilters.getEnglishLanguageLearnerStatuses();
+                return api.demographicFilters.getEnglishLanguageLearnerStatuses();
             }],
             ethnicities: ['api', (api: IApi) => {
-                return api.enrollmentFilters.getEthnicities();
+                return api.demographicFilters.getEthnicities();
             }],
             grades: ['api', (api: IApi) => {
-                return api.enrollmentFilters.getGrades();
+                return api.demographicFilters.getGrades();
             }],
             lunchStatuses: ['api', (api: IApi) => {
-                return api.enrollmentFilters.getLunchStatuses();
+                return api.demographicFilters.getLunchStatuses();
             }],
             specialEducationStatuses: ['api', (api: IApi) => {
-                return api.enrollmentFilters.getSpecialEducationStatuses();
+                return api.demographicFilters.getSpecialEducationStatuses();
             }],
             schoolYears: ['api', (api: IApi) => {
                 return api.enrollmentFilters.getSchoolYears();

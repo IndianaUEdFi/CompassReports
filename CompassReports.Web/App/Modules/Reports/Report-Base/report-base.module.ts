@@ -13,9 +13,14 @@
     }
 
     export class ReportBaseController implements ng.IController{
-        static $inject = ['$rootScope', '$mdSidenav', 'report'];
+        static $inject = ['$rootScope', '$mdSidenav', 'services', 'report'];
 
         apply = () => this.$rootScope.$emit('update-charts');
+
+        goBack = () => {
+            this.$rootScope.filterModel = this.report.model;
+            this.services.state.go(this.report.backState);
+        }
 
         isFiltering = () => this.report.model.isFiltering();
 
@@ -26,6 +31,7 @@
         constructor(
             public $rootScope,
             private readonly $mdSidenav: ng.material.ISidenavService,
+            private readonly services: IServices,
             private readonly report: Models.BaseReport
         ) { }
     }

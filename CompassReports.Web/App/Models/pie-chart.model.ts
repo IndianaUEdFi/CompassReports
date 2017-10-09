@@ -28,8 +28,8 @@
                 this.ShowPercentage = model.ShowPercentage;
         };
 
-        constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
-            super(apiCall, chartCall, delayDataCall);
+        constructor(apiCall: string, chartCall: string, detailState?: string) {
+            super(apiCall, chartCall, detailState);
 
             this.FlexXL = 50;
             this.FlexLG = 50;
@@ -44,7 +44,7 @@
                 tooltips: {
                     callbacks: {
                         label: (tooltipItem, data) => {
-                            if (this.Percentages)
+                            if (this.Percentages && this.Percentages.length)
                                 return `${this.Labels[tooltipItem.index]}: ${this.Percentages[tooltipItem.index]}%, ${this.Data[tooltipItem.index]}`;
                             else
                                 return `${this.Labels[tooltipItem.index]}: ${this.Data[tooltipItem.index]}`;

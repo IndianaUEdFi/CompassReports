@@ -17,7 +17,7 @@
         FlexMD: number;
         FlexSM: number;
 
-        DelayDataCall: boolean;
+        DetailState: string;
 
         Update = (model: ChartModel) => {
             this.Title = model.Title;
@@ -29,10 +29,10 @@
                 this.ShowChart = model.ShowChart;
         }
 
-        protected constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
+        protected constructor(apiCall: string, chartCall: string, detailState?: string) {
             this.ApiCall = apiCall;
             this.ChartCall = chartCall;
-            this.DelayDataCall = delayDataCall;
+            this.DetailState = detailState;
         }
     }
 }

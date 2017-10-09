@@ -62,6 +62,7 @@
             'app.reports.attendance-trends',
             'app.reports.enrollment',
             'app.reports.enrollment-trends',
+            'app.reports.graduates',
             'app.reports.home'
         ])
         .config(ReportsLayoutConfig);

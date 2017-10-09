@@ -35,8 +35,8 @@ module App.Models {
                 this.ShowPercentage = model.ShowPercentage;
         };
 
-        constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
-            super(apiCall, chartCall, delayDataCall);
+        constructor(apiCall: string, chartCall: string) {
+            super(apiCall, chartCall);
 
             this.FlexXL = 50;
             this.FlexLG = 50;

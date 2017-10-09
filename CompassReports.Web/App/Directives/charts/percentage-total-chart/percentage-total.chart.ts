@@ -54,9 +54,7 @@
             rootScope.$on('update-charts', this.updateChart);
 
             scope.togglePercentage = this.togglePercentage;
-
-            if (!scope.chart.DelayDataCall)
-                this.updateChart();
+            this.updateChart();
         }
     }
 

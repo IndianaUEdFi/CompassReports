@@ -5,5 +5,6 @@
         charts: Models.ChartModel[];
         filters: Models.FilterModel<any>[];
         model: IReportFilterModel;
+        backState: string;
     }
 }

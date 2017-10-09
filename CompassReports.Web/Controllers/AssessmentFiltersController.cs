@@ -26,22 +26,6 @@ namespace CompassReports.Web.Controllers
             return Ok(assessments);
         }
 
-        [Route("english-learner-statuses")]
-        [AcceptVerbs("GET")]
-        public IHttpActionResult GetEnglishLanguageLearnerStatuses()
-        {
-            var statuses = _assessmentFiltersService.GetEnglishLanguageLearnerStatuses();
-            return Ok(statuses);
-        }
-
-        [Route("ethnicities")]
-        [AcceptVerbs("GET")]
-        public IHttpActionResult GetEthnicities()
-        {
-            var ethnicites = _assessmentFiltersService.GetEthnicities();
-            return Ok(ethnicites);
-        }
-
         [Route("good-cause-excemptions")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetGoodCauseExcemptions(string assessmentTitle, string subject)
@@ -58,28 +42,12 @@ namespace CompassReports.Web.Controllers
             return Ok(grades);
         }
 
-        [Route("lunch-statuses")]
-        [AcceptVerbs("GET")]
-        public IHttpActionResult GetLunchStatuses()
-        {
-            var statuses = _assessmentFiltersService.GetLunchStatuses();
-            return Ok(statuses);
-        }
-
         [Route("performance-levels")]
         [AcceptVerbs("GET")]
         public IHttpActionResult GetPerformanceLevels(string assessmentTitle, string subject)
         {
             var levels = _assessmentFiltersService.GetPerformanceLevels(assessmentTitle, subject);
             return Ok(levels);
-        }
-
-        [Route("special-education-statuses")]
-        [AcceptVerbs("GET")]
-        public IHttpActionResult GetSpecialEducationStatuses()
-        {
-            var statuses = _assessmentFiltersService.GetSpecialEducationStatuses();
-            return Ok(statuses);
         }
 
         [Route("subjects")]

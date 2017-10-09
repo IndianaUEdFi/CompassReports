@@ -5,6 +5,7 @@
         model: Models.IReportFilterModel;
         dataSetOverride: any;
         togglePercentage: () => void;
+        viewDetails: () => void ;
     }
 
     class PieChartController {
@@ -26,6 +27,12 @@
                 });
         }
 
+        viewDetails = () => {
+            this.rootScope.backState = this.services.state.current.name;
+            this.rootScope.filterModel = this.scope.model;
+            this.services.state.go(this.scope.chart.DetailState);
+        }
+
         constructor(private readonly rootScope: IAppRootScope,
             private readonly scope: IPieChartScope,
             private readonly api: IApi,
@@ -35,9 +42,9 @@
             rootScope.$on('update-charts', this.updateChart);
 
             this.scope.togglePercentage = this.togglePercentage;
+            this.scope.viewDetails = this.viewDetails;
 
-            if (!scope.chart.DelayDataCall)
-                this.updateChart();
+            this.updateChart();
         }
     }
 

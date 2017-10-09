@@ -7,9 +7,14 @@ module App {
         assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi;
         attendance: Api.Attendance.IAttendanceApi;
         attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi;
+        demographicFilters: Api.DemographicFilters.IDemographicFiltersApi;
         enrollment: Api.Enrollment.IEnrollmentApi;
         enrollmentFilters: Api.EnrollmentFilters.IEnrollmentFiltersApi;
         enrollmentTrends: Api.EnrollmentTrends.IEnrollmentTrendsApi;
+        graduateDiplomaType: Api.GraduateDiplomaType.IGraduateDiplomaTypeApi;
+        graduateFilters: Api.GraduateFilters.IGraduateFiltersApi;
+        graduateStatus: Api.GraduateStatus.IGraduateStatusApi;
+        graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi;
     }
 
     class ApiService implements IApi {
@@ -19,9 +24,14 @@ module App {
             'api.assessment-filters',
             'api.attendance',
             'api.attendance-trends',
+            'api.demographic-filters',
             'api.enrollment',
             'api.enrollment-filters',
-            'api.enrollment-trends'
+            'api.enrollment-trends',
+            'api.graduate-diploma-type',
+            'api.graduate-filters',
+            'api.graduate-status',
+            'api.graduate-waivers'
         ];
 
         constructor(
@@ -29,9 +39,14 @@ module App {
             public assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi,
             public attendance: Api.Attendance.IAttendanceApi,
             public attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi,
+            public demographicFilters: Api.DemographicFilters.IDemographicFiltersApi,
             public enrollment: Api.Enrollment.IEnrollmentApi,
             public enrollmentFilters: Api.EnrollmentFilters.IEnrollmentFiltersApi,
-            public enrollmentTrends: Api.EnrollmentTrends.IEnrollmentTrendsApi
+            public enrollmentTrends: Api.EnrollmentTrends.IEnrollmentTrendsApi,
+            public graduateDiplomaType: Api.GraduateDiplomaType.IGraduateDiplomaTypeApi,
+            public graduateFilters: Api.GraduateFilters.IGraduateFiltersApi,
+            public graduateStatus: Api.GraduateStatus.IGraduateStatusApi,
+            public graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi
         ) {
         }
     }
@@ -70,9 +85,14 @@ module App {
             'app.api.assessment-filters',
             'app.api.attendance',
             'app.api.attendance-trends',
+            'app.api.demographic-filters',
             'app.api.enrollment',
             'app.api.enrollment-filters',
-            'app.api.enrollment-trends'
+            'app.api.enrollment-trends',
+            'app.api.graduate-diploma-type',
+            'app.api.graduate-filters',
+            'app.api.graduate-status',
+            'app.api.graduate-waivers'
         ])
         .service("api", ApiService);
 

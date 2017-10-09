@@ -15,13 +15,11 @@ module App.Reports.Assessment {
             model.Subject = null;
             model.SchoolYear = null;
             model.Assessments = [];
-            model.PerformanceLevels = [];
-            model.GoodCauseExcemptions = [];
+            //model.PerformanceLevels = [];
+            //model.GoodCauseExcemptions = [];
 
             filters[2].update([] as Models.FilterValueModel[]);
             filters[3].update([] as Models.FilterValueModel[]);
-            filters[4].update([] as Models.FilterValueModel[]);
-            filters[5].update([] as Models.FilterValueModel[]);
 
             api.assessmentFilters.getSubjects(model.AssessmentTitle).then((subjects: string[]) => {
                 filters[1].update(subjects);
@@ -39,12 +37,8 @@ module App.Reports.Assessment {
 
             model.SchoolYear = null;
             model.Assessments = [];
-            model.PerformanceLevels = [];
-            model.GoodCauseExcemptions = [];
 
             filters[3].update([] as Models.FilterValueModel[]);
-            filters[4].update([] as Models.FilterValueModel[]);
-            filters[5].update([] as Models.FilterValueModel[]);
 
             api.assessmentFilters.getSchoolYears(model.AssessmentTitle, model.Subject).then((schoolYears: Models.FilterValueModel[]) => {
                 filters[2].update(schoolYears);
@@ -53,14 +47,6 @@ module App.Reports.Assessment {
 
             api.assessmentFilters.getGrades(model.AssessmentTitle, model.Subject).then((grades: Models.FilterValueModel[]) => {
                 filters[3].update(grades);
-            });
-
-            api.assessmentFilters.getPerformanceLevels(model.AssessmentTitle, model.Subject).then((performanceLevels: Models.FilterValueModel[]) => {
-                filters[4].update(performanceLevels);
-            });
-
-            api.assessmentFilters.getGoodCauseExcemptions(model.AssessmentTitle, model.Subject).then((goodCauseExcemptions: Models.FilterValueModel[]) => {
-                filters[5].update(goodCauseExcemptions);
             });
         }
     }
@@ -81,8 +67,8 @@ module App.Reports.Assessment {
                     new Models.FilterModel<number>(subjects, 'Subject', 'Subject', false, true, onSubjectChange),
                     new Models.FilterModel<number>(schoolYears, 'School Year', 'SchoolYear', false, true),
                     new Models.FilterModel<number>(grades, 'Grades', 'Assessments', true, true),
-                    new Models.FilterModel<number>(peformanceLevels, 'Performance Levels', 'PerformanceLevels', true),
-                    new Models.FilterModel<number>(goodCauseExcemptions, 'Good Cause Excemptions', 'GoodCauseExcemptions', true),
+                    //new Models.FilterModel<number>(peformanceLevels, 'Performance Levels', 'PerformanceLevels', true),
+                    //new Models.FilterModel<number>(goodCauseExcemptions, 'Good Cause Excemptions', 'GoodCauseExcemptions', true),
                     new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                     new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),
                     new Models.FilterModel<number>(specialEducationStatuses, 'Education Types', 'SpecialEducationStatuses', true),
@@ -103,7 +89,6 @@ module App.Reports.Assessment {
                 model.Subject = DefaultSubject;
                 model.SchoolYear = (schoolYears && schoolYears.length) ? schoolYears[0].Value as number : null;
 
-                console.log(model);
                 return {
                     filters: filters,
                     charts: charts,
@@ -130,16 +115,16 @@ module App.Reports.Assessment {
                 return api.assessmentFilters.getGoodCauseExcemptions(DefaultAssessmentTitle, DefaultSubject);
             }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
-                return api.assessmentFilters.getEnglishLanguageLearnerStatuses();
+                return api.demographicFilters.getEnglishLanguageLearnerStatuses();
             }],
             ethnicities: ['api', (api: IApi) => {
-                return api.assessmentFilters.getEthnicities();
+                return api.demographicFilters.getEthnicities();
             }],
             lunchStatuses: ['api', (api: IApi) => {
-                return api.assessmentFilters.getLunchStatuses();
+                return api.demographicFilters.getLunchStatuses();
             }],
             specialEducationStatuses: ['api', (api: IApi) => {
-                return api.assessmentFilters.getSpecialEducationStatuses();
+                return api.demographicFilters.getSpecialEducationStatuses();
             }],
         }
     }

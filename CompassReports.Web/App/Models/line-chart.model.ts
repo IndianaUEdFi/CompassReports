@@ -27,8 +27,8 @@ module App.Models {
                 this.ShowChart = model.ShowChart;
         };
 
-        constructor(apiCall: string, chartCall: string, delayDataCall?: boolean) {
-            super(apiCall, chartCall, delayDataCall);
+        constructor(apiCall: string, chartCall: string) {
+            super(apiCall, chartCall);
 
             this.FlexXL = 50;
             this.FlexLG = 50;

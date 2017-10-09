@@ -8,7 +8,8 @@ module App {
         currentTheme: string;
         defaultPrimary: {color: string, name: string};
         defaultSecondary: { color: string, name: string };
-
+        filterModel?: Models.IReportFilterModel;
+        backState?: string;
     }
 
     class AppRun {

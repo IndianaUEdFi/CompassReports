@@ -185,10 +185,15 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GraduateDiplomaTypeController.cs" />
+    <Compile Include="Controllers\GraduateWaiversController.cs" />
+    <Compile Include="Controllers\GraduateStatusController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
     <Compile Include="Controllers\AttendanceTrendsController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\AssessmentFiltersController.cs" />
+    <Compile Include="Controllers\DemographicFiltersController.cs" />
+    <Compile Include="Controllers\GraduateFiltersController.cs" />
     <Compile Include="Controllers\EnrollmentTrendsController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\EnrollmentFiltersController.cs" />
@@ -233,8 +238,13 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
+    <TypeScriptCompile Include="App\Api\graduate-waviers.api.ts" />
+    <TypeScriptCompile Include="App\Api\graduate-status.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment-filters.api.ts" />
+    <TypeScriptCompile Include="App\Api\demographic-filters.api.ts" />
+    <TypeScriptCompile Include="App\Api\graduate-filters.api.ts" />
     <TypeScriptCompile Include="App\Api\enrollment-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment.api.ts" />
@@ -256,6 +266,7 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\graduate-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\assessment-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\percentage-total-bar-chart.ts" />
     <TypeScriptCompile Include="App\Models\line-chart.model.ts" />
@@ -272,6 +283,11 @@
     <TypeScriptCompile Include="App\Modules\Reports\Attendance\attendance.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-diploma-type.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-waivers.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-status.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduates.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-overview.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />
     <TypeScriptCompile Include="App\Models\chart.model.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Report-Base\report-base.module.ts" />

@@ -15,9 +15,9 @@
         <div ng-if="!chart.ShowChart">
             <table class="material-table material-table-bordered">
                 <thead>
-                <tr>
-                    <th ng-repeat="header in chart.Headers">{{header}}</th>
-                </tr>
+                    <tr>
+                        <th ng-repeat="header in chart.Headers">{{header}}</th>
+                    </tr>
                 </thead>
                 <tbody ng-if="chart.SingleSeries">
                     <tr ng-repeat="label in chart.Labels" class="data-rows">

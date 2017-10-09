@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace CompassReports.Data.Entities
 {
-    [Table("PerformanceLevelDimension", Schema = "cmp")]
-    public class PerformanceLevelDimension : EntityBase
+    [Table("PerformanceDimension", Schema = "cmp")]
+    public class PerformanceDimension : EntityBase
     {
         [Key]
-        public int PerformanceLevelKey { get; set; }
+        public int PerformanceKey { get; set; }
 
         [Required]
         [MaxLength(50)]

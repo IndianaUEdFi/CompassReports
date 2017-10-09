@@ -12,9 +12,12 @@ namespace CompassReports.Web.Controllers
     public class AssessmentController : ApiController
     {
         private readonly IAssessmentService _assessmentService;
-        public AssessmentController(IAssessmentService assessmentService)
+        private readonly IAssessmentPerformanceService _assessmentPerformanceService;
+
+        public AssessmentController(IAssessmentService assessmentService, IAssessmentPerformanceService assessmentPerformanceService)
         {
             _assessmentService = assessmentService;
+            _assessmentPerformanceService = assessmentPerformanceService;
         }
 
         [Route("by-good-cause")]
@@ -29,7 +32,7 @@ namespace CompassReports.Web.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult ByPerformanceLevel(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.ByPerformanceLevel(model);
+            var chart = _assessmentPerformanceService.Get(model);
             return Ok(chart);
         }
 
@@ -37,7 +40,7 @@ namespace CompassReports.Web.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult PerformanceLevelByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.PerformanceLevelByEnglishLanguageLearner(model);
+            var chart = _assessmentPerformanceService.ByEnglishLanguageLearner(model);
             return Ok(chart);
         }
 
@@ -45,7 +48,7 @@ namespace CompassReports.Web.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult PerformanceLevelByEthnicity(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.PerformanceLevelByEthnicity(model);
+            var chart = _assessmentPerformanceService.ByEthnicity(model);
             return Ok(chart);
         }
 
@@ -53,7 +56,7 @@ namespace CompassReports.Web.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult PerformanceLevelByLunchStatus(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.PerformanceLevelByLunchStatus(model);
+            var chart = _assessmentPerformanceService.ByLunchStatus(model);
             return Ok(chart);
         }
 
@@ -61,7 +64,7 @@ namespace CompassReports.Web.Controllers
         [AcceptVerbs("POST")]
         public IHttpActionResult PerformanceLevelBySpecialEducation(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.PerformanceLevelBySpecialEducation(model);
+            var chart = _assessmentPerformanceService.BySpecialEducation(model);
             return Ok(chart);
         }
     }

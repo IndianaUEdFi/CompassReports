@@ -5,10 +5,10 @@
         model: Models.IReportFilterModel;
         dataSetOverride: any;
         togglePercentage: () => void;
-        viewDetails: () => void ;
+        viewDetails: () => void;
     }
 
-    class PieChartController {
+    class PieChartController implements ng.IController {
         static $inject = ['$rootScope', '$scope', 'api', 'services'];
 
         resetColors = () => {
@@ -33,13 +33,21 @@
             this.services.state.go(this.scope.chart.DetailState);
         }
 
+        themeWatch: () => void;
+        updateWatch: () => void;
+
+        $onDestroy(): void {
+            this.themeWatch();
+            this.updateWatch();
+        }
+
         constructor(private readonly rootScope: IAppRootScope,
             private readonly scope: IPieChartScope,
             private readonly api: IApi,
             private readonly services: IServices) {
 
-            rootScope.$on('theme-change', this.resetColors);
-            rootScope.$on('update-charts', this.updateChart);
+            this.themeWatch = rootScope.$on('theme-change', this.resetColors);
+            this.updateWatch = rootScope.$on('update-charts', this.updateChart);
 
             this.scope.togglePercentage = this.togglePercentage;
             this.scope.viewDetails = this.viewDetails;

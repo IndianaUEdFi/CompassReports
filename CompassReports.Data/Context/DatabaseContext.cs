@@ -25,7 +25,7 @@ namespace CompassReports.Data.Context
 
         public virtual DbSet<GraduationStatusJunkDimension> GraduationStatusJunkDimensions { get; set; }
 
-        public virtual DbSet<PerformanceLevelDimension> PerformanceLevelDimensions { get; set; }
+        public virtual DbSet<PerformanceDimension> PerformanceLevelDimensions { get; set; }
 
         public virtual DbSet<SchoolDimension> SchoolDimensions { get; set; }
 

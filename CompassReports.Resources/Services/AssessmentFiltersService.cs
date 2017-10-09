@@ -62,7 +62,7 @@ namespace CompassReports.Resources.Services
         {
             return _assessmentDimensionRepository.GetAll()
                 .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
-                .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<int> { Display = y.PerformanceLevel.PerformanceLevel, Value = y.PerformanceLevelKey }))
+                .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<int> { Display = y.Performance.PerformanceLevel, Value = y.PerformanceKey }))
                 .Distinct()
                 .OrderBy(x => x.Display)
                 .ToList();

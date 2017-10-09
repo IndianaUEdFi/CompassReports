@@ -63,8 +63,11 @@ module App.Reports.Graduate {
             schoolYears: ['api', (api: IApi) => {
                 return api.graduateFilters.getSchoolYears();
             }],
-            cohorts: ['api', 'schoolYears', (api: IApi, schoolYears: Models.FilterValueModel[]) => {
-                if (schoolYears && schoolYears.length) {
+            cohorts: ['$rootScope', 'api', 'schoolYears', (rootScope: IAppRootScope, api: IApi, schoolYears: Models.FilterValueModel[]) => {
+                if (rootScope.filterModel) {
+                    const model = rootScope.filterModel as Models.GraduateFilterModel;
+                    return api.graduateFilters.getCohorts(model.ExpectedGraduationYear);
+                } else if (schoolYears && schoolYears.length) {
                     return api.graduateFilters.getCohorts(schoolYears[0].Value as number);
                 }
             }],

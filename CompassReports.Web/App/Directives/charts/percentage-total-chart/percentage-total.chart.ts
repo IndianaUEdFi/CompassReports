@@ -45,13 +45,21 @@
             this.scope.data = data;
         }
 
+        themeWatch: () => void;
+        updateWatch: () => void;
+
+        $onDestroy(): void {
+            this.themeWatch();
+            this.updateWatch();
+        }
+
         constructor(private readonly rootScope: IAppRootScope,
             private readonly scope: IPercentageTotalChart,
             private readonly api: IApi,
             private readonly services: IServices) {
 
-            rootScope.$on('theme-change', this.resetColors);
-            rootScope.$on('update-charts', this.updateChart);
+            this.themeWatch = rootScope.$on('theme-change', this.resetColors);
+            this.updateWatch = rootScope.$on('update-charts', this.updateChart);
 
             scope.togglePercentage = this.togglePercentage;
             this.updateChart();

@@ -26,22 +26,22 @@ namespace CompassReports.Data.Migrations
                         SchoolKey = c.Int(nullable: false),
                         SchoolYearKey = c.Short(nullable: false),
                         AssessmentKey = c.Int(nullable: false),
-                        PerformanceLevelKey = c.Int(nullable: false),
+                        PerformanceKey = c.Int(nullable: false),
                         GoodCauseExemptionKey = c.Int(nullable: false),
                         AssessmentStudentCount = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.DemographicKey, t.SchoolKey, t.SchoolYearKey, t.AssessmentKey, t.PerformanceLevelKey, t.GoodCauseExemptionKey })
+                .PrimaryKey(t => new { t.DemographicKey, t.SchoolKey, t.SchoolYearKey, t.AssessmentKey, t.PerformanceKey, t.GoodCauseExemptionKey })
                 .ForeignKey("cmp.AssessmentDimension", t => t.AssessmentKey, cascadeDelete: true)
                 .ForeignKey("cmp.DemographicJunkDimension", t => t.DemographicKey, cascadeDelete: true)
                 .ForeignKey("cmp.SchoolDimension", t => t.SchoolKey, cascadeDelete: true)
                 .ForeignKey("cmp.SchoolYearDimension", t => t.SchoolYearKey, cascadeDelete: true)
                 .ForeignKey("cmp.GoodCauseExemptionJunkDimension", t => t.GoodCauseExemptionKey, cascadeDelete: true)
-                .ForeignKey("cmp.PerformanceLevelDimension", t => t.PerformanceLevelKey, cascadeDelete: true)
+                .ForeignKey("cmp.PerformanceDimension", t => t.PerformanceKey, cascadeDelete: true)
                 .Index(t => t.DemographicKey)
                 .Index(t => t.SchoolKey)
                 .Index(t => t.SchoolYearKey)
                 .Index(t => t.AssessmentKey)
-                .Index(t => t.PerformanceLevelKey)
+                .Index(t => t.PerformanceKey)
                 .Index(t => t.GoodCauseExemptionKey);
             
             CreateTable(
@@ -50,6 +50,7 @@ namespace CompassReports.Data.Migrations
                     {
                         DemographicKey = c.Int(nullable: false, identity: true),
                         GradeLevel = c.String(nullable: false, maxLength: 50),
+                        GradeLevelSort = c.String(nullable: false, maxLength: 10),
                         Ethnicity = c.String(nullable: false, maxLength: 50),
                         FreeReducedLunchStatus = c.String(nullable: false, maxLength: 50),
                         SpecialEducationStatus = c.String(nullable: false, maxLength: 50),
@@ -65,8 +66,8 @@ namespace CompassReports.Data.Migrations
                         DemographicKey = c.Int(nullable: false),
                         SchoolKey = c.Int(nullable: false),
                         SchoolYearKey = c.Short(nullable: false),
-                        Absences = c.Int(nullable: false),
-                        PossibleStudentAttendanceDays = c.Int(nullable: false),
+                        TotalAbsences = c.Int(nullable: false),
+                        TotalInstructionalDays = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.DemographicKey, t.SchoolKey, t.SchoolYearKey })
                 .ForeignKey("cmp.DemographicJunkDimension", t => t.DemographicKey, cascadeDelete: true)
@@ -178,19 +179,19 @@ namespace CompassReports.Data.Migrations
                 .PrimaryKey(t => t.GoodCauseExemptionKey);
             
             CreateTable(
-                "cmp.PerformanceLevelDimension",
+                "cmp.PerformanceDimension",
                 c => new
                     {
-                        PerformanceLevelKey = c.Int(nullable: false, identity: true),
+                        PerformanceKey = c.Int(nullable: false, identity: true),
                         PerformanceLevel = c.String(nullable: false, maxLength: 50),
                     })
-                .PrimaryKey(t => t.PerformanceLevelKey);
+                .PrimaryKey(t => t.PerformanceKey);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("cmp.AssessmentFact", "PerformanceLevelKey", "cmp.PerformanceLevelDimension");
+            DropForeignKey("cmp.AssessmentFact", "PerformanceKey", "cmp.PerformanceDimension");
             DropForeignKey("cmp.AssessmentFact", "GoodCauseExemptionKey", "cmp.GoodCauseExemptionJunkDimension");
             DropForeignKey("cmp.GraduationFact", "SchoolYearKey", "cmp.SchoolYearDimension");
             DropForeignKey("cmp.GraduationFact", "SchoolKey", "cmp.SchoolDimension");
@@ -217,12 +218,12 @@ namespace CompassReports.Data.Migrations
             DropIndex("cmp.AttendanceFact", new[] { "SchoolKey" });
             DropIndex("cmp.AttendanceFact", new[] { "DemographicKey" });
             DropIndex("cmp.AssessmentFact", new[] { "GoodCauseExemptionKey" });
-            DropIndex("cmp.AssessmentFact", new[] { "PerformanceLevelKey" });
+            DropIndex("cmp.AssessmentFact", new[] { "PerformanceKey" });
             DropIndex("cmp.AssessmentFact", new[] { "AssessmentKey" });
             DropIndex("cmp.AssessmentFact", new[] { "SchoolYearKey" });
             DropIndex("cmp.AssessmentFact", new[] { "SchoolKey" });
             DropIndex("cmp.AssessmentFact", new[] { "DemographicKey" });
-            DropTable("cmp.PerformanceLevelDimension");
+            DropTable("cmp.PerformanceDimension");
             DropTable("cmp.GoodCauseExemptionJunkDimension");
             DropTable("cmp.GraduationStatusJunkDimension");
             DropTable("cmp.GraduationFact");

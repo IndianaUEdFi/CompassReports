@@ -27,8 +27,8 @@ namespace CompassReports.Data.Entities
         public virtual AssessmentDimension Assessment { get; set; }
 
         [Key, Column(Order = 4)]
-        public int PerformanceLevelKey { get; set; }
-        public virtual PerformanceLevelDimension PerformanceLevel { get; set; }
+        public int PerformanceKey { get; set; }
+        public virtual PerformanceDimension Performance { get; set; }
 
         [Key, Column(Order = 5)]
         public int GoodCauseExemptionKey { get; set; }

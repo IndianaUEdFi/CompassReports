@@ -8,7 +8,8 @@ namespace CompassReports.Resources.Models
         public string AssessmentTitle { get; set; }
         public List<string> EnglishLanguageLearnerStatuses { get; set; }
         public List<string> Ethnicities { get; set; }
-        public List<int> GoodCauseExcemptions { get; set; }
+        public List<int> ExcludePerformanceKeys { get; set; }
+        public List<int> PerformanceKeys { get; set; }
         public List<string> LunchStatuses { get; set; }
         public int? PerformanceKey { get; set; }
         public List<short> SchoolYears { get; set; }

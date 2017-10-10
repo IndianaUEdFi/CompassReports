@@ -5,8 +5,14 @@ module App {
     export interface IApi {
         assessment: Api.Assessment.IAssessmentApi;
         assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi;
+        assessmentPass: Api.AssessmentPass.IAssessmentPassApi;
+        assessmentPassTrend: Api.AssessmentPassTrend.IAssessmentPassTrendApi;
         assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi;
         assessmentPerformanceTrend: Api.AssessmentPerformanceTrend.IAssessmentPerformanceTrendApi;
+        assessmentScores: Api.AssessmentScores.IAssessmentScoresApi;
+        assessmentScoreTrend: Api.AssessmentScoreTrend.IAssessmentScoreTrendApi;
+        assessmentTaking: Api.AssessmentTaking.IAssessmentTakingApi;
+        assessmentTakingTrend: Api.AssessmentTakingTrend.IAssessmentTakingTrendApi,
         attendance: Api.Attendance.IAttendanceApi;
         attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi;
         demographicFilters: Api.DemographicFilters.IDemographicFiltersApi;
@@ -25,8 +31,14 @@ module App {
         static $inject = [
             'api.assessment',
             'api.assessment-filters',
+            'api.assessment-pass',
+            'api.assessment-pass-trend',
             'api.assessment-performance',
             'api.assessment-performance-trend',
+            'api.assessment-scores',
+            'api.assessment-score-trend',
+            'api.assessment-taking',
+            'api.assessment-taking-trend',
             'api.attendance',
             'api.attendance-trends',
             'api.demographic-filters',
@@ -43,8 +55,14 @@ module App {
         constructor(
             public assessment: Api.Assessment.IAssessmentApi,
             public assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi,
+            public assessmentPass: Api.AssessmentPass.IAssessmentPassApi,
+            public assessmentPassTrend: Api.AssessmentPassTrend.IAssessmentPassTrendApi,
             public assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi,
             public assessmentPerformanceTrend: Api.AssessmentPerformanceTrend.IAssessmentPerformanceTrendApi,
+            public assessmentScores: Api.AssessmentScores.IAssessmentScoresApi,
+            public assessmentScoreTrend: Api.AssessmentScoreTrend.IAssessmentScoreTrendApi,
+            public assessmentTaking: Api.AssessmentTaking.IAssessmentTakingApi,
+            public assessmentTakingTrend: Api.AssessmentTakingTrend.IAssessmentTakingTrendApi,
             public attendance: Api.Attendance.IAttendanceApi,
             public attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi,
             public demographicFilters: Api.DemographicFilters.IDemographicFiltersApi,
@@ -92,8 +110,14 @@ module App {
         .module("app.api", [
             'app.api.assessment',
             'app.api.assessment-filters',
+            'app.api.assessment-pass',
+            'app.api.assessment-pass-trend',
             'app.api.assessment-performance',
             'app.api.assessment-performance-trend',
+            'app.api.assessment-scores',
+            'app.api.assessment-score-trend',
+            'app.api.assessment-taking',
+            'app.api.assessment-taking-trend',
             'app.api.attendance',
             'app.api.attendance-trends',
             'app.api.demographic-filters',

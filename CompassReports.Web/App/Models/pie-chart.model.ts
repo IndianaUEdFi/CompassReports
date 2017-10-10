@@ -16,6 +16,7 @@
             this.Headers = model.Headers;
             this.Labels = model.Labels;
             this.Data = model.Data;
+            this.HideTotal = model.HideTotal;
             this.Percentages = model.Percentages;
             this.PercentageHeaders = model.PercentageHeaders;
             this.TotalRowTitle = model.TotalRowTitle;

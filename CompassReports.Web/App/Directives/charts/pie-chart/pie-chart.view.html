@@ -36,7 +36,7 @@
                         <td ng-if="chart.ShowPercentage">{{chart.Percentages[$index]}}%</td>
                     </tr>
                 </tbody>
-                <tfoot ng-if="!chart.ShowPercentage">
+                <tfoot ng-if="!chart.ShowPercentage && !chart.HideTotal">
                     <tr>
                         <th></th>
                         <th>{{chart.TotalRowTitle}}</th>

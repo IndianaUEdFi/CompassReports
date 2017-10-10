@@ -20,13 +20,10 @@ namespace CompassReports.Resources.Services
     public class AssessmentPerformanceService : IAssessmentPerformanceService
     {
         private readonly IRepository<AssessmentFact> _assessmentRepository;
-        private readonly IRepository<GoodCauseExemptionJunkDimension> _goodCauseExemptionRepository;
 
-        public AssessmentPerformanceService(IRepository<AssessmentFact> assessmentRepository,
-            IRepository<GoodCauseExemptionJunkDimension> goodCauseExemptionRepository)
+        public AssessmentPerformanceService(IRepository<AssessmentFact> assessmentRepository)
         {
             _assessmentRepository = assessmentRepository;
-            _goodCauseExemptionRepository = goodCauseExemptionRepository;
         }
 
         public PieChartModel<int> Get(AssessmentFilterModel model)
@@ -317,55 +314,6 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public PercentageTotalBarChartModel ByGoodCauseExcemption(AssessmentFilterModel model)
-        {
-            var baseQuery = BaseQuery(model);
-
-            if (baseQuery.All(x => x.GoodCauseExemptionKey == 3)) return null;
-
-            var results = (
-                from cause in
-                _goodCauseExemptionRepository.GetAll().Where(x => (new[] {1, 2}).Contains(x.GoodCauseExemptionKey))
-                join fact in baseQuery on cause.GoodCauseExemptionKey equals fact.GoodCauseExemptionKey into facts
-                from fact in facts.DefaultIfEmpty()
-                select new
-                {
-                    GoodCauseExemptionKey = cause.GoodCauseExemptionKey,
-                    GoodCauseExemption = cause.GoodCauseExemption,
-                    AssessmentStudentCount = fact == null ? 0 : fact.AssessmentStudentCount
-                }
-            ).GroupBy(x => new
-            {
-                GoodCauseExemptionKey = x.GoodCauseExemptionKey,
-                GoodCauseExemption = x.GoodCauseExemption
-            }).Select(x => new
-            {
-                GoodCauseExemption = x.Key.GoodCauseExemption,
-                GoodCauseExemptionKey = x.Key.GoodCauseExemptionKey,
-                Total = x.Sum(y => y.AssessmentStudentCount)
-            }).ToList();
-
-            var goodCause = results.Where(x => x.GoodCauseExemptionKey == 1).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = "Good Cause Exemptions",
-                Headers = new List<string> { "", "Good Cause Exemptions", "Total"},
-                Labels = goodCause.Select(x => x.GoodCauseExemption).ToList(),
-                Series = new List<string> { goodCause.First().GoodCauseExemption },
-                Data = new List<List<PercentageTotalDataModel>> {
-                    goodCause.Select( x => new PercentageTotalDataModel
-                    {
-                        Percentage = GetPercentage(x.Total, results.Sum(y => y.Total)),
-                        Total = x.Total
-                    }).ToList()
-                },
-                ShowChart = true,
-                ShowPercentage = true,
-                HideTotal = true
-            };
-        }
-
         private IQueryable<AssessmentFact> BaseQuery(AssessmentFilterModel model)
         {
             var query = _assessmentRepository
@@ -383,8 +331,11 @@ namespace CompassReports.Resources.Services
             if (model.Ethnicities != null && model.Ethnicities.Any())
                 query = query.Where(x => model.Ethnicities.Contains(x.Demographic.Ethnicity));
 
-            if (model.GoodCauseExcemptions != null && model.GoodCauseExcemptions.Any())
-                query = query.Where(x => model.GoodCauseExcemptions.Contains(x.GoodCauseExemptionKey));
+            if (model.PerformanceKeys != null && model.PerformanceKeys.Any())
+                query = query.Where(x => model.PerformanceKeys.Contains(x.PerformanceKey));
+
+            if (model.ExcludePerformanceKeys != null && model.ExcludePerformanceKeys.Any())
+                query = query.Where(x => !model.ExcludePerformanceKeys.Contains(x.PerformanceKey));
 
             if (model.LunchStatuses != null && model.LunchStatuses.Any())
                 query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));

@@ -387,8 +387,11 @@ namespace CompassReports.Resources.Services
             if (model.Ethnicities != null && model.Ethnicities.Any())
                 query = query.Where(x => model.Ethnicities.Contains(x.Demographic.Ethnicity));
 
-            if (model.GoodCauseExcemptions != null && model.GoodCauseExcemptions.Any())
-                query = query.Where(x => model.GoodCauseExcemptions.Contains(x.GoodCauseExemptionKey));
+            if (model.PerformanceKeys != null && model.PerformanceKeys.Any())
+                query = query.Where(x => model.PerformanceKeys.Contains(x.PerformanceKey));
+
+            if (model.ExcludePerformanceKeys != null && model.ExcludePerformanceKeys.Any())
+                query = query.Where(x => !model.ExcludePerformanceKeys.Contains(x.PerformanceKey));
 
             if (model.LunchStatuses != null && model.LunchStatuses.Any())
                 query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));

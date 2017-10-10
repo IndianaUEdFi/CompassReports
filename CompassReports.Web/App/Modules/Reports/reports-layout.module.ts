@@ -67,6 +67,8 @@
             'app.reports.assessment-trends',
             'app.reports.attendance',
             'app.reports.attendance-trends',
+            'app.reports.college-readiness',
+            'app.reports.college-readiness-trends',
             'app.reports.enrollment',
             'app.reports.enrollment-trends',
             'app.reports.graduate-trends',

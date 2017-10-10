@@ -6,6 +6,7 @@ namespace CompassReports.Resources.Models
     public class BarChartModel<T>
     {
         public List<List<double>> PercentageData { get; set; }
+
         public List<List<T>> TotalData { get; set; }
 
         public List<List<T>> Data { get; set; }

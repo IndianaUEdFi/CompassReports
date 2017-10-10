@@ -9,6 +9,8 @@ namespace CompassReports.Resources.Models
 
         public List<string> Headers { get; set; }
 
+        public bool HideTotal { get; set; }
+
         public List<string> Labels { get; set; }
 
         public List<string> PercentageHeaders { get; set; }

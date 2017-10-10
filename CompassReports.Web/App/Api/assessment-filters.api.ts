@@ -20,26 +20,32 @@ module App.Api.AssessmentFilters {
         }
 
         getGoodCauseExcemptions(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {
-            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/good-cause-excemptions?assessmentTitle=${assessmentTitle}&subject=${subject}`).then((data) => { return data.data; });
+            const fixedTitle = assessmentTitle.replace('+', '%2B')
+            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/good-cause-excemptions?assessmentTitle=${fixedTitle}&subject=${subject}`).then((data) => { return data.data; });
         }
 
         getGrades(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {
-            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/grades?assessmentTitle=${assessmentTitle}&subject=${subject}`).then((data) => { return data.data; });
+            const fixedTitle = assessmentTitle.replace('+', '%2B');
+            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/grades?assessmentTitle=${fixedTitle}&subject=${subject}`).then((data) => { return data.data; });
         }
 
         getPerformanceLevels(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {
-            let url = `${this.settings.apiBaseUrl}/${this.resourceUrl}/performance-levels?assessmentTitle=${assessmentTitle}`;
+            const fixedTitle = assessmentTitle.replace('+', '%2B');
+
+            let url = `${this.settings.apiBaseUrl}/${this.resourceUrl}/performance-levels?assessmentTitle=${fixedTitle}`;
             if (subject != null) url += `&subject=${subject}`;
 
             return this.services.http.get<Models.FilterValueModel[]>(url).then((data) => { return data.data; });
         }
 
         getSchoolYears(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {
-            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/school-years?assessmentTitle=${assessmentTitle}&subject=${subject}`).then((data) => { return data.data; });
+            const fixedTitle = assessmentTitle.replace('+', '%2B');
+            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/school-years?assessmentTitle=${fixedTitle}&subject=${subject}`).then((data) => { return data.data; });
         }
 
         getSubjects(assessmentTitle: string): angular.IPromise<string[]> {
-            return this.services.http.get<string[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/subjects?assessmentTitle=${assessmentTitle}`).then((data) => { return data.data; });
+            const fixedTitle = assessmentTitle.replace('+', '%2B');
+            return this.services.http.get<string[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/subjects?assessmentTitle=${fixedTitle}`).then((data) => { return data.data; });
         }
 
     }

@@ -58,6 +58,12 @@
     <Compile Include="Models\PieChartModel.cs" />
     <Compile Include="Models\EnrollmentFilterModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Services\AssessmentPassService.cs" />
+    <Compile Include="Services\AssessmentPassTrendService.cs" />
+    <Compile Include="Services\AssessmentScoreTrendService.cs" />
+    <Compile Include="Services\AssessmentTakingTrendService.cs" />
+    <Compile Include="Services\AssessmentScoresService.cs" />
+    <Compile Include="Services\AssessmentTakingService.cs" />
     <Compile Include="Services\AssessmentPerformanceTrendService.cs" />
     <Compile Include="Services\AssessmentPerformanceService.cs" />
     <Compile Include="Services\AssessmentService.cs" />

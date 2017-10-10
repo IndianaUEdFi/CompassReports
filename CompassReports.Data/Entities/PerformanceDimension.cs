@@ -15,6 +15,10 @@ namespace CompassReports.Data.Entities
         [MaxLength(50)]
         public string PerformanceLevel { get; set; }
 
+        [Required]
+        [MaxLength(25)]
+        public string ScoreResult { get; set; }
+
         public ICollection<AssessmentFact> AssessmentFacts { get; set; }
     }
 }

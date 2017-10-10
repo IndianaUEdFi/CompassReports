@@ -10,6 +10,7 @@ module App {
         defaultSecondary: { color: string, name: string };
         filterModel?: Models.IReportFilterModel;
         backState?: string;
+        backParameters?: any;
     }
 
     class AppRun {

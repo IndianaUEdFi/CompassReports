@@ -11,6 +11,12 @@
 
         AssessmentTitle: string;
         Subject: string;
+        PerformanceKey: number;
+
+        addChartFilters = (chart: Models.ChartModel) => {
+            if(chart.ChartFilters)
+             this.PerformanceKey = chart.ChartFilters.PerformanceKey;
+        }
 
         filteringCount = () => {
             let count = 0;

@@ -28,7 +28,7 @@
                 this.ShowPercentage = model.ShowPercentage;
         };
 
-        constructor(apiCall: string, chartCall: string, detailState?: string) {
+        constructor(apiCall: string, chartCall: string, detailState?: RouteState) {
             super(apiCall, chartCall, detailState);
 
             this.FlexXL = 50;

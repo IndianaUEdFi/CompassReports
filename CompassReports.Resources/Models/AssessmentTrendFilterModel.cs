@@ -2,7 +2,7 @@
 
 namespace CompassReports.Resources.Models
 {
-    public class AssessmentFilterModel
+    public class AssessmentTrendFilterModel
     {
         public List<int> Assessments { get; set; }
         public string AssessmentTitle { get; set; }
@@ -10,7 +10,8 @@ namespace CompassReports.Resources.Models
         public List<string> Ethnicities { get; set; }
         public List<int> GoodCauseExcemptions { get; set; }
         public List<string> LunchStatuses { get; set; }
-        public short SchoolYear { get; set; }
+        public int? PerformanceKey { get; set; }
+        public List<short> SchoolYears { get; set; }
         public List<string> SpecialEducationStatuses { get; set; }
         public string Subject { get; set; }
     }

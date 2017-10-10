@@ -13,27 +13,6 @@ module App.Reports.Assessment {
         assessmentTitle: string
     }
 
-    function onAssessmentChange(model: Models.AssessmentFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
-        if (model.AssessmentTitle) {
-
-            model.Subject = null;
-            model.SchoolYear = null;
-            model.Assessments = [];
-
-            filters[2].update([] as Models.FilterValueModel[]);
-            filters[3].update([] as Models.FilterValueModel[]);
-
-            api.assessmentFilters.getSubjects(model.AssessmentTitle).then((subjects: string[]) => {
-                filters[1].update(subjects);
-                if (subjects.length === 1)
-                {
-                    model.Subject = subjects[0];
-                    onSubjectChange(model,filters, api);
-                }
-            });
-        }
-    }
-
     function onSubjectChange(model: Models.AssessmentFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
         if (model.AssessmentTitle && model.Subject) {
 
@@ -56,13 +35,11 @@ module App.Reports.Assessment {
     class AssessmentReportView extends ReportBaseView {
         resolve = {
             report: ['$stateParams', 'subjects', 'schoolYears',
-                'grades', 'performanceLevels', 'goodCauseExcemptions',
-                'englishLanguageLearnerStatuses', 'ethnicities', 'lunchStatuses',
-                'specialEducationStatuses',
+                'grades', 'englishLanguageLearnerStatuses', 'ethnicities',
+                'lunchStatuses', 'specialEducationStatuses',
                 ($stateParams: IAssessmentParams, subjects: string[], schoolYears: Models.FilterValueModel[],
-                    grades: Models.FilterValueModel[], peformanceLevels: string[], goodCauseExcemptions: string[],
-                    englishLanguageLearnerStatuses: string[], ethnicities: string[], lunchStatuses: string[],
-                    specialEducationStatuses: string[]) => {
+                    grades: Models.FilterValueModel[], englishLanguageLearnerStatuses: string[], ethnicities: string[],
+                    lunchStatuses: string[], specialEducationStatuses: string[]) => {
 
                 var filters = [
                     new Models.FilterModel<number>(subjects, 'Subject', 'Subject', false, true, onSubjectChange),
@@ -113,20 +90,6 @@ module App.Reports.Assessment {
                     return api.assessmentFilters.getGrades(DefaultAssessmentTitle, DefaultSubject);
                 }
             }],
-            performanceLevels: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentParams, api: IApi, subjects: string[]) => {
-                if ($stateParams.assessmentTitle) {
-                    return (subjects && subjects.length) ? api.assessmentFilters.getPerformanceLevels($stateParams.assessmentTitle, subjects[0]) : [];
-                } else {
-                    return api.assessmentFilters.getPerformanceLevels(DefaultAssessmentTitle, DefaultSubject);
-                }
-            }],
-            goodCauseExcemptions: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentParams, api: IApi, subjects: string[]) => {
-                if ($stateParams.assessmentTitle) {
-                    return (subjects && subjects.length) ? api.assessmentFilters.getGoodCauseExcemptions($stateParams.assessmentTitle, subjects[0]) : [];
-                } else {
-                    return api.assessmentFilters.getGoodCauseExcemptions(DefaultAssessmentTitle, DefaultSubject);
-                }
-            }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
                 return api.demographicFilters.getEnglishLanguageLearnerStatuses();
             }],
@@ -138,7 +101,7 @@ module App.Reports.Assessment {
             }],
             specialEducationStatuses: ['api', (api: IApi) => {
                 return api.demographicFilters.getSpecialEducationStatuses();
-            }],
+            }]
         }
     }
 

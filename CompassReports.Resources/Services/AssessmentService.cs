@@ -97,9 +97,6 @@ namespace CompassReports.Resources.Services
             if (model.LunchStatuses != null && model.LunchStatuses.Any())
                 query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));
 
-            if (model.PerformanceLevels != null && model.PerformanceLevels.Any())
-                query = query.Where(x => model.PerformanceLevels.Contains(x.PerformanceKey));
-
             if (model.SpecialEducationStatuses != null && model.SpecialEducationStatuses.Any())
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
 

@@ -63,8 +63,10 @@ namespace CompassReports.Resources.Services
 
         public List<FilterModel<int>> GetPerformanceLevels(string assessmentTitle, string subject)
         {
-            return _assessmentDimensionRepository.GetAll()
-                .Where(x => x.AssessmentTitle == assessmentTitle && x.AcademicSubject == subject)
+            var query =  _assessmentDimensionRepository.GetAll().Where(x => x.AssessmentTitle == assessmentTitle);
+            if(subject != null) query = query.Where(x => x.AcademicSubject == subject);
+
+            return query
                 .SelectMany(x => x.AssessmentFacts.Select(y => new FilterModel<int> { Display = y.Performance.PerformanceLevel, Value = y.PerformanceKey }))
                 .Distinct()
                 .OrderBy(x => x.Display)

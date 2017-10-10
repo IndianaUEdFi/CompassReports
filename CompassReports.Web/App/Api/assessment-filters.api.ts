@@ -6,7 +6,7 @@ module App.Api.AssessmentFilters {
         getAssessments(): angular.IPromise<string[]>;
         getGoodCauseExcemptions(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]>;
         getGrades(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]>;
-        getPerformanceLevels(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]>;
+        getPerformanceLevels(assessmentTitle: string, subject?: string): angular.IPromise<Models.FilterValueModel[]>;
         getSchoolYears(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]>;
         getSubjects(assessmentTitle: string): angular.IPromise<string[]>;
     }
@@ -28,7 +28,10 @@ module App.Api.AssessmentFilters {
         }
 
         getPerformanceLevels(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {
-            return this.services.http.get<Models.FilterValueModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}/performance-levels?assessmentTitle=${assessmentTitle}&subject=${subject}`).then((data) => { return data.data; });
+            let url = `${this.settings.apiBaseUrl}/${this.resourceUrl}/performance-levels?assessmentTitle=${assessmentTitle}`;
+            if (subject != null) url += `&subject=${subject}`;
+
+            return this.services.http.get<Models.FilterValueModel[]>(url).then((data) => { return data.data; });
         }
 
         getSchoolYears(assessmentTitle: string, subject: string): angular.IPromise<Models.FilterValueModel[]> {

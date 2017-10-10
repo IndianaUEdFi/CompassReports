@@ -185,6 +185,7 @@
     <Compile Include="App_Start\SimpleInjectorConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AssessmentPerformanceTrendController.cs" />
     <Compile Include="Controllers\AssessmentPerformanceController.cs" />
     <Compile Include="Controllers\GraduateDiplomaTypeController.cs" />
     <Compile Include="Controllers\GraduateWaiversController.cs" />
@@ -239,6 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Api\api.module.ts" />
+    <TypeScriptCompile Include="App\Api\assessment-performance-trend.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance.ts" />
     <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-waviers.api.ts" />
@@ -268,6 +270,7 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\route-state.model.ts" />
     <TypeScriptCompile Include="App\Models\graduate-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\assessment-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\percentage-total-bar-chart.ts" />
@@ -279,6 +282,7 @@
     <TypeScriptCompile Include="App\Models\pie-chart.model.ts" />
     <TypeScriptCompile Include="App\Models\enrollment-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\bar-chart.model.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Assessment-Trends\assessment-performance-trend.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Assessment-Trends\assessment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Assessment\assessment.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance-Trends\attendance-trends.module.ts" />

@@ -44,7 +44,7 @@ namespace CompassReports.Web.Controllers
 
         [Route("performance-levels")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetPerformanceLevels(string assessmentTitle, string subject)
+        public IHttpActionResult GetPerformanceLevels(string assessmentTitle, string subject = null)
         {
             var levels = _assessmentFiltersService.GetPerformanceLevels(assessmentTitle, subject);
             return Ok(levels);

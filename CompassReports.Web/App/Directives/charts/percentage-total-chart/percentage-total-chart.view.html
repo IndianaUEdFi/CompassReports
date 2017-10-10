@@ -4,6 +4,10 @@
             <h3>{{chart.Title}}</h3>
             <span flex></span>
             <div>
+                <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.DetailState" ng-click="viewDetails()">
+                    <md-tooltip md-direction="left">More Details</md-tooltip>
+                    <md-icon md-font-set="material-icons">dashboard</md-icon>
+                </md-button>
                 <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.Data.length" ng-click="togglePercentage()">
                     <md-icon ng-if="!chart.ShowPercentage" md-font-set="fa" md-font-icon="fa-percent"></md-icon>
                     <md-icon ng-if="chart.ShowPercentage" md-font-set="material-icons">people</md-icon>
@@ -19,33 +23,33 @@
         <div ng-if="!chart.ShowChart">
             <table class="material-table material-table-bordered">
                 <thead>
-                    <tr>
-                        <th ng-repeat="header in chart.Headers">{{header}}</th>
-                    </tr>
+                <tr>
+                    <th ng-repeat="header in chart.Headers">{{header}}</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="series in chart.Series" class="data-rows">
-                        <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
-                        <td>{{series}}</td>
-                        <td ng-repeat="set in chart.Data[$index] track by $index">
-                            <span ng-if="chart.ShowPercentage">{{set.Percentage}}%</span>
-                            <span ng-if="!chart.ShowPercentage">{{set.Total}}</span>
-                        </td>
-                    </tr>
+                <tr ng-repeat="series in chart.Series" class="data-rows">
+                    <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                    <td>{{series}}</td>
+                    <td ng-repeat="set in chart.Data[$index] track by $index">
+                        <span ng-if="chart.ShowPercentage">{{set.Percentage}}%</span>
+                        <span ng-if="!chart.ShowPercentage">{{set.Total}}</span>
+                    </td>
+                </tr>
                 </tbody>
-                <tfoot ng-hide="chart.HideTotal">
-                    <tr>
-                        <th></th>
-                        <th>
-                            {{chart.TotalRowTitle}}
-                            <span ng-if="chart.ShowPercentage">Percentage</span>
-                            <span ng-if="!chart.ShowPercentage">Total</span>
-                        </th>
-                        <th ng-repeat="total in chart.Totals track by $index">
-                            <span ng-if="chart.ShowPercentage">{{total.Percentage}}%</span>
-                            <span ng-if="!chart.ShowPercentage">{{total.Total}}</span>
-                        </th>
-                    </tr>
+                <tfoot ng-hide="chart.ShowPercentage ? chart.HidePercentageTotal : chart.HideTotal">
+                <tr>
+                    <th></th>
+                    <th>
+                        {{chart.TotalRowTitle}}
+                        <span ng-if="chart.ShowPercentage">Percentage</span>
+                        <span ng-if="!chart.ShowPercentage">Total</span>
+                    </th>
+                    <th ng-repeat="total in chart.Totals track by $index">
+                        <span ng-if="chart.ShowPercentage">{{total.Percentage}}%</span>
+                        <span ng-if="!chart.ShowPercentage">{{total.Total}}</span>
+                    </th>
+                </tr>
                 </tfoot>
             </table>
         </div>

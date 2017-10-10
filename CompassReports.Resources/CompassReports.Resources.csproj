@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AssessmentTrendFilterModel.cs" />
     <Compile Include="Models\AssessmentFilterModel.cs" />
     <Compile Include="Models\GraduateFilterModel.cs" />
     <Compile Include="Models\PercentageTotalBarChartModel.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Models\PieChartModel.cs" />
     <Compile Include="Models\EnrollmentFilterModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Services\AssessmentPerformanceTrendService.cs" />
     <Compile Include="Services\AssessmentPerformanceService.cs" />
     <Compile Include="Services\AssessmentService.cs" />
     <Compile Include="Services\AttendanceService.cs" />

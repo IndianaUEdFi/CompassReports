@@ -61,7 +61,7 @@
                     <md-sidemenu-group>
                         <md-sidemenu-content ng-repeat="assessment in ::ctrl.assessments" md-icon="assessment" md-arrow="true" on-hover="true" md-heading="{{assessment}}">
                             <md-sidemenu-button ui-sref="app.reports.assessment({assessmentTitle: assessment})">{{assessment}}</md-sidemenu-button>
-                            <md-sidemenu-button ui-sref="app.reports.assessment-trends">Trends</md-sidemenu-button>
+                            <md-sidemenu-button ui-sref="app.reports.assessment-trends({assessmentTitle: assessment})">Trends</md-sidemenu-button>
                         </md-sidemenu-content>
                     </md-sidemenu-group>
                 </md-sidemenu>

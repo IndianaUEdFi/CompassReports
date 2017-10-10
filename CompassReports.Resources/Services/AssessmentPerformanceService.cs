@@ -59,7 +59,7 @@ namespace CompassReports.Resources.Services
 
         public PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
+            var query = BaseQuery(model);
 
             var results = query.GroupBy(x => new { x.PerformanceKey, x.Performance.PerformanceLevel, Property = x.Demographic.EnglishLanguageLearnerStatus })
                 .Select(x => new
@@ -124,7 +124,7 @@ namespace CompassReports.Resources.Services
 
         public PercentageTotalBarChartModel ByEthnicity(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
+            var query = BaseQuery(model);
 
             var results = query.GroupBy(x => new { x.PerformanceKey, x.Performance.PerformanceLevel, Property = x.Demographic.Ethnicity })
                 .Select(x => new
@@ -189,7 +189,7 @@ namespace CompassReports.Resources.Services
 
         public PercentageTotalBarChartModel ByLunchStatus(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
+            var query = BaseQuery(model);
 
             var results = query.GroupBy(x => new { x.PerformanceKey, x.Performance.PerformanceLevel, Property = x.Demographic.FreeReducedLunchStatus })
                 .Select(x => new
@@ -254,7 +254,7 @@ namespace CompassReports.Resources.Services
 
         public PercentageTotalBarChartModel BySpecialEducation(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
+            var query = BaseQuery(model);
 
             var results = query.GroupBy(x => new { x.PerformanceKey, x.Performance.PerformanceLevel, Property = x.Demographic.SpecialEducationStatus })
                 .Select(x => new
@@ -388,9 +388,6 @@ namespace CompassReports.Resources.Services
 
             if (model.LunchStatuses != null && model.LunchStatuses.Any())
                 query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));
-
-            if (model.PerformanceLevels != null && model.PerformanceLevels.Any())
-                query = query.Where(x => model.PerformanceLevels.Contains(x.PerformanceKey));
 
             if (model.SpecialEducationStatuses != null && model.SpecialEducationStatuses.Any())
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));

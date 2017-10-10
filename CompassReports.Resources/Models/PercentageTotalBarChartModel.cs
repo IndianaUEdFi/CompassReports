@@ -18,6 +18,8 @@ namespace CompassReports.Resources.Models
 
         public bool HideTotal { get; set; }
 
+        public bool HidePercentageTotal { get; set; }
+
         public List<string> Labels { get; set; }
 
         public List<string> Series { get; set; }

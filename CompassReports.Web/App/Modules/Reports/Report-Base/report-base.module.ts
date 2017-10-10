@@ -21,7 +21,7 @@
 
         goBack = () => {
             this.$rootScope.filterModel = this.report.model;
-            this.services.state.go(this.report.backState);
+            this.services.state.go(this.report.backState, this.report.backParameters);
         }
 
         isFiltering = () => this.report.model.isFiltering();

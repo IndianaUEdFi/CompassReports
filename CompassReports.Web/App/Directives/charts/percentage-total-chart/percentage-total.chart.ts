@@ -6,6 +6,7 @@
         data: number[][];
         model: Models.IReportFilterModel;
         togglePercentage: () => void;
+        viewDetails: () => void;
     }
 
     class PercentageTotalChartController {
@@ -23,7 +24,20 @@
         }
 
         updateChart = () => {
-            this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
+            var model = {};
+
+            for (let key in this.scope.model) {
+                if(typeof this.scope.model[key] !== 'function')
+                    model[key] = this.scope.model[key];
+            }
+
+            if (this.scope.chart.ChartFilters) {
+                for (let key in this.scope.chart.ChartFilters) {
+                    model[key] = this.scope.chart.ChartFilters[key];
+                }
+            }
+
+            this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](model)
                 .then((result: Models.PercentageTotalBarChartModel) => {
                     this.scope.chart.Update(result);
                     this.updatePercentage();
@@ -45,6 +59,13 @@
             this.scope.data = data;
         }
 
+        viewDetails = () => {
+            this.rootScope.backState = this.services.state.current.name;
+            this.rootScope.backParameters = this.services.state.params;
+            this.rootScope.filterModel = this.scope.model;
+            this.services.state.go(this.scope.chart.DetailState.name, this.scope.chart.DetailState.parameters);
+        }
+
         themeWatch: () => void;
         updateWatch: () => void;
 
@@ -62,6 +83,8 @@
             this.updateWatch = rootScope.$on('update-charts', this.updateChart);
 
             scope.togglePercentage = this.togglePercentage;
+            scope.viewDetails = this.viewDetails;
+
             this.updateChart();
         }
     }

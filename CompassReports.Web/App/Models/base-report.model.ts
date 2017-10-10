@@ -6,5 +6,6 @@
         filters: Models.FilterModel<any>[];
         model: IReportFilterModel;
         backState: string;
+        backParameters: any;
     }
 }

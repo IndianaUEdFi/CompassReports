@@ -11,6 +11,7 @@ module App.Models {
         Data: PercentageTotalData[][];
         Totals: PercentageTotalData;
         ShowPercentage: boolean;
+        HidePercentageTotal: boolean;
 
         Update = (model: PercentageTotalBarChartModel) => {
             if (!model) {
@@ -21,6 +22,7 @@ module App.Models {
             this.Title = model.Title;
             this.Headers = model.Headers;
             this.HideTotal = model.HideTotal;
+            this.HidePercentageTotal = model.HidePercentageTotal;
             this.TotalRowTitle = model.TotalRowTitle;
             this.Labels = model.Labels;
             this.Data = model.Data;
@@ -35,8 +37,8 @@ module App.Models {
                 this.ShowPercentage = model.ShowPercentage;
         };
 
-        constructor(apiCall: string, chartCall: string) {
-            super(apiCall, chartCall);
+        constructor(apiCall: string, chartCall: string, detailState?: RouteState, chartFilters?: any) {
+            super(apiCall, chartCall, detailState, chartFilters);
 
             this.FlexXL = 50;
             this.FlexLG = 50;

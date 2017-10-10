@@ -29,8 +29,9 @@
 
         viewDetails = () => {
             this.rootScope.backState = this.services.state.current.name;
+            this.rootScope.backParameters = this.services.state.params;
             this.rootScope.filterModel = this.scope.model;
-            this.services.state.go(this.scope.chart.DetailState);
+            this.services.state.go(this.scope.chart.DetailState.name, this.scope.chart.DetailState.parameters);
         }
 
         themeWatch: () => void;

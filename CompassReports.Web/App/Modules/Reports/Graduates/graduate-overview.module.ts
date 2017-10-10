@@ -9,9 +9,9 @@ module App.Reports.Graduate.Overview {
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
             const charts = [
-                new PieChartModel('graduateStatus', 'get', 'app.reports.graduate-status'),
-                new PieChartModel('graduateWaivers', 'get', 'app.reports.graduate-waivers'),
-                new PieChartModel('graduateDiplomaType', 'get', 'app.reports.graduate-diploma-type')
+                new PieChartModel('graduateStatus', 'get', {name: 'app.reports.graduate-status'}),
+                new PieChartModel('graduateWaivers', 'get', { name: 'app.reports.graduate-waivers' }),
+                new PieChartModel('graduateDiplomaType', 'get', {name: 'app.reports.graduate-diploma-type'})
             ];
 
             $stateProvider.state('app.reports.graduates',

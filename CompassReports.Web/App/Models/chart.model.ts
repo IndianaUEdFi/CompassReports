@@ -17,7 +17,8 @@
         FlexMD: number;
         FlexSM: number;
 
-        DetailState: string;
+        DetailState: RouteState;
+        ChartFilters: any;
 
         Update = (model: ChartModel) => {
             this.Title = model.Title;
@@ -29,10 +30,11 @@
                 this.ShowChart = model.ShowChart;
         }
 
-        protected constructor(apiCall: string, chartCall: string, detailState?: string) {
+        protected constructor(apiCall: string, chartCall: string, detailState?: RouteState, chartFilters?: any) {
             this.ApiCall = apiCall;
             this.ChartCall = chartCall;
             this.DetailState = detailState;
+            this.ChartFilters = chartFilters;
         }
     }
 }

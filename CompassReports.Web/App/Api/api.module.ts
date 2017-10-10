@@ -6,6 +6,7 @@ module App {
         assessment: Api.Assessment.IAssessmentApi;
         assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi;
         assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi;
+        assessmentPerformanceTrend: Api.AssessmentPerformanceTrend.IAssessmentPerformanceTrendApi;
         attendance: Api.Attendance.IAttendanceApi;
         attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi;
         demographicFilters: Api.DemographicFilters.IDemographicFiltersApi;
@@ -24,6 +25,7 @@ module App {
             'api.assessment',
             'api.assessment-filters',
             'api.assessment-performance',
+            'api.assessment-performance-trend',
             'api.attendance',
             'api.attendance-trends',
             'api.demographic-filters',
@@ -40,6 +42,7 @@ module App {
             public assessment: Api.Assessment.IAssessmentApi,
             public assessmentFilters: Api.AssessmentFilters.IAssessmentFiltersApi,
             public assessmentPerformance: Api.AssessmentPerformance.IAssessmentPerformanceApi,
+            public assessmentPerformanceTrend: Api.AssessmentPerformanceTrend.IAssessmentPerformanceTrendApi,
             public attendance: Api.Attendance.IAttendanceApi,
             public attendanceTrends: Api.AttendanceTrends.IAttendanceTrendsApi,
             public demographicFilters: Api.DemographicFilters.IDemographicFiltersApi,
@@ -87,6 +90,7 @@ module App {
             'app.api.assessment',
             'app.api.assessment-filters',
             'app.api.assessment-performance',
+            'app.api.assessment-performance-trend',
             'app.api.attendance',
             'app.api.attendance-trends',
             'app.api.demographic-filters',

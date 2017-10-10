@@ -1,13 +1,14 @@
 ﻿/// <reference path="../Report-Base/report-base.module.ts" />
 
-module App.Reports.AssessmentTrends {
+module App.Reports.AssessmentPerformanceTrend {
     import PercentageTotalBarChartModel = Models.PercentageTotalBarChartModel;
 
     const DefaultAssessmentTitle = 'ISTAR';
     const DefaultSubject = 'English/Language Arts Only';
 
-    interface IAssessmentTrendParams {
-        assessmentTitle: string
+    interface IAssessmentPerformanceTrendParams {
+        assessmentTitle: string;
+        performanceKey: number;
     }
 
     function onSubjectChange(model: Models.AssessmentFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
@@ -29,16 +30,14 @@ module App.Reports.AssessmentTrends {
         }
     }
 
-    class AssessmentTrendsReportView extends ReportBaseView {
+    class AssessmentPerformanceTrendReportView extends ReportBaseView {
         resolve = {
             report: ['$rootScope', '$stateParams', 'subjects',
                 'schoolYears', 'grades', 'englishLanguageLearnerStatuses',
-                'ethnicities', 'lunchStatuses', 'performanceLevels',
-                'specialEducationStatuses',
-                ($rootScope: IAppRootScope, $stateParams: IAssessmentTrendParams, subjects: string[],
+                'ethnicities', 'lunchStatuses', 'specialEducationStatuses',
+                ($rootScope: IAppRootScope, $stateParams: IAssessmentPerformanceTrendParams, subjects: string[],
                     schoolYears: Models.FilterValueModel[], grades: Models.FilterValueModel[], englishLanguageLearnerStatuses: string[],
-                    ethnicities: string[], lunchStatuses: string[], performanceLevels: Models.FilterValueModel[],
-                    specialEducationStatuses: string[]) => {
+                    ethnicities: string[], lunchStatuses: string[], specialEducationStatuses: string[]) => {
 
                     var filters = [
                         new Models.FilterModel<number>(subjects, 'Subject', 'Subject', false, true, onSubjectChange),
@@ -51,22 +50,11 @@ module App.Reports.AssessmentTrends {
                     ];
 
                     var charts = [
-                        new PercentageTotalBarChartModel('assessmentPerformanceTrend', 'get')
+                        new PercentageTotalBarChartModel('assessmentPerformanceTrend', 'byEthnicity', null, { PerformanceKey: $stateParams.performanceKey }),
+                        new PercentageTotalBarChartModel('assessmentPerformanceTrend', 'byLunchStatus', null, { PerformanceKey: $stateParams.performanceKey }),
+                        new PercentageTotalBarChartModel('assessmentPerformanceTrend', 'byEnglishLanguageLearner', null, { PerformanceKey: $stateParams.performanceKey }),
+                        new PercentageTotalBarChartModel('assessmentPerformanceTrend', 'bySpecialEducation', null, { PerformanceKey: $stateParams.performanceKey })
                     ];
-
-                    angular.forEach(performanceLevels, (level) => {
-                        charts.push(new PercentageTotalBarChartModel(
-                            'assessmentPerformanceTrend',
-                            'get',
-                            {
-                                name: 'app.reports.assessment-performance-trend',
-                                parameters: {
-                                    assessmentTitle: $stateParams.assessmentTitle,
-                                    performanceKey: level.Value
-                                }
-                            },
-                            { PerformanceKey: level.Value }));
-                    });
 
                     var model = new Models.AssessmentFilterModel();
                     model.AssessmentTitle = $stateParams.assessmentTitle || DefaultAssessmentTitle;
@@ -74,8 +62,6 @@ module App.Reports.AssessmentTrends {
                     if ($rootScope.filterModel) {
                         model = $rootScope.filterModel as Models.AssessmentFilterModel;
                         $rootScope.filterModel = null;
-                    } else {
-                        model.Subject = ($stateParams.assessmentTitle) ? ((subjects && subjects.length) ? subjects[0] : null) : DefaultSubject;
                     }
 
                     let backState = null;
@@ -86,7 +72,7 @@ module App.Reports.AssessmentTrends {
                         backParameters = $rootScope.backParameters;
                         $rootScope.backState = null;
                         $rootScope.backParameters = null;
-
+                        
                     }
 
                     return {
@@ -98,29 +84,22 @@ module App.Reports.AssessmentTrends {
                         backParameters: backParameters
                     }
                 }],
-            subjects: ['$stateParams', 'api', ($stateParams: IAssessmentTrendParams, api: IApi) => {
+            subjects: ['$stateParams', 'api', ($stateParams: IAssessmentPerformanceTrendParams, api: IApi) => {
                 var assessmentTitle = $stateParams.assessmentTitle || DefaultAssessmentTitle;
                 return api.assessmentFilters.getSubjects(assessmentTitle);
             }],
-            schoolYears: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentTrendParams, api: IApi, subjects: string[]) => {
+            schoolYears: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentPerformanceTrendParams, api: IApi, subjects: string[]) => {
                 if ($stateParams.assessmentTitle) {
                     return (subjects && subjects.length) ? api.assessmentFilters.getSchoolYears($stateParams.assessmentTitle, subjects[0]) : [];
                 } else {
                     return api.assessmentFilters.getSchoolYears(DefaultAssessmentTitle, DefaultSubject);
                 }
             }],
-            grades: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentTrendParams, api: IApi, subjects: string[]) => {
+            grades: ['$stateParams', 'api', 'subjects', ($stateParams: IAssessmentPerformanceTrendParams, api: IApi, subjects: string[]) => {
                 if ($stateParams.assessmentTitle) {
                     return (subjects && subjects.length) ? api.assessmentFilters.getGrades($stateParams.assessmentTitle, subjects[0]) : [];
                 } else {
                     return api.assessmentFilters.getGrades(DefaultAssessmentTitle, DefaultSubject);
-                }
-            }],
-            performanceLevels: ['$stateParams', 'api', ($stateParams: IAssessmentTrendParams, api: IApi) => {
-                if ($stateParams.assessmentTitle) {
-                    return api.assessmentFilters.getPerformanceLevels($stateParams.assessmentTitle);
-                } else {
-                    return api.assessmentFilters.getPerformanceLevels(DefaultAssessmentTitle);
                 }
             }],
             englishLanguageLearnerStatuses: ['api', (api: IApi) => {
@@ -138,22 +117,22 @@ module App.Reports.AssessmentTrends {
         }
     }
 
-    class AssessmentTrendsConfig {
+    class AssessmentPerformanceTrendsConfig {
         static $inject = ['$stateProvider', 'settings'];
 
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
-            $stateProvider.state('app.reports.assessment-trends',
+            $stateProvider.state('app.reports.assessment-performance-trend',
                 {
-                    url: '/assessment-trends?assessmentTitle',
+                    url: '/assessment-peformance-trend?assessmentTitle&performanceKey',
                     views: {
-                        'report@app.reports': new AssessmentTrendsReportView(settings)
+                        'report@app.reports': new AssessmentPerformanceTrendReportView(settings)
                     }
                 });
         }
     }
 
     angular
-        .module('app.reports.assessment-trends', ['app.reports.assessment-trends.performance'])
-        .config(AssessmentTrendsConfig);
+        .module('app.reports.assessment-trends.performance', [])
+        .config(AssessmentPerformanceTrendsConfig);
 }

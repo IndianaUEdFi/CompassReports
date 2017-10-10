@@ -3,7 +3,7 @@
         <div class="md-toolbar-tools">
             <h3>{{chart.Title}}</h3>
             <span flex></span>
-            <div>
+            <div style="white-space: nowrap">
                 <md-button class="md-fab md-mini md-primary md-hue-1" ng-if="chart.DetailState" ng-click="viewDetails()">
                     <md-tooltip md-direction="left">More Details</md-tooltip>
                     <md-icon md-font-set="material-icons">dashboard</md-icon>
@@ -20,7 +20,7 @@
         </div>
     </md-toolbar>
     <md-card-content>
-        <div ng-if="!chart.ShowChart">
+        <div ng-if="!chart.ShowChart" style="overflow-x: auto">
             <table class="material-table material-table-bordered">
                 <thead>
                 <tr>

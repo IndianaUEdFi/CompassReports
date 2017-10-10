@@ -41,7 +41,7 @@ module App.Models {
             super(apiCall, chartCall, detailState, chartFilters);
 
             this.FlexXL = 50;
-            this.FlexLG = 50;
+            this.FlexLG = 100;
             this.FlexMD = 100;
             this.FlexSM = 100;
 

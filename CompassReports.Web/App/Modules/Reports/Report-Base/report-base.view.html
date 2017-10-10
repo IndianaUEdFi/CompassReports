@@ -1,12 +1,12 @@
 ﻿<md-toolbar class="md-hue-1">
-    <div class="md-toolbar-tools" ng-style="{'height': ctrl.isFiltering() ? 'inherit' : 'max-height': ctrl.filteringCount() > 4 ? 'none': ''}">
+    <div class="md-toolbar-tools" ng-style="{'height': ctrl.isFiltering() ? 'inherit' : '', 'max-height': ctrl.filteringCount() > 4 ? 'none': ''}">
         <md-button ng-if="ctrl.report.backState" class="md-raised md-accent md-hue-2 md-mini" ng-click="ctrl.goBack()">
             Back
         </md-button>
         <h3 style="padding-right: 50px; white-space: nowrap">{{ctrl.report.title}}</h3>
 
         <ul class="filter-status">
-            <li ng-repeat="filter in ctrl.report.filters" ng-if="filter.Multiple ? ctrl.report.model[filter.ModelParam].length : ctrl.report.model[filter.ModelParam]">
+            <li ng-repeat="filter in ctrl.report.filters" ng-if="filter.Multiple ? ctrl.report.model[filter.ModelParam].length : (ctrl.report.model[filter.ModelParam] != null)">
                 {{filter.Title}}
                 <div style="font-size: 12px">
                     <span ng-if="filter.Multiple">

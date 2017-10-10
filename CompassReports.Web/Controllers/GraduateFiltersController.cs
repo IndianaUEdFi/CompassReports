@@ -21,7 +21,7 @@ namespace CompassReports.Web.Controllers
 
         [Route("cohorts")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetCohorts(short expectedGraduationYear)
+        public IHttpActionResult GetCohorts(short? expectedGraduationYear = null)
         {
             var cohorts = _graduateFiltersService.GetCohorts(expectedGraduationYear);
             return Ok(cohorts);

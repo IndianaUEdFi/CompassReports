@@ -44,6 +44,9 @@ module App.Models {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend: { display: true, position: 'bottom' },
+                tooltips: {
+                    mode: 'x'
+                },
                 scales: {
                     yAxes: [{
                         ticks: {

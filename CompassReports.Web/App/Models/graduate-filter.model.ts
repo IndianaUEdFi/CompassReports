@@ -3,6 +3,7 @@
         ExpectedGraduationYear?: number;
         ExpectedGraduationYears?: number[];
         CohortYear: number;
+        GradCohortYearDifference: number;
 
         EnglishLanguageLearnerStatuses: string[];
         Ethnicities: string[];
@@ -13,7 +14,8 @@
             let count = 0;
 
             if (this.ExpectedGraduationYear) count++;
-            if (this.CohortYear) count++;
+            if (this.CohortYear != null) count++;
+            if (this.GradCohortYearDifference != null) count++;
             if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) count++;
             if (this.Ethnicities != null && this.Ethnicities.length) count++;
             if (this.ExpectedGraduationYears != null && this.ExpectedGraduationYears.length) count++;
@@ -25,7 +27,8 @@
 
         isFiltering = () => {
             if (this.ExpectedGraduationYear) return true;
-            if (this.CohortYear) return true;
+            if (this.CohortYear != null) return true;
+            if (this.GradCohortYearDifference != null) return true;
             if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) return true;
             if (this.Ethnicities != null && this.Ethnicities.length) return true;
             if (this.ExpectedGraduationYears != null && this.ExpectedGraduationYears.length) return true;

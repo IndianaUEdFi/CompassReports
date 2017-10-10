@@ -66,6 +66,7 @@
     <Compile Include="Services\AssessmentFiltersService.cs" />
     <Compile Include="Services\DemographicFiltersService.cs" />
     <Compile Include="Services\GraduateDiplomaTypeService.cs" />
+    <Compile Include="Services\GraduateTrendsService.cs" />
     <Compile Include="Services\GraduateWaiversService.cs" />
     <Compile Include="Services\GraduateFiltersService.cs" />
     <Compile Include="Services\EnrollmentTrendsService.cs" />

@@ -12,7 +12,7 @@ namespace CompassReports.Resources.Services
 {
     public interface IGraduateFiltersService
     {
-        List<FilterModel<short>> GetCohorts(short expectedGradYear);
+        List<FilterModel<short>> GetCohorts(short? expectedGradYear = null);
         List<FilterModel<short>> GetSchoolYears();
     }
 
@@ -29,7 +29,12 @@ namespace CompassReports.Resources.Services
             _graduationFactRepository = graduationFactRepository;
         }
 
-        public List<FilterModel<short>> GetCohorts(short expectedGradYear)
+        public List<FilterModel<short>> GetCohorts(short? expectedGradYear = null)
+        {
+            return expectedGradYear.HasValue ? GetCohortsByExpectedGraduationYear(expectedGradYear.Value) : GetUniqueCohorts();
+        }
+
+        private List<FilterModel<short>> GetCohortsByExpectedGraduationYear(short expectedGradYear)
         {
             return _graduationFactRepository
                 .GetAll()
@@ -40,6 +45,26 @@ namespace CompassReports.Resources.Services
                 .Select(x => new FilterModel<short>
                 {
                     Display = GetCohortName(x, expectedGradYear),
+                    Value = x
+                })
+                .ToList();
+        }
+
+        private List<FilterModel<short>> GetUniqueCohorts()
+        {
+            var values = new[] { "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" };
+
+            return _graduationFactRepository
+                .GetAll()
+                .Select(x => new { SchoolYear = x.SchoolYearKey, x.Demographic.ExpectedGraduationYear })
+                .Distinct()
+                .ToList()
+                .Select(x => (short)(x.SchoolYear - short.Parse(x.ExpectedGraduationYear)))
+                .Distinct()
+                .OrderBy(x => x)
+                .Select(x => new FilterModel<short>
+                {
+                    Display = values[x] + " Year",
                     Value = x
                 })
                 .ToList();

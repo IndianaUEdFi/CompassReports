@@ -17,7 +17,7 @@ namespace CompassReports.Resources.Services
         LineChartModel<double> ByLunchStatus(EnrollmentFilterModel model);
         LineChartModel<double> BySpecialEducationStatus(EnrollmentFilterModel model);
     }
-    class AttendanceTrendsService : IAttendanceTrendsService
+    public class AttendanceTrendsService : IAttendanceTrendsService
     {
         private readonly IRepository<AttendanceFact> _attendanceRepository;
 

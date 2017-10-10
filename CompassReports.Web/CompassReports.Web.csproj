@@ -188,6 +188,7 @@
     <Compile Include="Controllers\AssessmentPerformanceTrendController.cs" />
     <Compile Include="Controllers\AssessmentPerformanceController.cs" />
     <Compile Include="Controllers\GraduateDiplomaTypeController.cs" />
+    <Compile Include="Controllers\GraduateTrendsController.cs" />
     <Compile Include="Controllers\GraduateWaiversController.cs" />
     <Compile Include="Controllers\GraduateStatusController.cs" />
     <Compile Include="Controllers\AssessmentController.cs" />
@@ -243,6 +244,7 @@
     <TypeScriptCompile Include="App\Api\assessment-performance-trend.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance.ts" />
     <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
+    <TypeScriptCompile Include="App\Api\graduate-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-waviers.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-status.api.ts" />
     <TypeScriptCompile Include="App\Api\attendance-trends.api.ts" />
@@ -292,6 +294,7 @@
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-diploma-type.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-waivers.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-status.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduate-Trends\graduate-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduates.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-overview.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Home\home.module.ts" />

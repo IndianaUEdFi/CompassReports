@@ -16,6 +16,7 @@ module App {
         graduateDiplomaType: Api.GraduateDiplomaType.IGraduateDiplomaTypeApi;
         graduateFilters: Api.GraduateFilters.IGraduateFiltersApi;
         graduateStatus: Api.GraduateStatus.IGraduateStatusApi;
+        graduateTrends: Api.GraduateTrends.IGraduateTrendsApi;
         graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi;
     }
 
@@ -35,6 +36,7 @@ module App {
             'api.graduate-diploma-type',
             'api.graduate-filters',
             'api.graduate-status',
+            'api.graduate-trends',
             'api.graduate-waivers'
         ];
 
@@ -52,6 +54,7 @@ module App {
             public graduateDiplomaType: Api.GraduateDiplomaType.IGraduateDiplomaTypeApi,
             public graduateFilters: Api.GraduateFilters.IGraduateFiltersApi,
             public graduateStatus: Api.GraduateStatus.IGraduateStatusApi,
+            public graduateTrends: Api.GraduateTrends.IGraduateTrendsApi,
             public graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi
         ) {
         }
@@ -100,6 +103,7 @@ module App {
             'app.api.graduate-diploma-type',
             'app.api.graduate-filters',
             'app.api.graduate-status',
+            'app.api.graduate-trends',
             'app.api.graduate-waivers'
         ])
         .service("api", ApiService);

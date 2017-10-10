@@ -50,6 +50,20 @@ module App.Models {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend: { display: true, position: 'bottom' },
+                tooltips: {
+                    mode: 'x',
+                    callbacks: {
+                        label: (tooltipItem, data) => {
+
+                            var value = this.Data[tooltipItem.datasetIndex][tooltipItem.index];
+
+                            if (this.ShowPercentage)
+                                return `${this.Series[tooltipItem.datasetIndex]}: ${value.Percentage}%, ${value.Total}`;
+                            else
+                                return `${this.Series[tooltipItem.datasetIndex]}: ${value.Total}, ${value.Percentage}%`;
+                        }
+                    }    
+                },
                 scales: {
                     yAxes: [{
                         ticks: {

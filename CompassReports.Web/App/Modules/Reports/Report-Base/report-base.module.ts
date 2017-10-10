@@ -17,7 +17,7 @@
 
         apply = () => this.$rootScope.$emit('update-charts');
 
-        filteringCount = () => this.report.model.isFiltering();
+        filteringCount = () => this.report.model.filteringCount();
 
         goBack = () => {
             this.$rootScope.filterModel = this.report.model;

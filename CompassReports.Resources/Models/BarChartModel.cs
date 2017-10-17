@@ -31,5 +31,7 @@ namespace CompassReports.Resources.Models
 
         public List<int> Totals { get; set; }
 
+        public int? MaxYAxisValue { get; set; }
+
     }
 }

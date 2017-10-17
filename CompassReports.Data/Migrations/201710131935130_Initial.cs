@@ -15,6 +15,7 @@ namespace CompassReports.Data.Migrations
                         AssessmentTitle = c.String(nullable: false, maxLength: 60),
                         AssessedGradeLevel = c.String(nullable: false, maxLength: 50),
                         AcademicSubject = c.String(nullable: false, maxLength: 50),
+                        MaxScore = c.Int(),
                     })
                 .PrimaryKey(t => t.AssessmentKey);
             
@@ -55,7 +56,7 @@ namespace CompassReports.Data.Migrations
                         FreeReducedLunchStatus = c.String(nullable: false, maxLength: 50),
                         SpecialEducationStatus = c.String(nullable: false, maxLength: 50),
                         EnglishLanguageLearnerStatus = c.String(nullable: false, maxLength: 50),
-                        ExpectedGraduationYear = c.String(maxLength: 15),
+                        ExpectedGraduationYear = c.Short(),
                     })
                 .PrimaryKey(t => t.DemographicKey);
             
@@ -184,6 +185,7 @@ namespace CompassReports.Data.Migrations
                     {
                         PerformanceKey = c.Int(nullable: false, identity: true),
                         PerformanceLevel = c.String(nullable: false, maxLength: 50),
+                        ScoreResult = c.Int(),
                     })
                 .PrimaryKey(t => t.PerformanceKey);
             

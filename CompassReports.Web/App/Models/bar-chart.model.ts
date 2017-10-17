@@ -8,6 +8,7 @@ module App.Models {
         Data: number[][];
         PercentageData: number[][];
         Totals: number[];
+        MaxYAxisValue?: number;
 
         Update = (model: BarChartModel) => {
             if (!model) {
@@ -29,6 +30,11 @@ module App.Models {
 
             if (this.ShowChart === undefined)
                 this.ShowChart = model.ShowChart;
+
+            if (model.MaxYAxisValue) {
+                this.MaxYAxisValue = model.MaxYAxisValue;
+                this.Options.scales.yAxes[0].ticks.max = model.MaxYAxisValue;
+            } 
         };
 
         constructor(apiCall: string, chartCall: string) {

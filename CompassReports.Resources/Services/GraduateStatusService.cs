@@ -313,7 +313,7 @@ namespace CompassReports.Resources.Services
             var query = _graduationFactRepository
                 .GetAll()
                 .Where(x => x.SchoolYearKey == model.CohortYear && 
-                    x.Demographic.ExpectedGraduationYear == model.ExpectedGraduationYear.ToString());
+                    x.Demographic.ExpectedGraduationYear == model.ExpectedGraduationYear);
 
             if (model.EnglishLanguageLearnerStatuses != null && model.EnglishLanguageLearnerStatuses.Any())
                 query = query.Where(x => model.EnglishLanguageLearnerStatuses.Contains(x.Demographic.EnglishLanguageLearnerStatus));

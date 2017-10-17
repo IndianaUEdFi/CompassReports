@@ -34,7 +34,6 @@ namespace CompassReports.Resources.Services
                         x =>
                             new
                             {
-                                x.Demographic.ExpectedGraduationYear,
                                 x.SchoolYearKey,
                                 x.SchoolYearDimension.SchoolYearDescription,
                                 x.GraduationStatus.GraduationStatus
@@ -43,12 +42,9 @@ namespace CompassReports.Resources.Services
                     {
                         GraduationStatus = x.Key.GraduationStatus,
                         SchoolYear = x.Key.SchoolYearKey,
-                        ExpectedGraduationYear = x.Key.ExpectedGraduationYear,
                         SchoolYearDescription = x.Key.SchoolYearDescription,
                         Total = x.Sum(y => y.GraduationStudentCount)
                     })
-                    .ToList()
-                    .Where(x => x.SchoolYear - short.Parse(x.ExpectedGraduationYear) == model.GradCohortYearDifference)
                     .OrderBy(x => x.SchoolYear)
                     .ToList();
 
@@ -110,17 +106,14 @@ namespace CompassReports.Resources.Services
 
             var results = query
                 .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
-                .GroupBy(x => new { x.Demographic.ExpectedGraduationYear, x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.GraduationStatus.GraduationWaiver })
+                .GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.GraduationStatus.GraduationWaiver })
                 .Select(x => new
                 {
                     GraduationWaiver = x.Key.GraduationWaiver,
                     SchoolYear = x.Key.SchoolYearKey,
-                    ExpectedGraduationYear = x.Key.ExpectedGraduationYear,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.GraduationStudentCount)
                 })
-                .ToList()
-                .Where(x => x.SchoolYear - short.Parse(x.ExpectedGraduationYear) == model.GradCohortYearDifference)
                 .OrderBy(x => x.SchoolYear)
                 .ToList();
 
@@ -183,7 +176,7 @@ namespace CompassReports.Resources.Services
         {
             var query = _graduationFactRepository
                 .GetAll()
-                .AsQueryable();
+                .Where(x => x.Demographic.ExpectedGraduationYear.HasValue && x.SchoolYearKey - x.Demographic.ExpectedGraduationYear.Value == model.GradCohortYearDifference);
 
             if (model.EnglishLanguageLearnerStatuses != null && model.EnglishLanguageLearnerStatuses.Any())
                 query = query.Where(x => model.EnglishLanguageLearnerStatuses.Contains(x.Demographic.EnglishLanguageLearnerStatus));

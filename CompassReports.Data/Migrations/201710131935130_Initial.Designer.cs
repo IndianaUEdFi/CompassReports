@@ -13,7 +13,7 @@ namespace CompassReports.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201710092034310_Initial"; }
+            get { return "201710131935130_Initial"; }
         }
         
         string IMigrationMetadata.Source

@@ -20,10 +20,13 @@ namespace CompassReports.Resources.Services
     public class AssessmentScoreTrendService : IAssessmentScoreTrendService
     {
         private readonly IRepository<AssessmentFact> _assessmentRepository;
+        private readonly IRepository<AssessmentDimension> _assessmentDimensionRepository;
 
-        public AssessmentScoreTrendService(IRepository<AssessmentFact> assessmentRepository)
+        public AssessmentScoreTrendService(IRepository<AssessmentFact> assessmentRepository,
+            IRepository<AssessmentDimension> assessmentDimensionRepository)
         {
             _assessmentRepository = assessmentRepository;
+            _assessmentDimensionRepository = assessmentDimensionRepository;
         }
 
         public BarChartModel<int> Get(AssessmentTrendFilterModel model)
@@ -33,18 +36,10 @@ namespace CompassReports.Resources.Services
             var results = query.GroupBy(x => new { x.Performance.ScoreResult, x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.Value,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     SchoolYear = x.Key.SchoolYearKey,
                     Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = int.Parse(x.ScoreResult),
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
                 })
                 .OrderBy(x => x.SchoolYear)
                 .ToList();
@@ -74,6 +69,7 @@ namespace CompassReports.Resources.Services
                 Data = new List<List<int>> { data },
                 ShowChart = true,
                 HideTotal = true,
+                MaxYAxisValue = GetMaxScore(model)
             };
         }
 
@@ -84,20 +80,11 @@ namespace CompassReports.Resources.Services
             var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.EnglishLanguageLearnerStatus })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.Value,
                     EnglishLanguageLearnerStatus = x.Key.EnglishLanguageLearnerStatus,
                     SchoolYear = x.Key.SchoolYearKey,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = int.Parse(x.ScoreResult),
-                    EnglishLanguageLearnerStatus = x.EnglishLanguageLearnerStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
                 })
                 .OrderBy(x => x.EnglishLanguageLearnerStatus)
                 .ToList();
@@ -134,6 +121,7 @@ namespace CompassReports.Resources.Services
                 Data = data,
                 ShowChart = true,
                 HideTotal = true,
+                MaxYAxisValue = GetMaxScore(model)
             };
         }
 
@@ -144,20 +132,11 @@ namespace CompassReports.Resources.Services
             var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.Ethnicity })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.Value,
                     Ethnicity = x.Key.Ethnicity,
                     SchoolYear = x.Key.SchoolYearKey,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = int.Parse(x.ScoreResult),
-                    Ethnicity = x.Ethnicity,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
                 })
                 .OrderBy(x => x.Ethnicity)
                 .ToList();
@@ -194,6 +173,7 @@ namespace CompassReports.Resources.Services
                 Data = data,
                 ShowChart = true,
                 HideTotal = true,
+                MaxYAxisValue = GetMaxScore(model)
             };
         }
 
@@ -204,20 +184,11 @@ namespace CompassReports.Resources.Services
             var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.FreeReducedLunchStatus })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.Value,
                     FreeReducedLunchStatus = x.Key.FreeReducedLunchStatus,
                     SchoolYear = x.Key.SchoolYearKey,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = int.Parse(x.ScoreResult),
-                    FreeReducedLunchStatus = x.FreeReducedLunchStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
                 })
                 .OrderBy(x => x.FreeReducedLunchStatus)
                 .ToList();
@@ -254,6 +225,7 @@ namespace CompassReports.Resources.Services
                 Data = data,
                 ShowChart = true,
                 HideTotal = true,
+                MaxYAxisValue = GetMaxScore(model)
             };
         }
 
@@ -264,20 +236,11 @@ namespace CompassReports.Resources.Services
             var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.SpecialEducationStatus })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.Value,
                     SpecialEducationStatus = x.Key.SpecialEducationStatus,
                     SchoolYear = x.Key.SchoolYearKey,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = int.Parse(x.ScoreResult),
-                    SpecialEducationStatus = x.SpecialEducationStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
                 })
                 .OrderBy(x => x.SpecialEducationStatus)
                 .ToList();
@@ -314,6 +277,7 @@ namespace CompassReports.Resources.Services
                 Data = data,
                 ShowChart = true,
                 HideTotal = true,
+                MaxYAxisValue = GetMaxScore(model)
             };
         }
 
@@ -321,7 +285,7 @@ namespace CompassReports.Resources.Services
         {
             var query = _assessmentRepository
                 .GetAll()
-                .Where(x => x.Performance.ScoreResult != "Not Applicable");
+                .Where(x => x.Performance.ScoreResult.HasValue);
 
             if (model.SchoolYears != null && model.SchoolYears.Any())
                 query = query.Where(x => model.SchoolYears.Contains(x.SchoolYearKey));
@@ -344,6 +308,14 @@ namespace CompassReports.Resources.Services
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
 
             return query;
+        }
+
+        private int? GetMaxScore(AssessmentTrendFilterModel model)
+        {
+            return _assessmentDimensionRepository.GetAll()
+                .Where(x => x.AssessmentTitle == model.AssessmentTitle && x.AcademicSubject == model.Subject)
+                .Max(x => x.MaxScore);
+
         }
     }
 }

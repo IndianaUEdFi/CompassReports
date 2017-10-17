@@ -17,9 +17,6 @@ namespace CompassReports.Data.Entities
         [MaxLength(60)]
         public string AssessmentTitle { get; set; }
 
-        //[MaxLength(50)]
-        //public string AssessmentPeriod { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string AssessedGradeLevel { get; set; }
@@ -27,6 +24,8 @@ namespace CompassReports.Data.Entities
         [Required]
         [MaxLength(50)]
         public string AcademicSubject { get; set; }
+
+        public int? MaxScore { get; set; }
         
         public ICollection<AssessmentFact> AssessmentFacts { get; set; }
     }

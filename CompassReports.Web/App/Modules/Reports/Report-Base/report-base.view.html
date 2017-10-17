@@ -6,9 +6,10 @@
         <h3 style="padding-right: 50px; white-space: nowrap">{{ctrl.report.title}}</h3>
 
         <ul class="filter-status">
-            <li ng-repeat="filter in ctrl.report.filters" ng-if="filter.Multiple ? ctrl.report.model[filter.ModelParam].length : (ctrl.report.model[filter.ModelParam] != null)">
+            <li ng-repeat="filter in ctrl.report.filters" ng-if="(filter.Multiple ? (ctrl.report.model[filter.ModelParam].length) : (ctrl.report.model[filter.ModelParam] != null)) || filter.Title == 'Grades'">
                 {{filter.Title}}
                 <div style="font-size: 12px">
+                    <span ng-if="filter.Title == 'Grades' && !ctrl.report.model[filter.ModelParam].length">All Grades</span>
                     <span ng-if="filter.Multiple">
                         <span ng-repeat="value in ctrl.report.model[filter.ModelParam]">{{filter.Display[value]}}<span ng-if="!$last">, </span></span>
                     </span>

@@ -8,8 +8,8 @@
         static $inject = ['$rootScope'];
 
         private getColor(colorCount: number, asRGB: boolean) {
-            const color1Hash = this.$rootScope.primaryColor.color;
-            const color2Hash = this.$rootScope.secondaryColor.color;
+            const color1Hash = (this.$rootScope.primaryColor) ? this.$rootScope.primaryColor.color : this.$rootScope.defaultPrimary.color ;
+            const color2Hash = (this.$rootScope.secondaryColor) ? this.$rootScope.secondaryColor.color : this.$rootScope.defaultSecondary.color;
 
             const color1Hex = color1Hash.split('#')[1];
             const color2Hex = color2Hash.split('#')[1];

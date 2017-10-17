@@ -11,7 +11,15 @@
             </div>
         </div>
     </md-toolbar>
-    <md-card-content>
+    <md-card-content style="position: relative" ng-style="{'height': chart.Data.length ? '' : '50vh'}">
+        <div ng-if="loading" class="chart-loader">
+            <div style="vertical-align: middle; display: table-cell;">
+                <h2>Loading...</h2>
+                <div layout-align="space-around" style="text-align: -webkit-center;">
+                    <md-progress-circular md-mode="indeterminate" class="md-hue-1"></md-progress-circular>
+                </div>
+            </div>
+        </div>
         <div ng-if="!chart.ShowChart" style="overflow-x: auto">
             <table class="material-table material-table-bordered">
                 <thead>

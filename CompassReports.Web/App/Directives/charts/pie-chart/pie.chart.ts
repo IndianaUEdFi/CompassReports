@@ -1,9 +1,10 @@
 ﻿module App.Directive.Charts {
 
     interface IPieChartScope extends ng.IScope {
-        chart: Models.PieChartModel,
-        model: Models.IReportFilterModel;
+        chart: Models.PieChartModel;
         dataSetOverride: any;
+        loading: boolean;
+        model: Models.IReportFilterModel;
         togglePercentage: () => void;
         viewDetails: () => void;
     }
@@ -20,10 +21,13 @@
         togglePercentage = () => this.scope.chart.ShowPercentage = !this.scope.chart.ShowPercentage;
 
         updateChart = () => {
+            this.scope.loading = true;
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
                 .then((result: Models.PieChartModel) => {
                     this.scope.chart.Update(result);
                     this.resetColors();
+                }).finally(() => {
+                    this.scope.loading = false;
                 });
         }
 

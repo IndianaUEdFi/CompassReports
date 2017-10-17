@@ -4,6 +4,7 @@
         chart: Models.PercentageTotalBarChartModel,
         dataSetOverride: any;
         data: number[][];
+        loading: boolean;
         model: Models.IReportFilterModel;
         togglePercentage: () => void;
         viewDetails: () => void;
@@ -37,12 +38,16 @@
                 }
             }
 
+            this.scope.loading = true;
+
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](model)
                 .then((result: Models.PercentageTotalBarChartModel) => {
                     this.scope.chart.Update(result);
                     this.updatePercentage();
                     this.resetColors();
-            });
+                }).finally(() => {
+                    this.scope.loading = false;
+                });
         }
 
         updatePercentage = () => {

@@ -21,6 +21,9 @@ module App.Reports.CollegeReadiness {
 
             api.assessmentFilters.getGrades(model.AssessmentTitle, model.Subject).then((grades: Models.FilterValueModel[]) => {
                 filters[2].update(grades);
+                if (grades.length === 1) {
+                    model.Assessments = [grades[0].Value as number];
+                }
             });
         }
     }
@@ -48,6 +51,7 @@ module App.Reports.CollegeReadiness {
                 model.AssessmentTitle = $stateParams.assessmentTitle;
                 model.Subject = ($stateParams.assessmentTitle) ? ((subjects && subjects.length) ? subjects[0] : null) : null;
                 model.SchoolYear = (schoolYears && schoolYears.length) ? schoolYears[0].Value as number : null;
+                model.Assessments = (grades && grades.length === 1) ? [grades[0].Value as number] : [];
 
                 return {
                     filters: filters,

@@ -25,6 +25,9 @@ module App.Reports.AssessmentTrends {
 
             api.assessmentFilters.getGrades(model.AssessmentTitle, model.Subject).then((grades: Models.FilterValueModel[]) => {
                 filters[2].update(grades);
+                if (grades.length === 1) {
+                    model.Assessments = [grades[0].Value as number];
+                }
             });
         }
     }
@@ -76,6 +79,7 @@ module App.Reports.AssessmentTrends {
                         $rootScope.filterModel = null;
                     } else {
                         model.Subject = ($stateParams.assessmentTitle) ? ((subjects && subjects.length) ? subjects[0] : null) : DefaultSubject;
+                        model.Assessments = (grades && grades.length === 1) ? [grades[0].Value as number] : [];
                     }
 
                     let backState = null;

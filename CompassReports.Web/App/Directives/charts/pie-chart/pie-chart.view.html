@@ -1,4 +1,4 @@
-﻿<md-card>
+﻿<md-card style="position: relative">
     <md-toolbar class="md-accent md-hue-1" style="height: 50px">
         <div class="md-toolbar-tools">
             <h3>{{chart.Title}}</h3>
@@ -19,29 +19,37 @@
             </div>
         </div>
     </md-toolbar>
-    <md-card-content>
+    <md-card-content style="position: relative" ng-style="{'height': chart.Data.length ? '' : '50vh'}">
+        <div ng-if="loading" class="chart-loader">
+            <div style="vertical-align: middle; display: table-cell;">
+                <h2>Loading...</h2>
+                <div layout-align="space-around" style="text-align: -webkit-center;">
+                    <md-progress-circular md-mode="indeterminate" class="md-hue-1"></md-progress-circular>
+                </div>
+            </div>
+        </div>
         <div ng-if="!chart.ShowChart" style="overflow-x: auto">
             <table class="material-table material-table-bordered">
                 <thead>
-                    <tr>
-                        <th ng-if="!chart.ShowPercentage" ng-repeat="header in chart.Headers">{{header}}</th>
-                        <th ng-if="chart.ShowPercentage" ng-repeat="header in chart.PercentageHeaders">{{header}}</th>
-                    </tr>
+                <tr>
+                    <th ng-if="!chart.ShowPercentage" ng-repeat="header in chart.Headers">{{header}}</th>
+                    <th ng-if="chart.ShowPercentage" ng-repeat="header in chart.PercentageHeaders">{{header}}</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="label in chart.Labels" class="data-rows">
-                        <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
-                        <td>{{label}}</td>
-                        <td ng-if="!chart.ShowPercentage">{{chart.Data[$index]}}</td>
-                        <td ng-if="chart.ShowPercentage">{{chart.Percentages[$index]}}%</td>
-                    </tr>
+                <tr ng-repeat="label in chart.Labels" class="data-rows">
+                    <td style="width: 20px"><md-icon ng-style="{'color': chart.Colors[$index]}" md-font-set="material-icons">stop</md-icon></td>
+                    <td>{{label}}</td>
+                    <td ng-if="!chart.ShowPercentage">{{chart.Data[$index]}}</td>
+                    <td ng-if="chart.ShowPercentage">{{chart.Percentages[$index]}}%</td>
+                </tr>
                 </tbody>
                 <tfoot ng-if="!chart.ShowPercentage && !chart.HideTotal">
-                    <tr>
-                        <th></th>
-                        <th>{{chart.TotalRowTitle}}</th>
-                        <th>{{chart.Total}}</th>
-                    </tr>
+                <tr>
+                    <th></th>
+                    <th>{{chart.TotalRowTitle}}</th>
+                    <th>{{chart.Total}}</th>
+                </tr>
                 </tfoot>
             </table>
         </div>

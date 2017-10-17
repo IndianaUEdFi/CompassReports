@@ -12,7 +12,7 @@ module App.Reports.EnrollmentTrends {
                 ) => {
                     var filters = [
                         new Models.FilterModel<number>(schoolYears, 'School Years', 'SchoolYears', true),
-                        new Models.FilterModel<number>(grades, 'Grade Levels', 'Grades', true),
+                        new Models.FilterModel<number>(grades, 'Grades', 'Grades', true),
                         new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                         new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),
                         new Models.FilterModel<number>(specialEducationStatuses, 'Education Types', 'SpecialEducationStatuses', true),

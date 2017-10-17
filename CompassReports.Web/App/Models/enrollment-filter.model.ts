@@ -13,10 +13,11 @@
 
 
         filteringCount = () => {
-            let count = 0;
+            //Starts at one since Grades always shows
+            let count = 1;
+
             if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) count++;
             if (this.Ethnicities != null && this.Ethnicities.length) count++;
-            if (this.Grades != null && this.Grades.length) count++;
             if (this.SchoolYears != null && this.SchoolYears.length) count++;
             if (this.LunchStatuses != null && this.LunchStatuses.length) count++;
             if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) count++;

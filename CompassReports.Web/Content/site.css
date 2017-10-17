@@ -161,3 +161,16 @@ ul.filter-status li div {
 md-icon.fa {
     font-size: 20px;
 }
+
+.chart-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(232, 232, 232, .7);
+    top: 0px;
+    left: 0px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    z-index: 10
+}

@@ -15,7 +15,12 @@
     export class ReportBaseController implements ng.IController{
         static $inject = ['$rootScope', '$mdSidenav', 'services', 'report'];
 
-        apply = () => this.$rootScope.$emit('update-charts');
+        filterForm: ng.IFormController;
+
+        apply = () => {
+            this.$rootScope.$emit('update-charts');
+            this.filterForm.$setPristine();
+        };
 
         filteringCount = () => this.report.model.filteringCount();
 
@@ -35,6 +40,14 @@
             private readonly $mdSidenav: ng.material.ISidenavService,
             private readonly services: IServices,
             private readonly report: Models.BaseReport
-        ) { }
+        ) {
+            services.timeout(() => {
+                $mdSidenav('filternav').onClose(() => {
+                    if (!this.filterForm.$pristine) {
+                        this.apply();
+                    }
+                });
+            });
+        }
     }
 }

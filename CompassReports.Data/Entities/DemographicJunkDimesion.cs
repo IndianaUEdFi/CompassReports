@@ -37,8 +37,7 @@ namespace CompassReports.Data.Entities
         [MaxLength(50)]
         public string EnglishLanguageLearnerStatus { get; set; }
 
-        [MaxLength(15)]
-        public string ExpectedGraduationYear { get; set; }
+        public short ExpectedGraduationYear { get; set; }
 
         public ICollection<AssessmentFact> AssessmentFacts { get; set; }
         public ICollection<AttendanceFact> AttendanceFacts { get; set; }

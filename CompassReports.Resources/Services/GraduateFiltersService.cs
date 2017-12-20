@@ -38,7 +38,7 @@ namespace CompassReports.Resources.Services
         {
             return _graduationFactRepository
                 .GetAll()
-                .Where(x => x.Demographic.ExpectedGraduationYear == expectedGradYear.ToString())
+                .Where(x => x.Demographic.ExpectedGraduationYear == expectedGradYear)
                 .Select(x => x.SchoolYearKey)
                 .Distinct()
                 .ToList()
@@ -59,7 +59,7 @@ namespace CompassReports.Resources.Services
                 .Select(x => new { SchoolYear = x.SchoolYearKey, x.Demographic.ExpectedGraduationYear })
                 .Distinct()
                 .ToList()
-                .Select(x => (short)(x.SchoolYear - short.Parse(x.ExpectedGraduationYear)))
+                .Select(x => (short)(x.SchoolYear - x.ExpectedGraduationYear))
                 .Distinct()
                 .OrderBy(x => x)
                 .Select(x => new FilterModel<short>
@@ -82,8 +82,6 @@ namespace CompassReports.Resources.Services
                 .GetAll()
                 .Select(x => x.Demographic.ExpectedGraduationYear)
                 .Distinct()
-                .ToList()
-                .Select(short.Parse)
                 .ToList();
 
             return _schoolYearRepository

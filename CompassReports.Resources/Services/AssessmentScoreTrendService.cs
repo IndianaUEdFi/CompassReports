@@ -41,7 +41,7 @@ namespace CompassReports.Resources.Services
                 .ToList()
                 .Select(x => new
                 {
-                    ScoreResult = int.Parse(x.ScoreResult),
+                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
                     SchoolYear = x.SchoolYear,
                     SchoolYearDescription = x.SchoolYearDescription,
                     Total = x.Total
@@ -93,7 +93,7 @@ namespace CompassReports.Resources.Services
                 .ToList()
                 .Select(x => new
                 {
-                    ScoreResult = int.Parse(x.ScoreResult),
+                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
                     EnglishLanguageLearnerStatus = x.EnglishLanguageLearnerStatus,
                     SchoolYear = x.SchoolYear,
                     SchoolYearDescription = x.SchoolYearDescription,
@@ -153,7 +153,7 @@ namespace CompassReports.Resources.Services
                 .ToList()
                 .Select(x => new
                 {
-                    ScoreResult = int.Parse(x.ScoreResult),
+                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
                     Ethnicity = x.Ethnicity,
                     SchoolYear = x.SchoolYear,
                     SchoolYearDescription = x.SchoolYearDescription,
@@ -213,7 +213,7 @@ namespace CompassReports.Resources.Services
                 .ToList()
                 .Select(x => new
                 {
-                    ScoreResult = int.Parse(x.ScoreResult),
+                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
                     FreeReducedLunchStatus = x.FreeReducedLunchStatus,
                     SchoolYear = x.SchoolYear,
                     SchoolYearDescription = x.SchoolYearDescription,
@@ -273,7 +273,7 @@ namespace CompassReports.Resources.Services
                 .ToList()
                 .Select(x => new
                 {
-                    ScoreResult = int.Parse(x.ScoreResult),
+                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
                     SpecialEducationStatus = x.SpecialEducationStatus,
                     SchoolYear = x.SchoolYear,
                     SchoolYearDescription = x.SchoolYearDescription,
@@ -321,7 +321,7 @@ namespace CompassReports.Resources.Services
         {
             var query = _assessmentRepository
                 .GetAll()
-                .Where(x => x.Performance.ScoreResult != "Not Applicable");
+                .Where(x => x.Performance.ScoreResult != null);
 
             if (model.SchoolYears != null && model.SchoolYears.Any())
                 query = query.Where(x => model.SchoolYears.Contains(x.SchoolYearKey));

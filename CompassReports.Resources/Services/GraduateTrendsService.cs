@@ -47,8 +47,7 @@ namespace CompassReports.Resources.Services
                         SchoolYearDescription = x.Key.SchoolYearDescription,
                         Total = x.Sum(y => y.GraduationStudentCount)
                     })
-                    .ToList()
-                    .Where(x => x.SchoolYear - short.Parse(x.ExpectedGraduationYear) == model.GradCohortYearDifference)
+                    .Where(x => x.SchoolYear - x.ExpectedGraduationYear == model.GradCohortYearDifference)
                     .OrderBy(x => x.SchoolYear)
                     .ToList();
 
@@ -119,8 +118,7 @@ namespace CompassReports.Resources.Services
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     Total = x.Sum(y => y.GraduationStudentCount)
                 })
-                .ToList()
-                .Where(x => x.SchoolYear - short.Parse(x.ExpectedGraduationYear) == model.GradCohortYearDifference)
+                .Where(x => x.SchoolYear - x.ExpectedGraduationYear == model.GradCohortYearDifference)
                 .OrderBy(x => x.SchoolYear)
                 .ToList();
 
@@ -196,6 +194,9 @@ namespace CompassReports.Resources.Services
 
             if (model.SpecialEducationStatuses != null && model.SpecialEducationStatuses.Any())
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
+
+            if (model.ExpectedGraduationYears.Any())
+                query = query.Where(x => model.ExpectedGraduationYears.Contains(x.Demographic.ExpectedGraduationYear));
 
             return query;
         }

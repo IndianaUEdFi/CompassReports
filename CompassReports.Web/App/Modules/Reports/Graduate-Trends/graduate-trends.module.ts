@@ -14,7 +14,7 @@ module App.Reports.GraduateTrends {
                     specialEducationStatuses: string[]) => {
 
                 const filters = [
-                    new Models.FilterModel<number>(schoolYears, 'Years', 'ExpectedGraduationYears', true, true),
+                    new Models.FilterModel<number>(schoolYears, 'Expected Graduation Years', 'ExpectedGraduationYears', true, true),
                     new Models.FilterModel<number>(cohorts, 'Cohort', 'GradCohortYearDifference', false, true),
                     new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                     new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),

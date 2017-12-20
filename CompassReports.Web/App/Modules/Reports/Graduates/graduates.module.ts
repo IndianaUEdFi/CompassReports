@@ -28,7 +28,7 @@ module App.Reports.Graduate {
                     englishLanguageLearnerStatuses: string[], ethnicities: string[], lunchStatuses: string[],
                     specialEducationStatuses: string[]) => {
                 const filters = [
-                    new Models.FilterModel<number>(schoolYears, 'Year', 'ExpectedGraduationYear', false, true, onExpectedGraduationYearChange),
+                    new Models.FilterModel<number>(schoolYears, 'Expected Graduation Year', 'ExpectedGraduationYear', false, true, onExpectedGraduationYearChange),
                     new Models.FilterModel<number>(cohorts, 'Cohort', 'CohortYear', false, true),
                     new Models.FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                     new Models.FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),

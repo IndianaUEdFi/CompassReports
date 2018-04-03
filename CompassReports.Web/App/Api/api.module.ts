@@ -24,6 +24,7 @@ module App {
         graduateStatus: Api.GraduateStatus.IGraduateStatusApi;
         graduateTrends: Api.GraduateTrends.IGraduateTrendsApi;
         graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi;
+        school: Api.School.ISchoolApi;
     }
 
     class ApiService implements IApi {
@@ -49,7 +50,8 @@ module App {
             'api.graduate-filters',
             'api.graduate-status',
             'api.graduate-trends',
-            'api.graduate-waivers'
+            'api.graduate-waivers',
+            'api.school'
         ];
 
         constructor(
@@ -73,7 +75,8 @@ module App {
             public graduateFilters: Api.GraduateFilters.IGraduateFiltersApi,
             public graduateStatus: Api.GraduateStatus.IGraduateStatusApi,
             public graduateTrends: Api.GraduateTrends.IGraduateTrendsApi,
-            public graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi
+            public graduateWaivers: Api.GraduateWaivers.IGraduateWaiversApi,
+            public school: Api.School.ISchoolApi
         ) {
         }
     }
@@ -128,7 +131,8 @@ module App {
             'app.api.graduate-filters',
             'app.api.graduate-status',
             'app.api.graduate-trends',
-            'app.api.graduate-waivers'
+            'app.api.graduate-waivers',
+            'app.api.school'
         ])
         .service("api", ApiService);
 

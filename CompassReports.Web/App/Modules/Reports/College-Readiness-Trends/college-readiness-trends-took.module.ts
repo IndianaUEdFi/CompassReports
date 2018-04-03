@@ -1,4 +1,4 @@
-﻿/// <reference path="../Report-Base/report-base.module.ts" />
+﻿/// <reference path="./college-readiness-trends.module.ts" />
 
 module App.Reports.CollegeReadinessTrends.Took {
 
@@ -9,9 +9,8 @@ module App.Reports.CollegeReadinessTrends.Took {
 
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
-            let view = new CollegeReadinessTrendsReportView(settings);
-            view.resolve.charts = ['$stateParams', 'performanceLevels', ($stateParams: any, performanceLevels: Models.FilterValueModel[]) => {
-                var charts =  [ new PercentageTotalBarChartModel('assessmentTakingTrend', 'get') ];
+            const chartResolve = ['$stateParams', 'performanceLevels', ($stateParams: any, performanceLevels: Models.FilterValueModel[]) => {
+                var charts = [new PercentageTotalBarChartModel('assessmentTakingTrend', 'get')];
 
                 angular.forEach(performanceLevels, (performanceLevel: Models.FilterValueModel) => {
                     var display = (performanceLevel.Display as string).toLowerCase();
@@ -37,7 +36,7 @@ module App.Reports.CollegeReadinessTrends.Took {
                 {
                     url: '/college-readiness-trends/took?assessmentTitle',
                     views: {
-                        'report@app.reports': view
+                        'report@app.reports': new AssessmentReportView(settings, true, true, chartResolve)
                     }
                 });
         }
@@ -48,8 +47,7 @@ module App.Reports.CollegeReadinessTrends.Took {
 
         constructor($stateProvider: ng.ui.IStateProvider, settings: ISystemSettings) {
 
-            let view = new CollegeReadinessTrendsReportView(settings);
-            view.resolve.charts = ['$stateParams', ($stateParams: any) => {
+            const chartResolve = ['$stateParams', ($stateParams: any) => {
                 var charts = [
                     new PercentageTotalBarChartModel('assessmentTakingTrend', 'byEthnicity', null, { PerformanceKey: $stateParams.performanceKey }),
                     new PercentageTotalBarChartModel('assessmentTakingTrend', 'byLunchStatus', null, { PerformanceKey: $stateParams.performanceKey }),
@@ -63,7 +61,7 @@ module App.Reports.CollegeReadinessTrends.Took {
                 {
                     url: '/college-readiness-trends/took-details?assessmentTitle&performanceKey',
                     views: {
-                        'report@app.reports': view
+                        'report@app.reports': new AssessmentReportView(settings, true, false, chartResolve)
                     }
                 });
         }

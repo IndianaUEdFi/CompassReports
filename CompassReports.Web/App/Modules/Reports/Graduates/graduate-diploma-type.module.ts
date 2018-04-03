@@ -19,7 +19,7 @@ module App.Reports.Graduate.DiplomaType  {
                 {
                     url: '/graduate-diploma-type',
                     views: {
-                        'report@app.reports': new GraduatesReportView(settings, 'Diploma Types', charts)
+                        'report@app.reports': new GraduatesReportView(settings, 'Diploma Types', false, charts)
                     }
                 });
         }

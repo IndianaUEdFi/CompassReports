@@ -1,6 +1,9 @@
 ﻿<md-input-container style="width: 100%">
     <label>{{filter.Title}}</label>
     <md-select ng-model="report.model[filter.ModelParam]" ng-change="onChange()" ng-disabled="!filter.Values.length || filter.Disabled" ng-required="filter.Required">
-        <md-option ng-repeat="value in filter.Values" ng-value="value.Value">{{value.Display}}</md-option>
+        <md-option ng-repeat="value in filter.Values" ng-value="value.Value">
+            {{value.Display}}
+            <small ng-show="value.SubDisplay"><br />{{value.SubDisplay}}</small>
+        </md-option>
     </md-select>
 </md-input-container>

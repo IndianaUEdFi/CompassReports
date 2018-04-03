@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Models\AssessmentTrendFilterModel.cs" />
     <Compile Include="Models\AssessmentFilterModel.cs" />
+    <Compile Include="Models\SchoolModel.cs" />
     <Compile Include="Models\GraduateFilterModel.cs" />
     <Compile Include="Models\PercentageTotalBarChartModel.cs" />
     <Compile Include="Models\LineChartModel.cs" />

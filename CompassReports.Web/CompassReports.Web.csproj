@@ -255,6 +255,7 @@
     <TypeScriptCompile Include="App\Api\assessment-taking.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance-trend.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance.api.ts" />
+    <TypeScriptCompile Include="App\Api\school.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-trends.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-waviers.api.ts" />
@@ -284,6 +285,8 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\school-filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\school.model.ts" />
     <TypeScriptCompile Include="App\Models\route-state.model.ts" />
     <TypeScriptCompile Include="App\Models\graduate-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\assessment-filter.model.ts" />
@@ -299,6 +302,7 @@
     <TypeScriptCompile Include="App\Modules\Reports\Assessment-Trends\assessment-performance-trend.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Assessment-Trends\assessment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Assessment\assessment.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Assessment-Report-View\assessment-report-view.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance-Trends\attendance-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Attendance\attendance.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\College-Readiness-Trends\college-readiness-trends-score.module.ts" />
@@ -310,8 +314,10 @@
     <TypeScriptCompile Include="App\Modules\Reports\College-Readiness\college-readiness-took-trend.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\College-Readiness\college-readiness.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\College-Readiness\college-readiness-took.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Report-View\enrollment-report-view.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment-Trends\enrollment-trends.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Enrollment\enrollment.module.ts" />
+    <TypeScriptCompile Include="App\Modules\Reports\Graduates-Report-View\graduates-report-view.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-diploma-type.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-waivers.module.ts" />
     <TypeScriptCompile Include="App\Modules\Reports\Graduates\graduate-status.module.ts" />

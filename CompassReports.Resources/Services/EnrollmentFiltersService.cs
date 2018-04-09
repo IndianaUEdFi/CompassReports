@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace CompassReports.Resources.Services
 {
     public interface IEnrollmentFiltersService
     {
-        List<FilterModel<short>> GetSchoolYears();
+        Task<List<FilterModel<short>>> GetSchoolYears();
     }
 
     public class EnrollmentFiltersService : IEnrollmentFiltersService
@@ -24,9 +25,9 @@ namespace CompassReports.Resources.Services
             _enrollmentRepository = enrollmentRepository;
         }
 
-        public List<FilterModel<short>> GetSchoolYears()
+        public async Task<List<FilterModel<short>>> GetSchoolYears()
         {
-            return _enrollmentRepository
+            return await _enrollmentRepository
                 .GetAll()
                 .Select(x => new FilterModel<short>
                 {
@@ -35,7 +36,7 @@ namespace CompassReports.Resources.Services
                 })
                 .Distinct()
                 .OrderByDescending(x => x.Value)
-                .ToList();
+                .ToListAsync();
         }
     }
 }

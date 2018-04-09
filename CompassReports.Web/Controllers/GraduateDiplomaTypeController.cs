@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using CompassReports.Resources.Models;
 using CompassReports.Resources.Services;
@@ -19,41 +20,41 @@ namespace CompassReports.Web.Controllers
 
         [Route("")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult Get(GraduateFilterModel model)
+        public async Task<IHttpActionResult> Get(GraduateFilterModel model)
         {
-            var chart = _graduateDiplomaTypeService.Get(model);
+            var chart = await _graduateDiplomaTypeService.Get(model);
             return Ok(chart);
         }
 
         [Route("by-language-learner")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEnglishLanguageLearner(GraduateFilterModel model)
+        public async Task<IHttpActionResult> ByEnglishLanguageLearner(GraduateFilterModel model)
         {
-            var chart = _graduateDiplomaTypeService.ByEnglishLanguageLearner(model);
+            var chart = await _graduateDiplomaTypeService.ByEnglishLanguageLearner(model);
             return Ok(chart);
         }
 
         [Route("by-ethnicity")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEthnicity(GraduateFilterModel model)
+        public async Task<IHttpActionResult> ByEthnicity(GraduateFilterModel model)
         {
-            var chart = _graduateDiplomaTypeService.ByEthnicity(model);
+            var chart = await _graduateDiplomaTypeService.ByEthnicity(model);
             return Ok(chart);
         }
 
         [Route("by-lunch-status")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByLunchStatus(GraduateFilterModel model)
+        public async Task<IHttpActionResult> ByLunchStatus(GraduateFilterModel model)
         {
-            var chart = _graduateDiplomaTypeService.ByLunchStatus(model);
+            var chart = await _graduateDiplomaTypeService.ByLunchStatus(model);
             return Ok(chart);
         }
 
         [Route("by-special-education")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult BySpecialEducation(GraduateFilterModel model)
+        public async Task<IHttpActionResult> BySpecialEducation(GraduateFilterModel model)
         {
-            var chart = _graduateDiplomaTypeService.BySpecialEducation(model);
+            var chart = await _graduateDiplomaTypeService.BySpecialEducation(model);
             return Ok(chart);
         }
     }

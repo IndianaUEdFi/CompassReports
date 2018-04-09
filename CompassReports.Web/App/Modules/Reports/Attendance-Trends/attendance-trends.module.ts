@@ -21,7 +21,7 @@ module App.Reports.AttendanceTrends {
                 {
                     url: '/attendance-trends',
                     views: {
-                        'report@app.reports': new EnrollmentReportView(settings, 'Attendance Trends', false, charts)
+                        'report@app.reports': new EnrollmentReportView(settings, 'Attendance Trends', true, charts)
                     }
                 });
         }

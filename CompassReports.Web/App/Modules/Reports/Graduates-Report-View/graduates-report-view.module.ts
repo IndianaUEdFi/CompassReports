@@ -40,7 +40,7 @@ module App.Reports {
         constructor(title: string, multipleSchoolYears: boolean, charts: ChartModel[]) {
             super(multipleSchoolYears);
 
-            if (multipleSchoolYears)
+            if (!multipleSchoolYears)
                 this.cohorts = ['$rootScope', 'api', 'schoolYears',
                     ($rootScope: IAppRootScope, api: IApi, schoolYears: Models.FilterValueModel[]) => {
                         if ($rootScope.filterModel) {
@@ -64,15 +64,17 @@ module App.Reports {
 
                     var filters = [
                         expectedGraduationYearFilter,
-                        new FilterModel<number>(cohorts, 'Cohort', 'CohortYear', false, true)
-                    ].concat(baseFilters);;
+                        new FilterModel<number>(cohorts, 'Cohort', multipleSchoolYears ? 'GradCohortYearDifference' : 'CohortYear', false, true)
+                    ].concat(baseFilters);
+
+                    console.log(cohorts);
 
                     let model = new Models.GraduateFilterModel();
-                    model.CohortYear = (cohorts && cohorts.length) ? cohorts[0].Value as number : null;
 
-                    if(!multipleSchoolYears)
+                    if (!multipleSchoolYears) {
                         model.ExpectedGraduationYear = (schoolYears && schoolYears.length) ? schoolYears[0].Value as number : null;
-                    else if(cohorts.length)
+                        model.CohortYear = (cohorts && cohorts.length) ? cohorts[0].Value as number : null;
+                    } else if (cohorts.length)
                         model.GradCohortYearDifference = cohorts[0].Value as number;
 
                     if ($rootScope.filterModel) {

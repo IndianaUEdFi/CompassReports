@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CompassReports.Data;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
@@ -10,28 +12,36 @@ namespace CompassReports.Resources.Services
 {
     public interface IAssessmentPerformanceTrendService
     {
-        PercentageTotalBarChartModel Get(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByEthnicity(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByLunchStatus(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel BySpecialEducation(AssessmentTrendFilterModel model);
+        Task<PercentageTotalBarChartModel> Get(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model);
     }
 
     public class AssessmentPerformanceTrendService : IAssessmentPerformanceTrendService
     {
-        private readonly IRepository<AssessmentFact> _assessmentRepository;
+        private readonly IAssessmentFactService _assessmentFactService;
         private readonly IRepository<PerformanceDimension> _performanceRepository;
 
-        public AssessmentPerformanceTrendService(IRepository<AssessmentFact> assessmentRepository,
+        public AssessmentPerformanceTrendService(IAssessmentFactService assessmentFactService,
             IRepository<PerformanceDimension> performanceRepository)
         {
-            _assessmentRepository = assessmentRepository;
+            _assessmentFactService = assessmentFactService;
             _performanceRepository = performanceRepository;
         }
 
-        public PercentageTotalBarChartModel Get(AssessmentTrendFilterModel model)
+        public class AssessmentTrendChartGroupBy
         {
-            var query = BaseQuery(model);
+            public short SchoolYear { get; set; }
+            public string SchoolYearDescription { get; set; }
+            public int PerformanceKey { get; set; }
+            public string Property { get; set; }
+        }
+
+        public async Task<PercentageTotalBarChartModel> Get(AssessmentFilterModel model)
+        {
+            var query = _assessmentFactService.BaseQuery(model);
 
             var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.PerformanceLevel, x.PerformanceKey })
                 .Select(x => new
@@ -107,304 +117,128 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.PerformanceKey, Property = x.Demographic.EnglishLanguageLearnerStatus })
-                .Select(x => new
+            var grouping = _assessmentFactService.BaseQuery(model)
+                .GroupBy(x => new AssessmentTrendChartGroupBy
                 {
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Property = x.Key.Property,
-                    PerformanceKey = x.Key.PerformanceKey,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                }).OrderBy(x => x.SchoolYear)
-                .ToList();
+                    SchoolYear = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    PerformanceKey = x.PerformanceKey,
+                    Property = x.Demographic.EnglishLanguageLearnerStatus
+                });
 
-            var performance = _performanceRepository.GetAll().FirstOrDefault(x => x.PerformanceKey == model.PerformanceKey.Value);
-            if (performance == null || !model.PerformanceKey.HasValue)
-                throw new Exception("Performance Level does not Exist");
-
-            var headers = new List<string> { "", "Language Statuses" };
-            headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
-
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
-            var properties = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var totals = results.GroupBy(x => x.SchoolYear)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total), x.Sum(y => y.Total)),
-                    Total = x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total)
-                }).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var property in properties)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var row = results.FirstOrDefault(x => x.Property == property && x.SchoolYear == schoolYear && x.PerformanceKey == model.PerformanceKey.Value);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    var propertyTotal = results.Where(x => x.Property == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = performance.PerformanceLevel + " Trend By English Language Learners",
-                Headers = headers,
-                Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
-                Series = properties,
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = performance.PerformanceLevel,
-                Totals = totals
-            };
+            return await CreateChart(grouping, model.PerformanceKey, "Language Statues", "English Language Learner");
         }
 
-        public PercentageTotalBarChartModel ByEthnicity(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.PerformanceKey, Property = x.Demographic.Ethnicity })
-                .Select(x => new
+            var grouping = _assessmentFactService.BaseQuery(model)
+                .GroupBy(x => new AssessmentTrendChartGroupBy
                 {
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Property = x.Key.Property,
-                    PerformanceKey = x.Key.PerformanceKey,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                }).OrderBy(x => x.SchoolYear)
-                .ToList();
+                    SchoolYear = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    PerformanceKey = x.PerformanceKey,
+                    Property = x.Demographic.Ethnicity
+                });
 
-            var performance = _performanceRepository.GetAll().FirstOrDefault(x => x.PerformanceKey == model.PerformanceKey.Value);
-            if (performance == null || !model.PerformanceKey.HasValue)
-                throw new Exception("Performance Level does not Exist");
-
-            var headers = new List<string> { "", "Ethnicities" };
-            headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
-
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
-            var properties = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var totals = results.GroupBy(x => x.SchoolYear)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
+            return await CreateChart(grouping, model.PerformanceKey, "Ethnicities", "Ethnicity");
+        }
+      
+        public async Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model)
+        {
+            var grouping = _assessmentFactService.BaseQuery(model)
+                .GroupBy(x => new AssessmentTrendChartGroupBy
                 {
-                    Percentage = GetPercentage(x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total), x.Sum(y => y.Total)),
-                    Total = x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total)
-                }).ToList();
+                    SchoolYear = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    PerformanceKey = x.PerformanceKey,
+                    Property = x.Demographic.FreeReducedLunchStatus
+                });
 
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var property in properties)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var row = results.FirstOrDefault(x => x.Property == property && x.SchoolYear == schoolYear && x.PerformanceKey == model.PerformanceKey.Value);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    var propertyTotal = results.Where(x => x.Property == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = performance.PerformanceLevel + " Trend By Ethnicity",
-                Headers = headers,
-                Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
-                Series = properties,
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = performance.PerformanceLevel,
-                Totals = totals
-            };
+            return await CreateChart(grouping, model.PerformanceKey, "Lunch Statuses", "Free/Reduced Price Meals");
         }
 
-        public PercentageTotalBarChartModel ByLunchStatus(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.PerformanceKey, Property = x.Demographic.FreeReducedLunchStatus })
-                .Select(x => new
+            var grouping = _assessmentFactService.BaseQuery(model)
+                .GroupBy(x => new AssessmentTrendChartGroupBy
                 {
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Property = x.Key.Property,
-                    PerformanceKey = x.Key.PerformanceKey,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                }).OrderBy(x => x.SchoolYear)
-                .ToList();
+                    SchoolYear = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    PerformanceKey = x.PerformanceKey,
+                    Property = x.Demographic.SpecialEducationStatus
+                });
 
-            var performance = _performanceRepository.GetAll().FirstOrDefault(x => x.PerformanceKey == model.PerformanceKey.Value);
-            if (performance == null || !model.PerformanceKey.HasValue)
-                throw new Exception("Performance Level does not Exist");
-
-            var headers = new List<string> { "", "Lunch Statuses" };
-            headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
-
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
-            var properties = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var totals = results.GroupBy(x => x.SchoolYear)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total), x.Sum(y => y.Total)),
-                    Total = x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total)
-                }).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var property in properties)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var row = results.FirstOrDefault(x => x.Property == property && x.SchoolYear == schoolYear && x.PerformanceKey == model.PerformanceKey.Value);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    var propertyTotal = results.Where(x => x.Property == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = performance.PerformanceLevel + " Trend By Free/Reduced Price Meals",
-                Headers = headers,
-                Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
-                Series = properties,
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = performance.PerformanceLevel,
-                Totals = totals
-            };
-        }
-
-        public PercentageTotalBarChartModel BySpecialEducation(AssessmentTrendFilterModel model)
-        {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.PerformanceKey, Property = x.Demographic.SpecialEducationStatus })
-                .Select(x => new
-                {
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Property = x.Key.Property,
-                    PerformanceKey = x.Key.PerformanceKey,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                }).OrderBy(x => x.SchoolYear)
-                .ToList();
-
-            var performance = _performanceRepository.GetAll().FirstOrDefault(x => x.PerformanceKey == model.PerformanceKey.Value);
-            if (performance == null || !model.PerformanceKey.HasValue)
-                throw new Exception("Performance Level does not Exist");
-
-            var headers = new List<string> { "", "Education Statuses" };
-            headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
-
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
-            var properties = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var totals = results.GroupBy(x => x.SchoolYear)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total), x.Sum(y => y.Total)),
-                    Total = x.Where(y => y.PerformanceKey == model.PerformanceKey.Value).Sum(y => y.Total)
-                }).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var property in properties)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var row = results.FirstOrDefault(x => x.Property == property && x.SchoolYear == schoolYear && x.PerformanceKey == model.PerformanceKey.Value);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    var propertyTotal = results.Where(x => x.Property == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = performance.PerformanceLevel + " Trend By Special Education",
-                Headers = headers,
-                Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
-                Series = properties,
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = performance.PerformanceLevel,
-                Totals = totals
-            };
-        }
-
-        private IQueryable<AssessmentFact> BaseQuery(AssessmentTrendFilterModel model)
-        {
-            var query = _assessmentRepository
-                .GetAll()
-                .AsQueryable();
-
-            if (model.SchoolYears != null && model.SchoolYears.Any())
-                query = query.Where(x => model.SchoolYears.Contains(x.SchoolYearKey));
-
-            if (model.Assessments != null && model.Assessments.Any())
-                query = query.Where(x => model.Assessments.Contains(x.AssessmentKey));
-            else
-                query = query.Where(x => x.Assessment.AssessmentTitle == model.AssessmentTitle && x.Assessment.AcademicSubject == model.Subject);
-
-            if (model.EnglishLanguageLearnerStatuses != null && model.EnglishLanguageLearnerStatuses.Any())
-                query = query.Where(x => model.EnglishLanguageLearnerStatuses.Contains(x.Demographic.EnglishLanguageLearnerStatus));
-
-            if (model.Ethnicities != null && model.Ethnicities.Any())
-                query = query.Where(x => model.Ethnicities.Contains(x.Demographic.Ethnicity));
-
-            if (model.PerformanceKeys != null && model.PerformanceKeys.Any())
-                query = query.Where(x => model.PerformanceKeys.Contains(x.PerformanceKey));
-
-            if (model.ExcludePerformanceKeys != null && model.ExcludePerformanceKeys.Any())
-                query = query.Where(x => !model.ExcludePerformanceKeys.Contains(x.PerformanceKey));
-
-            if (model.LunchStatuses != null && model.LunchStatuses.Any())
-                query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));
-
-            if (model.SpecialEducationStatuses != null && model.SpecialEducationStatuses.Any())
-                query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
-
-            return query;
+            return await CreateChart(grouping, model.PerformanceKey, "Education Statuses", "Special Education");
         }
 
         private static double GetPercentage(int subTotal, int total)
         {
             return Math.Round(100 * ((double)subTotal / (double)total), 2);
+        }
+
+        private async Task<PercentageTotalBarChartModel> CreateChart(IQueryable<IGrouping<AssessmentTrendChartGroupBy, AssessmentFact>> groupings, int? performanceKey, string header, string title)
+        {
+            var results = await groupings
+                .Select(x => new
+                {
+                    SchoolYear = x.Key.SchoolYear,
+                    SchoolYearDescription = x.Key.SchoolYearDescription,
+                    Property = x.Key.Property,
+                    PerformanceKey = x.Key.PerformanceKey,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                }).OrderBy(x => x.SchoolYear)
+                .ToListAsync();
+
+            var performance = await _performanceRepository.GetAll().FirstOrDefaultAsync(x => x.PerformanceKey == performanceKey.Value);
+            if (performance == null || !performanceKey.HasValue)
+                throw new Exception("Performance Level does not Exist");
+
+            var headers = new List<string> { "", header };
+            headers.AddRange(results.Select(x => x.SchoolYearDescription).Distinct());
+
+            var schoolYears = results.Select(x => x.SchoolYear).Distinct().ToList();
+            var properties = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
+
+            var totals = results.GroupBy(x => x.SchoolYear)
+                .OrderBy(x => x.Key)
+                .Select(x => new PercentageTotalDataModel
+                {
+                    Percentage = GetPercentage(x.Where(y => y.PerformanceKey == performanceKey.Value).Sum(y => y.Total), x.Sum(y => y.Total)),
+                    Total = x.Where(y => y.PerformanceKey == performanceKey.Value).Sum(y => y.Total)
+                }).ToList();
+
+            var data = new List<List<PercentageTotalDataModel>>();
+            foreach (var property in properties)
+            {
+                var values = new List<PercentageTotalDataModel>();
+                foreach (var schoolYear in schoolYears)
+                {
+                    var row = results.FirstOrDefault(x => x.Property == property && x.SchoolYear == schoolYear && x.PerformanceKey == performanceKey.Value);
+                    var rowTotal = row == null ? 0 : row.Total;
+                    var propertyTotal = results.Where(x => x.Property == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
+                    values.Add(new PercentageTotalDataModel
+                    {
+                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
+                        Total = rowTotal
+                    });
+                }
+                data.Add(values);
+            }
+
+            return new PercentageTotalBarChartModel
+            {
+                Title = performance.PerformanceLevel + " Trend By " + title,
+                Headers = headers,
+                Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
+                Series = properties,
+                Data = data,
+                ShowChart = true,
+                ShowPercentage = true,
+                TotalRowTitle = performance.PerformanceLevel,
+                Totals = totals
+            };
         }
     }
 }

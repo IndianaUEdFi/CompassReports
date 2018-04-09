@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using CompassReports.Resources.Models;
 using CompassReports.Resources.Services;
@@ -19,17 +20,17 @@ namespace CompassReports.Web.Controllers
 
         [Route("by-status")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByStatus(GraduateFilterModel model)
+        public async Task<IHttpActionResult> ByStatus(GraduateFilterModel model)
         {
-            var chart = _graduateTrendsService.ByStatus(model);
+            var chart = await _graduateTrendsService.ByStatus(model);
             return Ok(chart);
         }
 
         [Route("by-waiver")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByWaiver(GraduateFilterModel model)
+        public async Task<IHttpActionResult> ByWaiver(GraduateFilterModel model)
         {
-            var chart = _graduateTrendsService.ByWaiver(model);
+            var chart = await _graduateTrendsService.ByWaiver(model);
             return Ok(chart);
         }
 

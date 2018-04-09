@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CompassReports.Data;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
@@ -10,7 +12,7 @@ namespace CompassReports.Resources.Services
 {
     public interface IAssessmentService
     {
-        PercentageTotalBarChartModel ByGoodCauseExcemption(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByGoodCauseExcemption(AssessmentFilterModel model);
     }
 
     public class AssessmentService : IAssessmentService
@@ -25,13 +27,13 @@ namespace CompassReports.Resources.Services
             _goodCauseExemptionRepository = goodCauseExemptionRepository;
         }
 
-        public PercentageTotalBarChartModel ByGoodCauseExcemption(AssessmentFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByGoodCauseExcemption(AssessmentFilterModel model)
         {
             var baseQuery = BaseQuery(model);
 
             if (baseQuery.All(x => x.GoodCauseExemptionKey == 3)) return null;
 
-            var results = (
+            var results = await (
                 from cause in
                 _goodCauseExemptionRepository.GetAll().Where(x => (new[] {1, 2}).Contains(x.GoodCauseExemptionKey))
                 join fact in baseQuery on cause.GoodCauseExemptionKey equals fact.GoodCauseExemptionKey into facts
@@ -51,7 +53,7 @@ namespace CompassReports.Resources.Services
                 GoodCauseExemption = x.Key.GoodCauseExemption,
                 GoodCauseExemptionKey = x.Key.GoodCauseExemptionKey,
                 Total = x.Sum(y => y.AssessmentStudentCount)
-            }).ToList();
+            }).ToListAsync();
 
             var goodCause = results.Where(x => x.GoodCauseExemptionKey == 1).ToList();
 

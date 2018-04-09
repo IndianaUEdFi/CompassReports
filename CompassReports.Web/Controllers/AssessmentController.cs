@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using CompassReports.Resources.Models;
 using CompassReports.Resources.Services;
@@ -20,9 +21,9 @@ namespace CompassReports.Web.Controllers
 
         [Route("by-good-cause")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByGoodCauseExcemption(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> ByGoodCauseExcemption(AssessmentFilterModel model)
         {
-            var chart = _assessmentService.ByGoodCauseExcemption(model);
+            var chart = await _assessmentService.ByGoodCauseExcemption(model);
             return Ok(chart);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using CompassReports.Resources.Models;
@@ -22,41 +23,41 @@ namespace CompassReports.Web.Controllers
 
         [Route("by-english-language-learner")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model)
+        public async Task<IHttpActionResult> ByEnglishLanguageLearnerStatus(EnrollmentFilterModel model)
         {
-            var chart = _enrollmentService.ByEnglishLanguageLearnerStatus(model);
+            var chart = await _enrollmentService.ByEnglishLanguageLearnerStatus(model);
             return Ok(chart);
         }
 
         [Route("by-ethnicity")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEthnicity(EnrollmentFilterModel model)
+        public async Task<IHttpActionResult> ByEthnicity(EnrollmentFilterModel model)
         {
-            var chart = _enrollmentService.ByEthnicity(model);
+            var chart = await _enrollmentService.ByEthnicity(model);
             return Ok(chart);
         }
 
         [Route("by-grade")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByGrade(EnrollmentFilterModel model)
+        public async Task<IHttpActionResult> ByGrade(EnrollmentFilterModel model)
         {
-            var chart = _enrollmentService.ByGrade(model);
+            var chart = await _enrollmentService.ByGrade(model);
             return Ok(chart);
         }
 
         [Route("by-lunch-status")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByLunchStatus(EnrollmentFilterModel model)
+        public async Task<IHttpActionResult> ByLunchStatus(EnrollmentFilterModel model)
         {
-            var chart = _enrollmentService.ByLunchStatus(model);
+            var chart = await _enrollmentService.ByLunchStatus(model);
             return Ok(chart);
         }
 
         [Route("by-special-education")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult BySpecialEducationStatus(EnrollmentFilterModel model)
+        public async Task<IHttpActionResult> BySpecialEducationStatus(EnrollmentFilterModel model)
         {
-            var chart = _enrollmentService.BySpecialEducationStatus(model);
+            var chart = await _enrollmentService.BySpecialEducationStatus(model);
             return Ok(chart);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using CompassReports.Resources.Models;
 using CompassReports.Resources.Services;
@@ -20,41 +21,41 @@ namespace CompassReports.Web.Controllers
 
         [Route("")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult Get(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> Get(AssessmentFilterModel model)
         {
-            var chart = _assessmentPerformanceService.Get(model);
+            var chart = await _assessmentPerformanceService.Get(model);
             return Ok(chart);
         }
 
         [Route("by-language-learner")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEnglishLanguageLearner(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> ByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            var chart = _assessmentPerformanceService.ByEnglishLanguageLearner(model);
+            var chart = await _assessmentPerformanceService.ByEnglishLanguageLearner(model);
             return Ok(chart);
         }
 
         [Route("by-ethnicity")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByEthnicity(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> ByEthnicity(AssessmentFilterModel model)
         {
-            var chart = _assessmentPerformanceService.ByEthnicity(model);
+            var chart = await _assessmentPerformanceService.ByEthnicity(model);
             return Ok(chart);
         }
 
         [Route("by-lunch-status")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult ByLunchStatus(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> ByLunchStatus(AssessmentFilterModel model)
         {
-            var chart = _assessmentPerformanceService.ByLunchStatus(model);
+            var chart = await _assessmentPerformanceService.ByLunchStatus(model);
             return Ok(chart);
         }
 
         [Route("by-special-education")]
         [AcceptVerbs("POST")]
-        public IHttpActionResult BySpecialEducation(AssessmentFilterModel model)
+        public async Task<IHttpActionResult> BySpecialEducation(AssessmentFilterModel model)
         {
-            var chart = _assessmentPerformanceService.BySpecialEducation(model);
+            var chart = await _assessmentPerformanceService.BySpecialEducation(model);
             return Ok(chart);
         }
     }

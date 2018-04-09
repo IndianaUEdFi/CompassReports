@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace CompassReports.Resources.Services
 {
     public interface IGraduateFiltersService
     {
-        List<FilterModel<short>> GetCohorts(short? expectedGradYear = null);
-        List<FilterModel<short>> GetSchoolYears();
+        Task<List<FilterModel<short>>> GetCohorts(short? expectedGradYear = null);
+        Task<List<FilterModel<short>>> GetSchoolYears();
     }
 
     public class GraduateFiltersService : IGraduateFiltersService
@@ -29,19 +30,19 @@ namespace CompassReports.Resources.Services
             _graduationFactRepository = graduationFactRepository;
         }
 
-        public List<FilterModel<short>> GetCohorts(short? expectedGradYear = null)
+        public async Task<List<FilterModel<short>>> GetCohorts(short? expectedGradYear = null)
         {
-            return expectedGradYear.HasValue ? GetCohortsByExpectedGraduationYear(expectedGradYear.Value) : GetUniqueCohorts();
+            return await (expectedGradYear.HasValue ? GetCohortsByExpectedGraduationYear(expectedGradYear.Value) : GetUniqueCohorts());
         }
 
-        private List<FilterModel<short>> GetCohortsByExpectedGraduationYear(short expectedGradYear)
+        private async Task<List<FilterModel<short>>> GetCohortsByExpectedGraduationYear(short expectedGradYear)
         {
-            return _graduationFactRepository
+            return (await _graduationFactRepository
                 .GetAll()
                 .Where(x => x.Demographic.ExpectedGraduationYear == expectedGradYear)
                 .Select(x => x.SchoolYearKey)
                 .Distinct()
-                .ToList()
+                .ToListAsync())
                 .Select(x => new FilterModel<short>
                 {
                     Display = GetCohortName(x, expectedGradYear),
@@ -50,15 +51,15 @@ namespace CompassReports.Resources.Services
                 .ToList();
         }
 
-        private List<FilterModel<short>> GetUniqueCohorts()
+        private async Task<List<FilterModel<short>>> GetUniqueCohorts()
         {
             var values = new[] { "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" };
 
-            return _graduationFactRepository
+            return (await _graduationFactRepository
                 .GetAll()
                 .Select(x => new { SchoolYear = x.SchoolYearKey, x.Demographic.ExpectedGraduationYear })
                 .Distinct()
-                .ToList()
+                .ToListAsync())
                 .Select(x => (short)(x.SchoolYear - x.ExpectedGraduationYear))
                 .Distinct()
                 .OrderBy(x => x)
@@ -76,24 +77,25 @@ namespace CompassReports.Resources.Services
             return values[schoolYear - expectedGradYear] + " Year";
         }
 
-        public List<FilterModel<short>> GetSchoolYears()
+        public async Task<List<FilterModel<short>>> GetSchoolYears()
         {
-            var graduationYears = _graduationFactRepository
+            var graduationYears = await _graduationFactRepository
                 .GetAll()
                 .Select(x => x.Demographic.ExpectedGraduationYear)
                 .Distinct()
-                .ToList();
+                .ToListAsync();
 
-            return _schoolYearRepository
+            return await _schoolYearRepository
                 .GetAll()
                 .Where(x => graduationYears.Contains(x.SchoolYearKey))
                 .Select(x => new FilterModel<short>
                 {
                     Display = x.SchoolYearDescription,
                     Value = x.SchoolYearKey
-                }).Distinct()
+                })
+                .Distinct()
                 .OrderByDescending(x => x.Value)
-                .ToList();
+                .ToListAsync();
 
         }
     }

@@ -55,6 +55,7 @@
     <Compile Include="Models\EnrollmentGroupByModel.cs" />
     <Compile Include="Models\GraduateTrendGroupByModel.cs" />
     <Compile Include="Models\GraduateGroupByModel.cs" />
+    <Compile Include="Models\DistrictModel.cs" />
     <Compile Include="Models\SchoolModel.cs" />
     <Compile Include="Models\GraduateFilterModel.cs" />
     <Compile Include="Models\PercentageTotalBarChartModel.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />
     <Compile Include="Services\GraduateStatusService.cs" />
+    <Compile Include="Services\DistrictService.cs" />
     <Compile Include="Services\SchoolService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

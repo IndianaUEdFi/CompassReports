@@ -105,9 +105,9 @@ module App.Reports {
         constructor(multipleSchoolYears: boolean, includePerformanceLevels: boolean, charts: any[]) {
             super(multipleSchoolYears);
 
-            this.model = ['$rootScope', '$stateParams', 'grades', 'schoolYears', 'subjects',
-                ($rootScope: IAppRootScope, $stateParams: IAssessmentParams, grades: Models.FilterValueModel[],
-                    schoolYears: FilterValueModel[], subjects: string[]) => {
+            this.model = ['$rootScope', '$stateParams', 'districts', 'grades', 'schoolYears', 'subjects',
+                ($rootScope: IAppRootScope, $stateParams: IAssessmentParams, districts: Models.DistrictModel[],
+                    grades: Models.FilterValueModel[], schoolYears: FilterValueModel[], subjects: string[]) => {
 
                     var model = new Models.AssessmentFilterModel();
                     model.AssessmentTitle = $stateParams.assessmentTitle || defaultAssessmentTitle;
@@ -120,6 +120,10 @@ module App.Reports {
                     if ($rootScope.filterModel) {
                         model = $rootScope.filterModel as Models.AssessmentFilterModel;
                         $rootScope.filterModel = null;
+                    }
+
+                    if (districts.length === 1) {
+                        model.Districts = [districts[0].Id];
                     }
 
                     return model;

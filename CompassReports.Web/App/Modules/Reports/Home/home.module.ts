@@ -3,7 +3,6 @@
         static $inject = [];
 
         constructor() {
-            console.log('home app');
         }
     }
 

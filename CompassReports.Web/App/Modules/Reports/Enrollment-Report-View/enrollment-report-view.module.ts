@@ -22,12 +22,16 @@ module App.Reports {
         constructor(title: string, multipleSchoolYears: boolean, charts: ChartModel[]) {
             super(multipleSchoolYears);
 
-            this.report = ['baseFilters', 'schoolYears',
-                (baseFilters: FilterModel<any>[], schoolYears: FilterValueModel[]) => {
+            this.report = ['baseFilters', 'districts', 'schoolYears',
+                (baseFilters: FilterModel<any>[], districts: Models.DistrictModel[], schoolYears: FilterValueModel[]) => {
 
                     var model = multipleSchoolYears
                         ? new Models.EnrollmentFilterModel()
                         : new Models.EnrollmentFilterModel(schoolYears[0].Value as number);
+
+                    if (districts.length === 1) {
+                        model.Districts = [districts[0].Id];                        
+                    }
 
                     return {
                         filters: baseFilters,

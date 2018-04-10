@@ -11,7 +11,7 @@ namespace CompassReports.Resources.Services
 {
     public interface ISchoolService
     {
-         Task<List<SchoolModel>> GetAll();
+         Task<List<SchoolModel>> GetAll(int[] districtId = null);
     }
 
     public class SchoolService : ISchoolService
@@ -23,9 +23,13 @@ namespace CompassReports.Resources.Services
             _db = db;
         }
 
-        public async Task<List<SchoolModel>> GetAll()
+        public async Task<List<SchoolModel>> GetAll(int[] districtId = null)
         {
-            return await _db.SchoolDimensions.Select(x => new SchoolModel
+            var query = _db.SchoolDimensions.AsQueryable();
+            if (districtId != null && districtId.Length > 0)
+                query = query.Where(x => districtId.Contains(x.LocalEducationAgencyKey));
+
+            return await query.Select(x => new SchoolModel
             {
                 Id = x.SchoolKey,
                 SchoolName = x.NameOfInstitution,

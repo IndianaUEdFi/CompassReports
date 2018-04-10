@@ -6,6 +6,7 @@ namespace CompassReports.Resources.Models
     {
         public List<int> Assessments { get; set; }
         public string AssessmentTitle { get; set; }
+        public List<int> Districts { get; set; }
         public List<string> EnglishLanguageLearnerStatuses { get; set; }
         public List<string> Ethnicities { get; set; }
         public List<int> ExcludePerformanceKeys { get; set; }
@@ -13,6 +14,7 @@ namespace CompassReports.Resources.Models
         public int? PerformanceKey { get; set; }
         public List<int> GoodCauseExcemptions { get; set; }
         public List<string> LunchStatuses { get; set; }
+        public List<int> Schools { get; set; }
         public short? SchoolYear { get; set; }
         public List<short> SchoolYears { get; set; }
         public List<string> SpecialEducationStatuses { get; set; }

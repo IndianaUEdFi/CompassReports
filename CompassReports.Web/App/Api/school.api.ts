@@ -4,14 +4,24 @@ module App.Api.School {
     import SchoolModel = Models.SchoolModel;
 
     export interface ISchoolApi {
-        getAll(): angular.IPromise<SchoolModel[]>;
+        getAll(districts?: number[]): angular.IPromise<SchoolModel[]>;
     }
 
     class SchoolApi extends ApiBase implements ISchoolApi {
         resourceUrl = 'school';
 
-        getAll(): angular.IPromise<SchoolModel[]> {
-            return this.services.http.get<SchoolModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}`).then((data) => { return data.data; });
+        getAll(districts?: number[]): angular.IPromise<SchoolModel[]> {
+
+            let query = '';
+            if (districts && districts.length) {
+                query += '?';
+                angular.forEach(districts, (district, index) => {
+                    if (index > 0) query += '&';
+                    query += `districtId=${district}`;
+                });
+            }
+
+            return this.services.http.get<SchoolModel[]>(`${this.settings.apiBaseUrl}/${this.resourceUrl}${query}`).then((data) => { return data.data; });
         }
     }
 

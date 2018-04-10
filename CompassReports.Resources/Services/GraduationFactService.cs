@@ -44,6 +44,12 @@ namespace CompassReports.Resources.Services
             if (model.CohortYear != 0)
                 query = query.Where(x => x.SchoolYearKey == model.CohortYear);
 
+            if (model.Schools != null && model.Schools.Any())
+                query = query.Where(x => model.Schools.Contains(x.SchoolKey));
+
+            if (model.Districts != null && model.Districts.Any())
+                query = query.Where(x => model.Districts.Contains(x.School.LocalEducationAgencyKey));
+
             if (model.ExpectedGraduationYear != 0)
                 query = query.Where(x => x.Demographic.ExpectedGraduationYear == model.ExpectedGraduationYear);
 

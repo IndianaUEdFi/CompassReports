@@ -52,8 +52,8 @@ module App.Reports {
                     }
                 ];
 
-            this.report = ['$rootScope', 'baseFilters', 'cohorts', 'schoolYears',
-                ($rootScope: IAppRootScope, baseFilters: FilterModel<any>[], cohorts: Models.FilterValueModel[], schoolYears: Models.FilterValueModel[]) => {
+            this.report = ['$rootScope', 'baseFilters', 'cohorts', 'districts', 'schoolYears',
+                ($rootScope: IAppRootScope, baseFilters: FilterModel<any>[], cohorts: Models.FilterValueModel[], districts: Models.DistrictModel[], schoolYears: Models.FilterValueModel[]) => {
 
                     // Remove School Year Filter
                     baseFilters.splice(0, 1);
@@ -67,8 +67,6 @@ module App.Reports {
                         new FilterModel<number>(cohorts, 'Cohort', multipleSchoolYears ? 'GradCohortYearDifference' : 'CohortYear', false, true)
                     ].concat(baseFilters);
 
-                    console.log(cohorts);
-
                     let model = new Models.GraduateFilterModel();
 
                     if (!multipleSchoolYears) {
@@ -81,6 +79,10 @@ module App.Reports {
                         model = $rootScope.filterModel as Models.GraduateFilterModel;
                         $rootScope.filterModel = null;
                     } 
+
+                    if (districts.length === 1) {
+                        model.Districts = [districts[0].Id];
+                    }
 
                     let backState = null;
                     if ($rootScope.backState) {

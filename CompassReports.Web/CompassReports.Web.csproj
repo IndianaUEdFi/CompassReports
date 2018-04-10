@@ -206,6 +206,7 @@
     <Compile Include="Controllers\EnrollmentTrendsController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\EnrollmentFiltersController.cs" />
+    <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -255,6 +256,7 @@
     <TypeScriptCompile Include="App\Api\assessment-taking.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance-trend.api.ts" />
     <TypeScriptCompile Include="App\Api\assessment-performance.api.ts" />
+    <TypeScriptCompile Include="App\Api\district.api.ts" />
     <TypeScriptCompile Include="App\Api\school.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-diploma-type.api.ts" />
     <TypeScriptCompile Include="App\Api\graduate-trends.api.ts" />
@@ -285,7 +287,9 @@
     <TypeScriptCompile Include="App\Directives\filters\select\select.filter.ts" />
     <TypeScriptCompile Include="App\Directives\theme\theme.directive.ts" />
     <TypeScriptCompile Include="App\Directives\truncate-tooltip.directive.ts" />
+    <TypeScriptCompile Include="App\Models\district-filter.model.ts" />
     <TypeScriptCompile Include="App\Models\school-filter.model.ts" />
+    <TypeScriptCompile Include="App\Models\district.model.ts" />
     <TypeScriptCompile Include="App\Models\school.model.ts" />
     <TypeScriptCompile Include="App\Models\route-state.model.ts" />
     <TypeScriptCompile Include="App\Models\graduate-filter.model.ts" />

@@ -8,8 +8,6 @@
                 values.push(new FilterValueModel(schools[i].Id, schools[i].SchoolName, schools[i].DistrictName));
             }
 
-            console.log(values);
-
             super(values, 'Schools', 'Schools', true, false);
         }
     }

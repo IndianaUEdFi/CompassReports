@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,9 +22,9 @@ namespace CompassReports.Web.Controllers
             _schoolService = schoolService;
         }
 
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> GetAll([FromUri] int[] districtId)
         {
-            var schools = await _schoolService.GetAll();
+            var schools = await _schoolService.GetAll(districtId);
             return Ok(schools);
         }
     }

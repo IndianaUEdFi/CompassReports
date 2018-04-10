@@ -1,5 +1,6 @@
 ﻿module App.Reports {
 
+    import DistrictFilterModel = Models.DistrictFilterModel;
     import FilterModel = Models.FilterModel;
     import SchoolFilterModel = Models.SchoolFilterModel;
 
@@ -55,9 +56,38 @@
         }
     }
 
+
+    function onDistrictSelect(model: Models.IReportFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
+
+        let schoolFilterIndex = null;
+
+        angular.forEach(filters, (filter, index) => {
+            if (filter.Title === 'Schools') schoolFilterIndex = index;
+        });
+
+        if (model.Districts && model.Districts.length) {
+            api.school.getAll(model.Districts).then((schools: Models.SchoolModel[]) => {
+                const values: Models.FilterValueModel[] = [];
+
+                for (let i = 0; i < schools.length; i++) {
+                    values.push(new Models.FilterValueModel(schools[i].Id,
+                        schools[i].SchoolName,
+                        schools[i].DistrictName));
+                }
+
+                filters[schoolFilterIndex].update(values);
+            });
+        } else {
+            model.Schools = [];
+            filters[schoolFilterIndex].update([] as Models.FilterValueModel[]);
+        }
+    }
+
     export class ReportBaseResolve {
 
         baseFilters: any[];
+
+        districts: any[] = ['api', (api: IApi) => api.district.getAll()];
 
         englishLanguageLearnerStatuses: any[] = ['api', (api: IApi) => api.demographicFilters.getEnglishLanguageLearnerStatuses()];
 
@@ -69,19 +99,21 @@
 
         specialEducationStatuses: any[] = ['api', (api: IApi) => api.demographicFilters.getSpecialEducationStatuses()];
 
-        schools: any[] = ['api', (api: IApi) => api.school.getAll()];
+        schools: any[] = ['api', 'districts', (api: IApi, districts: Models.DistrictModel[]) => {
+            if (districts.length > 1) return [];
+            else return api.school.getAll([districts[0].Id]);
+        }];
 
         schoolYears: any[] = ['api', (api: IApi) => api.enrollmentFilters.getSchoolYears() ];
 
         constructor(multipleSchoolYears?: boolean) {
 
-            this.baseFilters = ['englishLanguageLearnerStatuses', 'ethnicities', 'grades',
+            this.baseFilters = ['districts', 'englishLanguageLearnerStatuses', 'ethnicities', 'grades',
                 'lunchStatuses', 'specialEducationStatuses', 'schools', 'schoolYears', (
-                    englishLanguageLearnerStatuses: string[], ethnicities: string[], grades: string[],
-                    lunchStatuses: string[], specialEducationStatuses: string[], schools: Models.SchoolModel[],
+                    districts: Models.DistrictModel[], englishLanguageLearnerStatuses: string[], ethnicities: string[],
+                    grades: string[], lunchStatuses: string[], specialEducationStatuses: string[], schools: Models.SchoolModel[],
                     schoolYears: Models.FilterValueModel[]
                 ) => {
-
 
                     const schoolYearFilter = (multipleSchoolYears)
                         ? new Models.FilterModel<number>(schoolYears, 'School Years', 'SchoolYears', true)
@@ -89,6 +121,7 @@
 
                     return [
                         schoolYearFilter,
+                        new DistrictFilterModel(districts, onDistrictSelect),
                         new SchoolFilterModel(schools),
                         new FilterModel<number>(grades, 'Grades', 'Grades', true),
                         new FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),

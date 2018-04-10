@@ -9,6 +9,9 @@
         LunchStatuses: string[];
         SpecialEducationStatuses: string[];
 
+        Schools: number[];
+        Districts: number[];
+
         AssessmentTitle: string;
         Subject: string;
         PerformanceKey: number;
@@ -29,20 +32,14 @@
             if (this.SchoolYears != null && this.SchoolYears.length) count++;
             if (this.LunchStatuses != null && this.LunchStatuses.length) count++;
             if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) count++;
+            if (this.Schools != null && this.Schools.length) count++;
+            if (this.Districts != null && this.Districts.length) count++;
 
             return count;
         }
 
         isFiltering = () => {
-            if (this.Subject) return true;
-            if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) return true;
-            if (this.Ethnicities != null && this.Ethnicities.length) return true;
-            if (this.SchoolYears != null && this.SchoolYears.length) return true;
-            if (this.LunchStatuses != null && this.LunchStatuses.length) return true;
-            if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) return true;
-            if (this.Assessments != null && this.Assessments.length) return true;
-
-            return false;
+            return this.filteringCount() > 0;
         }
 
         reset = () => {

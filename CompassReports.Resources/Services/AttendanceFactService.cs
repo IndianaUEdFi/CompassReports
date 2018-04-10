@@ -132,7 +132,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = properties,
                 Data = data,
-                ShowChart = false,
+                ShowChart = true,
                 HideTotal = true,
                 Percentage = true
             };

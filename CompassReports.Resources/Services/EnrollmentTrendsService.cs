@@ -67,7 +67,10 @@ namespace CompassReports.Resources.Services
                     SortOrder = x.Demographic.GradeLevelSort
                 });
 
-            return await _enrollmentFactService.CreateTrendChart(groupings, "Grades", "Grade");
+            var chart = await _enrollmentFactService.CreateTrendChart(groupings, "Grades", "Grade");
+            chart.ShowChart = false; // Show Table First
+
+            return chart;
         }
 
         public async Task<BarChartModel<int>> ByLunchStatus(EnrollmentFilterModel model)

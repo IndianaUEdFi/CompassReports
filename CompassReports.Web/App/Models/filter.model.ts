@@ -54,7 +54,7 @@
             required?: boolean,
             onChange?: (model: IReportFilterModel, filters: FilterModel<any>[], api: IApi) => void) {
 
-            if (values.length) this.update(values);
+            if (values && values.length) this.update(values);
 
             this.Title = title;
             this.Multiple = multiple;

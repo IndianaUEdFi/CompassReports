@@ -91,7 +91,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.Property).ToList(),
                 Data = results.Select(x => x.Total).ToList(),
                 Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
-                ShowChart = false,
+                ShowChart = true,
                 TotalRowTitle = "Enrollment Total",
                 Total = total
             };
@@ -136,7 +136,7 @@ namespace CompassReports.Resources.Services
                 Labels = results.Select(x => x.SchoolYearDescription).Distinct().ToList(),
                 Series = properties,
                 Data = data,
-                ShowChart = false,
+                ShowChart = true,
                 Totals = results.GroupBy(x => x.SchoolYear).OrderBy(x => x.Key).Select(x => x.Sum(y => y.Total)).ToList()
             };
         }

@@ -56,7 +56,6 @@
         }
     }
 
-
     function onDistrictSelect(model: Models.IReportFilterModel, filters: Models.FilterModel<any>[], api: IApi) {
 
         let schoolFilterIndex = null;
@@ -126,7 +125,6 @@
                         new FilterModel<number>(grades, 'Grades', 'Grades', true),
                         new FilterModel<number>(ethnicities, 'Ethnicities', 'Ethnicities', true),
                         new FilterModel<number>(lunchStatuses, 'Meal Plans', 'LunchStatuses', true),
-                        new FilterModel<number>(specialEducationStatuses, 'Education Types', 'SpecialEducationStatuses', true),
                         new FilterModel<number>(specialEducationStatuses, 'Education Types', 'SpecialEducationStatuses', true),
                         new FilterModel<number>(englishLanguageLearnerStatuses, 'Language Learners', 'EnglishLanguageLearnerStatuses', true)
                     ];

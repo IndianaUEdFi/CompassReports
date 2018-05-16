@@ -8,6 +8,7 @@ module App {
         currentTheme: string;
         defaultPrimary: {color: string, name: string};
         defaultSecondary: { color: string, name: string };
+        defaultTertiary: { color: string };
         filterModel?: Models.IReportFilterModel;
         backState?: string;
         backParameters?: any;
@@ -27,8 +28,9 @@ module App {
             });
 
             $rootScope.currentTheme = 'compass-reports-theme';
-            $rootScope.defaultPrimary = { color: '#003E69', name: 'dark-blue' };
-            $rootScope.defaultSecondary = { color: '#FDCD0F', name: 'dark-yellow' };
+            $rootScope.defaultPrimary = { color: '#990000', name: 'primary-color' };
+            $rootScope.defaultSecondary = { color: '#EDEBEB', name: 'secondary-color' };
+            $rootScope.defaultTertiary = { color: '#4A3C31' };
 
             var contentLoadedEvent = $rootScope.$on('$viewContentLoaded', (event: ng.IAngularEvent, view: string) => {
 
@@ -48,7 +50,7 @@ module App {
                 stateAuthorizeStartEvent();
             });
 
-            $rootScope.title = "Compass Reports";
+            $rootScope.title = "INSITE Compass";
         }
     }
     

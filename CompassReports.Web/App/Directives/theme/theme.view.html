@@ -40,7 +40,7 @@
                 <div ng-repeat="color in ctrl.colors" flex="10" style="padding-bottom: 5px">
                     <div style="margin:0 auto;" ng-style="{'background-color': color.color}"
                          class="theme-square" ng-class="{'selected': color == $root.primaryColor }"
-                         ng-click="ctrl.setTheme(color, $root.secondaryColor)">
+                         ng-click="ctrl.setTheme(color, $root.secondaryColor,  $root.tertiaryColor)">
                         <img />
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 <label>Default: </label>
                 <div style="display: inline-block" ng-style="{'background-color': $root.defaultPrimary.color}"
                      class="theme-square" ng-class="{'selected': $root.defaultPrimary == $root.primaryColor }"
-                     ng-click="ctrl.setTheme($root.defaultPrimary, $root.secondaryColor)">
+                     ng-click="ctrl.setTheme($root.defaultPrimary, $root.secondaryColor, $root.defaultTertiary)">
                     <img />
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <div ng-repeat="color in ctrl.colors" flex="10" style="padding-bottom: 5px">
                     <div style="margin:0 auto;" ng-style="{'background-color': color.color}" 
                          class="theme-square"  ng-class="{'selected': color == $root.secondaryColor }"
-                         ng-click="ctrl.setTheme($root.primaryColor, color)">
+                         ng-click="ctrl.setTheme($root.primaryColor, color, $root.tertiaryColor)">
                         <img />
                     </div>
                 </div>
@@ -69,10 +69,32 @@
                 <label>Default: </label> 
                 <div style="display: inline-block" ng-style="{'background-color': $root.defaultSecondary.color}" 
                      class="theme-square" ng-class="{'selected': $root.defaultSecondary == $root.secondaryColor }"
-                     ng-click="ctrl.setTheme($root.primaryColor, $root.defaultSecondary)">
+                     ng-click="ctrl.setTheme($root.primaryColor, $root.defaultSecondary, $root.tertiaryColor)">
                     <img/>
                 </div>
             </div>
         </div>
+        
+        <div>
+            <label style="font-size: 16px; font-weight: bold">Tertiary</label>
+            <div layout="row" layout-wrap>
+                <div ng-repeat="color in ctrl.colors" flex="10" style="padding-bottom: 5px">
+                    <div style="margin:0 auto;" ng-style="{'background-color': color.color}"
+                         class="theme-square" ng-class="{'selected': color == $root.tertiary }"
+                         ng-click="ctrl.setTheme($root.primaryColor, $root.secondaryColor, color)">
+                        <img />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label>Default: </label>
+                <div style="display: inline-block" ng-style="{'background-color': $root.defaultTertiary.color}"
+                     class="theme-square" ng-class="{'selected': $root.defaultTertiary == $root.tertiaryColor }"
+                     ng-click="ctrl.setTheme($root.primaryColor, $root.secondaryColor, $root.defaultTertiary)">
+                    <img />
+                </div>
+            </div>
+        </div>
+
     </md-content>
 </md-sidenav>

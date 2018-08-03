@@ -1,4 +1,4 @@
-﻿/// <reference path="../Report-Base/report-base.module.ts" />
+﻿/// <reference path="./college-readiness.module.ts" />
 
 module App.Reports.CollegeReadiness.Scores {
 
@@ -21,7 +21,7 @@ module App.Reports.CollegeReadiness.Scores {
                 {
                     url: '/college-readiness/scores?assessmentTitle',
                     views: {
-                        'report@app.reports': new CollegeReadinessReportView(settings, charts)
+                        'report@app.reports': new AssessmentReportView(settings, false, false, charts)
                     }
                 });
         }

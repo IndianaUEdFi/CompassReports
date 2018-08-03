@@ -18,7 +18,7 @@ module App.Reports.Graduate.Overview {
                 {
                     url: '/graduates',
                     views: {
-                        'report@app.reports': new GraduatesReportView(settings, 'Graduates', charts)
+                        'report@app.reports': new GraduatesReportView(settings, 'Graduates', false, charts)
                     }
                 });
         }

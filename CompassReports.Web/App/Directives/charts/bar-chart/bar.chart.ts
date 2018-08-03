@@ -40,7 +40,6 @@
             this.scope.loading = true;
             this.api[this.scope.chart.ApiCall][this.scope.chart.ChartCall](this.scope.model)
                 .then((result: Models.BarChartModel) => {
-                    console.log(result);
                     this.scope.chart.Update(result);
                     this.resetColors();
                 }).finally(() => {

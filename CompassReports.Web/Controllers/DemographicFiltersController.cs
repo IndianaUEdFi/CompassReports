@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using CompassReports.Resources.Services;
@@ -20,41 +21,41 @@ namespace CompassReports.Web.Controllers
         }
         [Route("english-learner-statuses")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetEnglishLanguageLearnerStatuses()
+        public async Task<IHttpActionResult> GetEnglishLanguageLearnerStatuses()
         {
-            var statuses = _demographicFiltersService.GetEnglishLanguageLearnerStatuses();
+            var statuses = await _demographicFiltersService.GetEnglishLanguageLearnerStatuses();
             return Ok(statuses);
         }
 
         [Route("ethnicities")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetEthnicities()
+        public async Task<IHttpActionResult> GetEthnicities()
         {
-            var ethnicites = _demographicFiltersService.GetEthnicities();
+            var ethnicites = await _demographicFiltersService.GetEthnicities();
             return Ok(ethnicites);
         }
 
         [Route("grades")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetGrades()
+        public async Task<IHttpActionResult> GetGrades()
         {
-            var grades = _demographicFiltersService.GetGrades();
+            var grades = await _demographicFiltersService.GetGrades();
             return Ok(grades);
         }
 
         [Route("lunch-statuses")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetLunchStatuses()
+        public async Task<IHttpActionResult> GetLunchStatuses()
         {
-            var statuses = _demographicFiltersService.GetLunchStatuses();
+            var statuses = await _demographicFiltersService.GetLunchStatuses();
             return Ok(statuses);
         }
 
         [Route("special-education-statuses")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetSpecialEducationStatuses()
+        public async Task<IHttpActionResult> GetSpecialEducationStatuses()
         {
-            var statuses = _demographicFiltersService.GetSpecialEducationStatuses();
+            var statuses = await _demographicFiltersService.GetSpecialEducationStatuses();
             return Ok(statuses);
         }
     }

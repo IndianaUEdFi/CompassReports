@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CompassReports.Data;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
@@ -10,11 +12,11 @@ namespace CompassReports.Resources.Services
 {
     public interface IAssessmentPassTrendService
     {
-        PercentageTotalBarChartModel Get(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByEthnicity(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel ByLunchStatus(AssessmentTrendFilterModel model);
-        PercentageTotalBarChartModel BySpecialEducation(AssessmentTrendFilterModel model);
+        Task<PercentageTotalBarChartModel> Get(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model);
     }
 
     public class AssessmentPassTrendService : IAssessmentPassTrendService
@@ -29,55 +31,55 @@ namespace CompassReports.Resources.Services
             _assessmentPerformanceTrendService = assessmentPerformanceTrendService;
         }
 
-        public PercentageTotalBarChartModel Get(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> Get(AssessmentFilterModel model)
         {
-            model.ExcludePerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceTrendService.Get(model);
+            model.ExcludePerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceTrendService.Get(model);
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            model.ExcludePerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceTrendService.ByEnglishLanguageLearner(model);
+            model.ExcludePerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceTrendService.ByEnglishLanguageLearner(model);
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByEthnicity(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model)
         {
-            model.ExcludePerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceTrendService.ByEthnicity(model);
+            model.ExcludePerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceTrendService.ByEthnicity(model);
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByLunchStatus(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model)
         {
-            model.ExcludePerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceTrendService.ByLunchStatus(model);
+            model.ExcludePerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceTrendService.ByLunchStatus(model);
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel BySpecialEducation(AssessmentTrendFilterModel model)
+        public async Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model)
         {
-            model.ExcludePerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceTrendService.BySpecialEducation(model);
+            model.ExcludePerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceTrendService.BySpecialEducation(model);
             chart.HideTotal = true;
             return chart;
         }
 
-        private List<int> GetPerformanceKeys(AssessmentTrendFilterModel model)
+        private async Task<List<int>> GetPerformanceKeys(AssessmentFilterModel model)
         {
-            return _assessmentRepository
+            return await _assessmentRepository
                 .GetAll()
                 .Where(x => x.Assessment.AssessmentTitle == model.AssessmentTitle && x.Assessment.AcademicSubject == model.Subject &&
                     x.Performance.PerformanceLevel.ToLower().Contains("took") || x.Performance.PerformanceLevel.ToLower().Contains("did not take"))
                 .Select(x => x.PerformanceKey)
                 .Distinct()
-                .ToList();
+                .ToListAsync();
         }
     }
 }

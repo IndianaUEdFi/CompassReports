@@ -11,324 +11,81 @@ namespace CompassReports.Resources.Services
 {
     public interface IGraduateWaiversService
     {
-        PieChartModel<int> Get(GraduateFilterModel model);
-        PercentageTotalBarChartModel ByEnglishLanguageLearner(GraduateFilterModel model);
-        PercentageTotalBarChartModel ByEthnicity(GraduateFilterModel model);
-        PercentageTotalBarChartModel ByLunchStatus(GraduateFilterModel model);
-        PercentageTotalBarChartModel BySpecialEducation(GraduateFilterModel model);
+        Task<PieChartModel<int>> Get(GraduateFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(GraduateFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEthnicity(GraduateFilterModel model);
+        Task<PercentageTotalBarChartModel> ByLunchStatus(GraduateFilterModel model);
+        Task<PercentageTotalBarChartModel> BySpecialEducation(GraduateFilterModel model);
     }
 
     public class GraduateWaiversService : IGraduateWaiversService
     {
-        private readonly IRepository<GraduationFact> _graduationFactRepository;
+        private readonly IGraduationFactService _graduationFactService;
 
-        public GraduateWaiversService(IRepository<GraduationFact> graduationFactRepository)
+        public GraduateWaiversService(IGraduationFactService graduationFactService)
         {
-            _graduationFactRepository = graduationFactRepository;
+            _graduationFactService = graduationFactService;
         }
 
-        public PieChartModel<int> Get(GraduateFilterModel model)
+        public async Task<PieChartModel<int>> Get(GraduateFilterModel model)
         {
-            var query = BaseQuery(model);
+            var groupings = _graduationFactService.BaseQuery(model)
+                .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
+                .GroupBy(x => x.GraduationStatus.GraduationWaiver);
 
-            var results = query.GroupBy(x => x.GraduationStatus.GraduationWaiver)
-                .Select(x => new
-                {
-                    GraduationWaiver = x.Key,
-                    Total = x.Sum(y => y.GraduationStudentCount)
-                }).OrderBy(x => x.GraduationWaiver)
-                .ToList();
-
-            var total = results.Sum(x => x.Total);
-
-            return new PieChartModel<int>
-            {
-                Title = "Graduation Waiver Status",
-                TotalRowTitle = "Waiver Total",
-                Headers = new List<string> { "", "Graduation Waiver", "Status Count" },
-                PercentageHeaders = new List<string> { "", "Graduation Waiver", "Status Percentage" },
-                Labels = results.Select(x => x.GraduationWaiver).ToList(),
-                Data = results.Select(x => x.Total).ToList(),
-                Percentages = results.Select(x => GetPercentage(x.Total, total)).ToList(),
-                ShowChart = true,
-                Total = total
-            };
+            return await _graduationFactService.CreateBaseChart(groupings, "Graduation Waiver");
         }
 
-        public PercentageTotalBarChartModel ByEnglishLanguageLearner(GraduateFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(GraduateFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
-
-            var results = query.GroupBy(x => new { x.GraduationStatus.GraduationWaiver, Property = x.Demographic.EnglishLanguageLearnerStatus })
-                .Select(x => new
+            var groupings = _graduationFactService.BaseQuery(model)
+                .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
+                .GroupBy(x => new GraduateGroupByModel
                 {
-                    GraduationWaiver = x.Key.GraduationWaiver,
-                    Property = x.Key.Property,
-                    Total = x.Sum(y => y.GraduationStudentCount)
-                }).ToList();
+                    ChartGroupBy = x.GraduationStatus.GraduationWaiver,
+                    Property = x.Demographic.EnglishLanguageLearnerStatus
+                });
 
-            var graduationWaivers = results.Select(x => x.GraduationWaiver).Distinct().OrderBy(x => x).ToList();
-
-            var headers = new List<string> { "", "Language Statuses" };
-            headers.AddRange(graduationWaivers);
-
-            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var value in propertyValues)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
-                var properties = results.Where(x => x.Property == value).ToList();
-
-                foreach (var graduationWaiver in graduationWaivers)
-                {
-                    var row = properties.FirstOrDefault(x => x.GraduationWaiver == graduationWaiver);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            var total = results.Sum(x => x.Total);
-            var totals = results.GroupBy(x => x.GraduationWaiver)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
-                    Total = x.Sum(y => y.Total)
-                }).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = "Graduation Waiver by English Language Learners",
-                Headers = headers,
-                Labels = graduationWaivers,
-                Series = propertyValues.Select(x => x.ToString()).ToList(),
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = "Graduation Waiver",
-                Totals = totals
-            };
+            return await _graduationFactService.CreateChart(groupings, "Graduation Waiver", "Language Statuses", "English Language Learners");
         }
 
-        public PercentageTotalBarChartModel ByEthnicity(GraduateFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEthnicity(GraduateFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
-
-            var results = query.GroupBy(x => new { x.GraduationStatus.GraduationWaiver, Property = x.Demographic.Ethnicity })
-                .Select(x => new
+            var groupings = _graduationFactService.BaseQuery(model)
+                .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
+                .GroupBy(x => new GraduateGroupByModel
                 {
-                    GraduationWaiver = x.Key.GraduationWaiver,
-                    Property = x.Key.Property,
-                    Total = x.Sum(y => y.GraduationStudentCount)
-                }).ToList();
+                    ChartGroupBy = x.GraduationStatus.GraduationWaiver,
+                    Property = x.Demographic.Ethnicity
+                });
 
-            var graduationWaivers = results.Select(x => x.GraduationWaiver).Distinct().OrderBy(x => x).ToList();
-
-            var headers = new List<string> { "", "Ethnicities" };
-            headers.AddRange(graduationWaivers);
-
-            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var value in propertyValues)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
-                var properties = results.Where(x => x.Property == value).ToList();
-
-                foreach (var waiver in graduationWaivers)
-                {
-                    var row = properties.FirstOrDefault(x => x.GraduationWaiver == waiver);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            var total = results.Sum(x => x.Total);
-            var totals = results.GroupBy(x => x.GraduationWaiver)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
-                    Total = x.Sum(y => y.Total)
-                }).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = "Graduation Waiver by Ethnicity",
-                Headers = headers,
-                Labels = graduationWaivers,
-                Series = propertyValues.Select(x => x.ToString()).ToList(),
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = "Graduation Waiver",
-                Totals = totals
-            };
+            return await _graduationFactService.CreateChart(groupings, "Graduation Waiver", "Ethnicities", "Ethnicity");
         }
 
-        public PercentageTotalBarChartModel ByLunchStatus(GraduateFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByLunchStatus(GraduateFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
-
-            var results = query.GroupBy(x => new { x.GraduationStatus.GraduationWaiver, Property = x.Demographic.FreeReducedLunchStatus })
-                .Select(x => new
+            var groupings = _graduationFactService.BaseQuery(model)
+                .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
+                .GroupBy(x => new GraduateGroupByModel
                 {
-                    GraduationWaiver = x.Key.GraduationWaiver,
-                    Property = x.Key.Property,
-                    Total = x.Sum(y => y.GraduationStudentCount)
-                }).ToList();
+                    ChartGroupBy = x.GraduationStatus.GraduationWaiver,
+                    Property = x.Demographic.FreeReducedLunchStatus
+                });
 
-            var graduationWaivers = results.Select(x => x.GraduationWaiver).Distinct().OrderBy(x => x).ToList();
-
-            var headers = new List<string> { "", "Lunch Statuses" };
-            headers.AddRange(graduationWaivers);
-
-            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var value in propertyValues)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
-                var properties = results.Where(x => x.Property == value).ToList();
-
-                foreach (var graduationWaiver in graduationWaivers)
-                {
-                    var row = properties.FirstOrDefault(x => x.GraduationWaiver == graduationWaiver);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            var total = results.Sum(x => x.Total);
-            var totals = results.GroupBy(x => x.GraduationWaiver)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
-                    Total = x.Sum(y => y.Total)
-                }).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = "Graduation Waiver by Free/Reduced Price Meals",
-                Headers = headers,
-                Labels = graduationWaivers,
-                Series = propertyValues.Select(x => x.ToString()).ToList(),
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = "Graduation Waiver",
-                Totals = totals
-            };
+            return await _graduationFactService.CreateChart(groupings, "DGraduation Waiver", "Lunch Statuses", "Free/Reduced Price Meals");
         }
 
-        public PercentageTotalBarChartModel BySpecialEducation(GraduateFilterModel model)
+        public async Task<PercentageTotalBarChartModel> BySpecialEducation(GraduateFilterModel model)
         {
-            var query = BaseQuery(model).ToList();
-
-            var results = query.GroupBy(x => new { x.GraduationStatus.GraduationWaiver, Property = x.Demographic.SpecialEducationStatus })
-                .Select(x => new
+            var groupings = _graduationFactService.BaseQuery(model)
+                .Where(x => x.GraduationStatus.GraduationWaiver != "Not Applicable")
+                .GroupBy(x => new GraduateGroupByModel
                 {
-                    GraduationWaiver = x.Key.GraduationWaiver,
-                    Property = x.Key.Property,
-                    Total = x.Sum(y => y.GraduationStudentCount)
-                }).ToList();
+                    ChartGroupBy = x.GraduationStatus.GraduationWaiver,
+                    Property = x.Demographic.SpecialEducationStatus
+                });
 
-            var graduationWaivers = results.Select(x => x.GraduationWaiver).Distinct().OrderBy(x => x).ToList();
-
-            var headers = new List<string> { "", "Education Statuses" };
-            headers.AddRange(graduationWaivers);
-
-            var propertyValues = results.Select(x => x.Property).Distinct().OrderBy(x => x).ToList();
-
-            var data = new List<List<PercentageTotalDataModel>>();
-            foreach (var value in propertyValues)
-            {
-                var values = new List<PercentageTotalDataModel>();
-                var propertyTotal = results.Where(x => x.Property == value).Sum(x => x.Total);
-                var properties = results.Where(x => x.Property == value).ToList();
-
-                foreach (var graduationWaiver in graduationWaivers)
-                {
-                    var row = properties.FirstOrDefault(x => x.GraduationWaiver == graduationWaiver);
-                    var rowTotal = row == null ? 0 : row.Total;
-                    values.Add(new PercentageTotalDataModel
-                    {
-                        Percentage = rowTotal == 0 ? 0 : GetPercentage(rowTotal, propertyTotal),
-                        Total = rowTotal
-                    });
-                }
-                data.Add(values);
-            }
-
-            var total = results.Sum(x => x.Total);
-            var totals = results.GroupBy(x => x.GraduationWaiver)
-                .OrderBy(x => x.Key)
-                .Select(x => new PercentageTotalDataModel
-                {
-                    Percentage = GetPercentage(x.Sum(y => y.Total), total),
-                    Total = x.Sum(y => y.Total)
-                }).ToList();
-
-            return new PercentageTotalBarChartModel
-            {
-                Title = "Graduation Waiver by Special Education",
-                Headers = headers,
-                Labels = graduationWaivers,
-                Series = propertyValues.Select(x => x.ToString()).ToList(),
-                Data = data,
-                ShowChart = true,
-                ShowPercentage = true,
-                TotalRowTitle = "Graduation Waiver",
-                Totals = totals
-            };
-        }
-
-        private static double GetPercentage(int subTotal, int total)
-        {
-            return Math.Round(100 * ((double)subTotal / (double)total), 2);
-        }
-
-        private IQueryable<GraduationFact> BaseQuery(GraduateFilterModel model)
-        {
-            var query = _graduationFactRepository
-                .GetAll()
-                .Where(x => x.SchoolYearKey == model.CohortYear && 
-                    x.Demographic.ExpectedGraduationYear == model.ExpectedGraduationYear &&
-                    x.GraduationStatus.GraduationWaiver != "Not Applicable");
-
-            if (model.EnglishLanguageLearnerStatuses != null && model.EnglishLanguageLearnerStatuses.Any())
-                query = query.Where(x => model.EnglishLanguageLearnerStatuses.Contains(x.Demographic.EnglishLanguageLearnerStatus));
-
-            if (model.Ethnicities != null && model.Ethnicities.Any())
-                query = query.Where(x => model.Ethnicities.Contains(x.Demographic.Ethnicity));
-
-            if (model.LunchStatuses != null && model.LunchStatuses.Any())
-                query = query.Where(x => model.LunchStatuses.Contains(x.Demographic.FreeReducedLunchStatus));
-
-            if (model.SpecialEducationStatuses != null && model.SpecialEducationStatuses.Any())
-                query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
-
-            return query;
+            return await _graduationFactService.CreateChart(groupings, "Graduation Waiver", "Education Statuses", "Special Education");
         }
     }
 }

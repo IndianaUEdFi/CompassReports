@@ -32,7 +32,7 @@
 
         colorCount = 1;
 
-        setTheme = (primaryColor: any, secondaryColor: any) => {
+        setTheme = (primaryColor: any, secondaryColor: any, tertiaryColor: any) => {
 
             this.colorCount++;
 
@@ -45,6 +45,7 @@
             this.$rootScope.currentTheme = 'compass-reports-theme' + this.colorCount;
             this.$rootScope.primaryColor = primaryColor;
             this.$rootScope.secondaryColor = secondaryColor;
+            this.$rootScope.tertiaryColor = tertiaryColor;
 
             this.$rootScope.$emit('theme-change');
 
@@ -62,7 +63,7 @@
 
             $mdThemingProvider.generateThemesOnDemand(true);
             $mdThemingProvider.alwaysWatchTheme(true);
-            this.setTheme($rootScope.defaultPrimary, $rootScope.defaultSecondary);
+            this.setTheme($rootScope.defaultPrimary, $rootScope.defaultSecondary, $rootScope.defaultTertiary);
         }          
     }
 

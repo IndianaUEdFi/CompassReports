@@ -10,10 +10,13 @@
         LunchStatuses: string[];
         SpecialEducationStatuses: string[];
 
-        filteringCount = () => {
-            let count = 0;
+        Schools: number[];
+        Districts: number[];
 
-            if (this.ExpectedGraduationYear) count++;
+        filteringCount = () => {
+            let count = 1; // Grades always shows
+
+            if (this.ExpectedGraduationYear != null) count++;
             if (this.CohortYear != null) count++;
             if (this.GradCohortYearDifference != null) count++;
             if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) count++;
@@ -21,21 +24,14 @@
             if (this.ExpectedGraduationYears != null && this.ExpectedGraduationYears.length) count++;
             if (this.LunchStatuses != null && this.LunchStatuses.length) count++;
             if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) count++;
+            if (this.Schools != null && this.Schools.length) count++;
+            if (this.Districts != null && this.Districts.length) count++;
 
             return count;
         }
 
         isFiltering = () => {
-            if (this.ExpectedGraduationYear) return true;
-            if (this.CohortYear != null) return true;
-            if (this.GradCohortYearDifference != null) return true;
-            if (this.EnglishLanguageLearnerStatuses != null && this.EnglishLanguageLearnerStatuses.length) return true;
-            if (this.Ethnicities != null && this.Ethnicities.length) return true;
-            if (this.ExpectedGraduationYears != null && this.ExpectedGraduationYears.length) return true;
-            if (this.LunchStatuses != null && this.LunchStatuses.length) return true;
-            if (this.SpecialEducationStatuses != null && this.SpecialEducationStatuses.length) return true;
-   
-            return false;
+            return this.filteringCount() > 0;
         }
 
         reset = () => {

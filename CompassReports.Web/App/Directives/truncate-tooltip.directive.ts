@@ -18,7 +18,7 @@
                     () => {
                         var el = element[0];
                         if (el.offsetWidth < el.scrollWidth) {
-                            console.log('showing tooltip');
+                            //console.log('showing tooltip');
                             scope.showTooltip = true;
                             scope.value = element.text();
                         }

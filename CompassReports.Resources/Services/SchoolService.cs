@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CompassReports.Data.Context;
+using CompassReports.Resources.Models;
 
 namespace CompassReports.Resources.Services
 {
     public interface ISchoolService
     {
-         void Get();
+         Task<List<SchoolModel>> GetAll(int[] districtId = null);
     }
 
     public class SchoolService : ISchoolService
@@ -21,9 +23,18 @@ namespace CompassReports.Resources.Services
             _db = db;
         }
 
-        public void Get()
+        public async Task<List<SchoolModel>> GetAll(int[] districtId = null)
         {
-            var model = _db.SchoolDimensions.ToList();
-            var temp = model;
+            var query = _db.SchoolDimensions.AsQueryable();
+            if (districtId != null && districtId.Length > 0)
+                query = query.Where(x => districtId.Contains(x.LocalEducationAgencyKey));
+
+            return await query.Select(x => new SchoolModel
+            {
+                Id = x.SchoolKey,
+                SchoolName = x.NameOfInstitution,
+                DistrictId = x.LocalEducationAgencyKey,
+                DistrictName = x.LEANameOfInstitution
+            }).OrderBy(x => x.SchoolName).ToListAsync();
         }
     }}

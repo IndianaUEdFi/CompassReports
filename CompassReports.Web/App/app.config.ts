@@ -14,52 +14,52 @@ module App {
 
             $locationProvider.hashPrefix('');
 
-            $mdThemingProvider.definePalette('dark-blue', {
-                '50': '#E0E8ED',
-                '100': '#B3C5D2',
-                '200': '#809FB4',
-                '300': '#4D7896',
-                '400': '#265B80',
-                '500': '#003E69',
-                '600': '#003861',
-                '700': '#003056',
-                '800': '#00284C',
-                '900': '#001B3B',
-                'A100': '#71A3FF',
-                'A200': '#3E81FF',
-                'A400': '#0B60FF',
-                'A700': '#0054F1',
+            $mdThemingProvider.definePalette('primary-color', {
+                '50': '#ff1a1a',
+                '100': '#ff0000',
+                '200': '#e60000',
+                '300': '#cc0000',
+                '400': '#b30000',
+                '500': '#990000',
+                '600': '#800000',
+                '700': '#660000',
+                '800': '#4d0000',
+                '900': '#330000',
+                'A100': '#990000',
+                'A200': '#b30000',
+                'A400': '#cc0000',
+                'A700': '#e60000',
                 'contrastDefaultColor': 'light',
                 'contrastDarkColors': '50 100 200 A100',
                 'contrastStrongLightColors': '300 400'
             });
 
-            $mdThemingProvider.definePalette('dark-yellow', {
-                '50': '#FFF9E2',
-                '100': '#FEF0B7',
+            $mdThemingProvider.definePalette('secondary-color', {
+                '50': '#ffffff',
+                '100': '#ffffff',
                 '200': '#FEE687',
-                '300': '#FEDC57',
-                '400': '#FDD533',
-                '500': '#FDCD0F',
-                '600': '#FDC80D',
-                '700': '#FCC10B',
-                '800': '#FCBA08',
-                '900': '#FCAE04',
-                'A100': '#FEDC57',
-                'A200': '#FDCD0F',
-                'A400': '#FCC10B',
-                'A700': '#FCAE04',
+                '300': '#f3f2f2',
+                '400': '#f3f2f2',
+                '500': '#EDEBEB',
+                '600': '#e7e4e4',
+                '700': '#dbd7d7',
+                '800': '#cfc9c9',
+                '900': '#c2bcbc',
+                'A100': '#EDEBEB',
+                'A200': '#e7e4e4',
+                'A400': '#cfc9c9',
+                'A700': '#b6afaf',
                 'contrastDefaultColor': 'dark',
                 //'contrastDarkColors': '50 100 200 A100',
                 //'contrastStrongLightColors': '300 400'
             });
 
             $mdThemingProvider.theme('compass-reports-theme')
-                .primaryPalette('dark-blue',
+                .primaryPalette('primary-color',
                 {
                     'hue-2': '100'
                 })
-                .accentPalette('dark-yellow',
+                .accentPalette('secondary-color',
                 {
                     'hue-1': '200',
                     'hue-2': '300',

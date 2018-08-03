@@ -19,7 +19,7 @@ module App.Reports.Graduate.Waviers  {
                 {
                     url: '/graduate-waviers',
                     views: {
-                        'report@app.reports': new GraduatesReportView(settings, 'Graduation Waviers', charts)
+                        'report@app.reports': new GraduatesReportView(settings, 'Graduation Waviers', false, charts)
                     }
                 });
         }

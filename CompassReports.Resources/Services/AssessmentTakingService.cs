@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CompassReports.Data;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
@@ -10,11 +12,11 @@ namespace CompassReports.Resources.Services
 {
     public interface IAssessmentTakingService
     {
-        PieChartModel<int> Get(AssessmentFilterModel model);
-        PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentFilterModel model);
-        PercentageTotalBarChartModel ByEthnicity(AssessmentFilterModel model);
-        PercentageTotalBarChartModel ByLunchStatus(AssessmentFilterModel model);
-        PercentageTotalBarChartModel BySpecialEducation(AssessmentFilterModel model);
+        Task<PieChartModel<int>> Get(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model);
+        Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model);
     }
 
     public class AssessmentTakingService : IAssessmentTakingService
@@ -29,60 +31,60 @@ namespace CompassReports.Resources.Services
             _assessmentRepository = assessmentRepository;
         }
 
-        public PieChartModel<int> Get(AssessmentFilterModel model)
+        public async Task<PieChartModel<int>> Get(AssessmentFilterModel model)
         {
-            model.PerformanceKeys = GetPerformanceKeys(model);
-            var chart =  _assessmentPerformanceService.Get(model);
+            model.PerformanceKeys = await GetPerformanceKeys(model);
+            var chart =  await _assessmentPerformanceService.Get(model);
             chart.Title = "Taking " + model.AssessmentTitle + " Exam";
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByEnglishLanguageLearner(AssessmentFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEnglishLanguageLearner(AssessmentFilterModel model)
         {
-            model.PerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceService.ByEnglishLanguageLearner(model);
+            model.PerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceService.ByEnglishLanguageLearner(model);
             chart.Title = "Taking " + model.AssessmentTitle + " Exam By English Language Learner";
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByEthnicity(AssessmentFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByEthnicity(AssessmentFilterModel model)
         {
-            model.PerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceService.ByEthnicity(model);
+            model.PerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceService.ByEthnicity(model);
             chart.Title = "Taking " + model.AssessmentTitle + " Exam By Ethnicity";
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel ByLunchStatus(AssessmentFilterModel model)
+        public async Task<PercentageTotalBarChartModel> ByLunchStatus(AssessmentFilterModel model)
         {
-            model.PerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceService.ByLunchStatus(model);
+            model.PerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceService.ByLunchStatus(model);
             chart.Title = "Taking " + model.AssessmentTitle + " Exam By Free/Reduced Meal Status";
             chart.HideTotal = true;
             return chart;
         }
 
-        public PercentageTotalBarChartModel BySpecialEducation(AssessmentFilterModel model)
+        public async Task<PercentageTotalBarChartModel> BySpecialEducation(AssessmentFilterModel model)
         {
-            model.PerformanceKeys = GetPerformanceKeys(model);
-            var chart = _assessmentPerformanceService.BySpecialEducation(model);
+            model.PerformanceKeys = await GetPerformanceKeys(model);
+            var chart = await _assessmentPerformanceService.BySpecialEducation(model);
             chart.Title = "Taking " + model.AssessmentTitle + " Exam By Special Eduaction";
             chart.HideTotal = true;
             return chart;
         }
 
-        private List<int> GetPerformanceKeys(AssessmentFilterModel model)
+        private async Task<List<int>> GetPerformanceKeys(AssessmentFilterModel model)
         {
-            return _assessmentRepository
+            return await _assessmentRepository
                 .GetAll()
                 .Where(x => x.Assessment.AssessmentTitle == model.AssessmentTitle && x.Assessment.AcademicSubject == model.Subject &&
                     x.Performance.PerformanceLevel.ToLower().Contains("took") || x.Performance.PerformanceLevel.ToLower().Contains("did not take"))
                 .Select(x => x.PerformanceKey)
                 .Distinct()
-                .ToList();
+                .ToListAsync();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using CompassReports.Resources.Services;
@@ -8,8 +10,10 @@ using CompassReports.Resources.Services;
 namespace CompassReports.Web.Controllers
 {
     /// <summary>
-    /// The Students resource endpoint.
+    /// The School resource endpoint.
     /// </summary>
+
+    [RoutePrefix("api/school")]
     public class SchoolController : ApiController
     {
         private readonly ISchoolService _schoolService;
@@ -18,10 +22,10 @@ namespace CompassReports.Web.Controllers
             _schoolService = schoolService;
         }
 
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> GetAll([FromUri] int[] districtId)
         {
-            _schoolService.Get();
-            return Ok();
+            var schools = await _schoolService.GetAll(districtId);
+            return Ok(schools);
         }
     }
 }

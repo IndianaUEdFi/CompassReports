@@ -51,6 +51,12 @@
   <ItemGroup>
     <Compile Include="Models\AssessmentTrendFilterModel.cs" />
     <Compile Include="Models\AssessmentFilterModel.cs" />
+    <Compile Include="Models\EnrollmentTrendGroupByModel.cs" />
+    <Compile Include="Models\EnrollmentGroupByModel.cs" />
+    <Compile Include="Models\GraduateTrendGroupByModel.cs" />
+    <Compile Include="Models\GraduateGroupByModel.cs" />
+    <Compile Include="Models\DistrictModel.cs" />
+    <Compile Include="Models\SchoolModel.cs" />
     <Compile Include="Models\GraduateFilterModel.cs" />
     <Compile Include="Models\PercentageTotalBarChartModel.cs" />
     <Compile Include="Models\LineChartModel.cs" />
@@ -67,10 +73,14 @@
     <Compile Include="Services\AssessmentPerformanceTrendService.cs" />
     <Compile Include="Services\AssessmentPerformanceService.cs" />
     <Compile Include="Services\AssessmentService.cs" />
+    <Compile Include="Services\AssessmentFactService.cs" />
     <Compile Include="Services\AttendanceService.cs" />
     <Compile Include="Services\AttendanceTrendsService.cs" />
     <Compile Include="Services\AssessmentFiltersService.cs" />
     <Compile Include="Services\DemographicFiltersService.cs" />
+    <Compile Include="Services\AttendanceFactService.cs" />
+    <Compile Include="Services\EnrollmentFactService.cs" />
+    <Compile Include="Services\GraduationFactService.cs" />
     <Compile Include="Services\GraduateDiplomaTypeService.cs" />
     <Compile Include="Services\GraduateTrendsService.cs" />
     <Compile Include="Services\GraduateWaiversService.cs" />
@@ -79,6 +89,7 @@
     <Compile Include="Services\EnrollmentService.cs" />
     <Compile Include="Services\EnrollmentFiltersService.cs" />
     <Compile Include="Services\GraduateStatusService.cs" />
+    <Compile Include="Services\DistrictService.cs" />
     <Compile Include="Services\SchoolService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -19,7 +19,7 @@ module App.Reports.Graduate.Status  {
                 {
                     url: '/graduate-status',
                     views: {
-                        'report@app.reports': new GraduatesReportView(settings, 'Graduation Status', charts)
+                        'report@app.reports': new GraduatesReportView(settings, 'Graduation Status', false, charts)
                     }
                 });
         }

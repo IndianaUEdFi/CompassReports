@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading.Tasks;
 using CompassReports.Data;
 using CompassReports.Data.Entities;
 using CompassReports.Resources.Models;
@@ -10,11 +13,11 @@ namespace CompassReports.Resources.Services
 {
     public interface IAssessmentScoreTrendService
     {
-        BarChartModel<int> Get(AssessmentTrendFilterModel model);
-        BarChartModel<int> ByEnglishLanguageLearner(AssessmentTrendFilterModel model);
-        BarChartModel<int> ByEthnicity(AssessmentTrendFilterModel model);
-        BarChartModel<int> ByLunchStatus(AssessmentTrendFilterModel model);
-        BarChartModel<int> BySpecialEducation(AssessmentTrendFilterModel model);
+        Task<BarChartModel<int>> Get(AssessmentTrendFilterModel model);
+        Task<BarChartModel<int>> ByEnglishLanguageLearner(AssessmentTrendFilterModel model);
+        Task<BarChartModel<int>> ByEthnicity(AssessmentTrendFilterModel model);
+        Task<BarChartModel<int>> ByLunchStatus(AssessmentTrendFilterModel model);
+        Task<BarChartModel<int>> BySpecialEducation(AssessmentTrendFilterModel model);
     }
 
     public class AssessmentScoreTrendService : IAssessmentScoreTrendService
@@ -25,29 +28,27 @@ namespace CompassReports.Resources.Services
         {
             _assessmentRepository = assessmentRepository;
         }
+        public class AssessmentScoreTrendGroupBy
+        {
+            public int? ScoreResult { get; set; }
+            public string GroupByProperty { get; set; }
+            public short SchoolYearKey { get; set; }
+            public string SchoolYearDescription { get; set; }
+        }
 
-        public BarChartModel<int> Get(AssessmentTrendFilterModel model)
+        public async Task<BarChartModel<int>> Get(AssessmentTrendFilterModel model)
         {
             var query = BaseQuery(model);
 
-            var results = query.GroupBy(x => new { x.Performance.ScoreResult, x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription })
+            var results = await query.GroupBy(x => new { x.Performance.ScoreResult, x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription })
                 .Select(x => new
                 {
-                    ScoreResult = x.Key.ScoreResult,
+                    ScoreResult = x.Key.ScoreResult.HasValue ? x.Key.ScoreResult.Value : 0,
                     SchoolYearDescription = x.Key.SchoolYearDescription,
                     SchoolYear = x.Key.SchoolYearKey,
                     Total = x.Sum(y => y.AssessmentStudentCount)
                 })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
-                })
-                .OrderBy(x => x.SchoolYear)
-                .ToList();
+                .ToListAsync();
 
             var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
             var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
@@ -77,244 +78,60 @@ namespace CompassReports.Resources.Services
             };
         }
 
-        public BarChartModel<int> ByEnglishLanguageLearner(AssessmentTrendFilterModel model)
+        public async Task<BarChartModel<int>> ByEnglishLanguageLearner(AssessmentTrendFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.EnglishLanguageLearnerStatus })
-                .Select(x => new
+            var groupings = BaseQuery(model)
+                .GroupBy(x => new AssessmentScoreTrendGroupBy
                 {
-                    ScoreResult = x.Key.ScoreResult,
-                    EnglishLanguageLearnerStatus = x.Key.EnglishLanguageLearnerStatus,
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
-                    EnglishLanguageLearnerStatus = x.EnglishLanguageLearnerStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
-                })
-                .OrderBy(x => x.EnglishLanguageLearnerStatus)
-                .ToList();
+                    SchoolYearKey = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    ScoreResult = x.Performance.ScoreResult,
+                    GroupByProperty = x.Demographic.EnglishLanguageLearnerStatus
+                });
 
-            var statuses = results.Select(x => x.EnglishLanguageLearnerStatus).Distinct().OrderBy(x => x).ToList();
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
-            var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
-
-            var data = new List<List<int>>();
-            foreach (var ethnicity in statuses)
-            {
-                var values = new List<int>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var resultTotal = results.Where(x => x.EnglishLanguageLearnerStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.ScoreResult * x.Total);
-                    var totalParticipants = results.Where(x => x.EnglishLanguageLearnerStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.Total);
-
-                    var averageScore = (totalParticipants == 0) ? 0 : resultTotal / totalParticipants;
-                    values.Add(averageScore);
-                }
-                data.Add(values);
-            }
-
-            var headers = new List<string> { "", "Assessment" };
-            headers.AddRange(schoolYearDescriptions);
-
-            return new BarChartModel<int>
-            {
-                Title = "Average Score Trend By English Language Learner",
-                TotalRowTitle = "Average Score",
-                Headers = headers,
-                Labels = schoolYearDescriptions,
-                Series = statuses,
-                Data = data,
-                ShowChart = true,
-                HideTotal = true,
-            };
+            return await CreateChart(groupings, "English Language Learner");
         }
 
-        public BarChartModel<int> ByEthnicity(AssessmentTrendFilterModel model)
+        public async Task<BarChartModel<int>> ByEthnicity(AssessmentTrendFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.Ethnicity })
-                .Select(x => new
+            var groupings = BaseQuery(model)
+                .GroupBy(x => new AssessmentScoreTrendGroupBy
                 {
-                    ScoreResult = x.Key.ScoreResult,
-                    Ethnicity = x.Key.Ethnicity,
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
-                    Ethnicity = x.Ethnicity,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
-                })
-                .OrderBy(x => x.Ethnicity)
-                .ToList();
+                    SchoolYearKey = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    ScoreResult = x.Performance.ScoreResult,
+                    GroupByProperty = x.Demographic.Ethnicity
+                });
 
-            var ethnicities = results.Select(x => x.Ethnicity).Distinct().OrderBy(x => x).ToList();
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
-            var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
-
-            var data = new List<List<int>>();
-            foreach (var ethnicity in ethnicities)
-            {
-                var values = new List<int>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var resultTotal = results.Where(x => x.Ethnicity == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.ScoreResult * x.Total);
-                    var totalParticipants = results.Where(x => x.Ethnicity == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.Total);
-
-                    var averageScore = (totalParticipants == 0) ? 0 : resultTotal / totalParticipants;
-                    values.Add(averageScore);
-                }
-                data.Add(values);
-            }
-
-            var headers = new List<string> { "", "Assessment" };
-            headers.AddRange(schoolYearDescriptions);
-
-            return new BarChartModel<int>
-            {
-                Title = "Average Score Trend By Ethnicity",
-                TotalRowTitle = "Average Score",
-                Headers = headers,
-                Labels = schoolYearDescriptions,
-                Series = ethnicities,
-                Data = data,
-                ShowChart = true,
-                HideTotal = true,
-            };
+            return await CreateChart(groupings, "Ethnicity");
         }
 
-        public BarChartModel<int> ByLunchStatus(AssessmentTrendFilterModel model)
+        public async Task<BarChartModel<int>> ByLunchStatus(AssessmentTrendFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.FreeReducedLunchStatus })
-                .Select(x => new
+            var groupings = BaseQuery(model)
+                .GroupBy(x => new AssessmentScoreTrendGroupBy
                 {
-                    ScoreResult = x.Key.ScoreResult,
-                    FreeReducedLunchStatus = x.Key.FreeReducedLunchStatus,
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
-                    FreeReducedLunchStatus = x.FreeReducedLunchStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
-                })
-                .OrderBy(x => x.FreeReducedLunchStatus)
-                .ToList();
+                    SchoolYearKey = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    ScoreResult = x.Performance.ScoreResult,
+                    GroupByProperty = x.Demographic.FreeReducedLunchStatus
+                });
 
-            var statuses = results.Select(x => x.FreeReducedLunchStatus).Distinct().OrderBy(x => x).ToList();
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
-            var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
-
-            var data = new List<List<int>>();
-            foreach (var ethnicity in statuses)
-            {
-                var values = new List<int>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var resultTotal = results.Where(x => x.FreeReducedLunchStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.ScoreResult * x.Total);
-                    var totalParticipants = results.Where(x => x.FreeReducedLunchStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.Total);
-
-                    var averageScore = (totalParticipants == 0) ? 0 : resultTotal / totalParticipants;
-                    values.Add(averageScore);
-                }
-                data.Add(values);
-            }
-
-            var headers = new List<string> { "", "Assessment" };
-            headers.AddRange(schoolYearDescriptions);
-
-            return new BarChartModel<int>
-            {
-                Title = "Average Score Trend By Free/Reduced Lunch Status",
-                TotalRowTitle = "Average Score",
-                Headers = headers,
-                Labels = schoolYearDescriptions,
-                Series = statuses,
-                Data = data,
-                ShowChart = true,
-                HideTotal = true,
-            };
+            return await CreateChart(groupings, "Free/Reduced Lunch Status");
         }
 
-        public BarChartModel<int> BySpecialEducation(AssessmentTrendFilterModel model)
+        public async Task<BarChartModel<int>> BySpecialEducation(AssessmentTrendFilterModel model)
         {
-            var query = BaseQuery(model);
-
-            var results = query.GroupBy(x => new { x.SchoolYearKey, x.SchoolYearDimension.SchoolYearDescription, x.Performance.ScoreResult, x.Demographic.SpecialEducationStatus })
-                .Select(x => new
+            var groupings = BaseQuery(model)
+                .GroupBy(x => new AssessmentScoreTrendGroupBy
                 {
-                    ScoreResult = x.Key.ScoreResult,
-                    SpecialEducationStatus = x.Key.SpecialEducationStatus,
-                    SchoolYear = x.Key.SchoolYearKey,
-                    SchoolYearDescription = x.Key.SchoolYearDescription,
-                    Total = x.Sum(y => y.AssessmentStudentCount)
-                })
-                .ToList()
-                .Select(x => new
-                {
-                    ScoreResult = x.ScoreResult.HasValue ? 0 : x.ScoreResult.Value,
-                    SpecialEducationStatus = x.SpecialEducationStatus,
-                    SchoolYear = x.SchoolYear,
-                    SchoolYearDescription = x.SchoolYearDescription,
-                    Total = x.Total
-                })
-                .OrderBy(x => x.SpecialEducationStatus)
-                .ToList();
+                    SchoolYearKey = x.SchoolYearKey,
+                    SchoolYearDescription = x.SchoolYearDimension.SchoolYearDescription,
+                    ScoreResult = x.Performance.ScoreResult,
+                    GroupByProperty = x.Demographic.SpecialEducationStatus
+                });
 
-            var statuses = results.Select(x => x.SpecialEducationStatus).Distinct().OrderBy(x => x).ToList();
-            var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
-            var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
-
-            var data = new List<List<int>>();
-            foreach (var ethnicity in statuses)
-            {
-                var values = new List<int>();
-                foreach (var schoolYear in schoolYears)
-                {
-                    var resultTotal = results.Where(x => x.SpecialEducationStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.ScoreResult * x.Total);
-                    var totalParticipants = results.Where(x => x.SpecialEducationStatus == ethnicity && x.SchoolYear == schoolYear).Sum(x => x.Total);
-
-                    var averageScore = (totalParticipants == 0) ? 0 : resultTotal / totalParticipants;
-                    values.Add(averageScore);
-                }
-                data.Add(values);
-            }
-
-            var headers = new List<string> { "", "Assessment" };
-            headers.AddRange(schoolYearDescriptions);
-
-            return new BarChartModel<int>
-            {
-                Title = "Average Score Trend By Special Education",
-                TotalRowTitle = "Average Score",
-                Headers = headers,
-                Labels = schoolYearDescriptions,
-                Series = statuses,
-                Data = data,
-                ShowChart = true,
-                HideTotal = true,
-            };
+            return await CreateChart(groupings, "Special Education");
         }
 
         private IQueryable<AssessmentFact> BaseQuery(AssessmentTrendFilterModel model)
@@ -344,6 +161,55 @@ namespace CompassReports.Resources.Services
                 query = query.Where(x => model.SpecialEducationStatuses.Contains(x.Demographic.SpecialEducationStatus));
 
             return query;
+        }
+
+        private async Task<BarChartModel<int>> CreateChart(IQueryable<IGrouping<AssessmentScoreTrendGroupBy, AssessmentFact>> groupings, string type)
+        {
+            var results = await groupings
+                .Select(x => new
+                {
+                    ScoreResult = x.Key.ScoreResult.HasValue ? x.Key.ScoreResult.Value : 0,
+                    GroupByProperty = x.Key.GroupByProperty,
+                    SchoolYear = x.Key.SchoolYearKey,
+                    SchoolYearDescription = x.Key.SchoolYearDescription,
+                    Total = x.Sum(y => y.AssessmentStudentCount)
+                })
+                .OrderBy(x => x.GroupByProperty)
+                .ToListAsync();
+
+            var properties = results.Select(x => x.GroupByProperty).Distinct().OrderBy(x => x).ToList();
+            var schoolYears = results.Select(x => x.SchoolYear).Distinct().OrderBy(x => x).ToList();
+            var schoolYearDescriptions = results.Select(x => new { y = x.SchoolYear, d = x.SchoolYearDescription }).Distinct().OrderBy(x => x.y).Select(x => x.d).ToList();
+
+            var data = new List<List<int>>();
+            foreach (var property in properties)
+            {
+                var values = new List<int>();
+                foreach (var schoolYear in schoolYears)
+                {
+                    var resultTotal = results.Where(x => x.GroupByProperty == property && x.SchoolYear == schoolYear).Sum(x => x.ScoreResult * x.Total);
+                    var totalParticipants = results.Where(x => x.GroupByProperty == property && x.SchoolYear == schoolYear).Sum(x => x.Total);
+
+                    var averageScore = (totalParticipants == 0) ? 0 : resultTotal / totalParticipants;
+                    values.Add(averageScore);
+                }
+                data.Add(values);
+            }
+
+            var headers = new List<string> { "", "Assessment" };
+            headers.AddRange(schoolYearDescriptions);
+
+            return new BarChartModel<int>
+            {
+                Title = "Average Score Trend By " + type,
+                TotalRowTitle = "Average Score",
+                Headers = headers,
+                Labels = schoolYearDescriptions,
+                Series = properties,
+                Data = data,
+                ShowChart = true,
+                HideTotal = true,
+            };
         }
     }
 }

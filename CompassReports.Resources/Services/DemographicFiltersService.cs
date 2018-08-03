@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CompassReports.Data;
-using CompassReports.Data.Context;
 using CompassReports.Data.Entities;
-using CompassReports.Resources.Models;
 
 namespace CompassReports.Resources.Services
 {
     public interface IDemographicFiltersService
     {
-        List<string> GetEnglishLanguageLearnerStatuses();
-        List<string> GetEthnicities();
-        List<string> GetGrades();
-        List<string> GetLunchStatuses();
-        List<string> GetSpecialEducationStatuses();
+        Task<List<string>> GetEnglishLanguageLearnerStatuses();
+        Task<List<string>> GetEthnicities();
+        Task<List<string>> GetGrades();
+        Task<List<string>> GetLunchStatuses();
+        Task<List<string>> GetSpecialEducationStatuses();
     }
 
     public class DemographicFiltersService : IDemographicFiltersService
@@ -27,28 +25,28 @@ namespace CompassReports.Resources.Services
         {
             _demographicJunkRepository = demographicJunkRepository;
         }
-        public List<string> GetEnglishLanguageLearnerStatuses()
+        public async Task<List<string>> GetEnglishLanguageLearnerStatuses()
         {
-            return _demographicJunkRepository.GetAll().Select(x => x.EnglishLanguageLearnerStatus).Distinct().OrderBy(x => x).ToList();
+            return await _demographicJunkRepository.GetAll().Select(x => x.EnglishLanguageLearnerStatus).Distinct().OrderBy(x => x).ToListAsync();
         }
-        public List<string> GetEthnicities()
+        public async Task<List<string>> GetEthnicities()
         {
-            return _demographicJunkRepository.GetAll().Select(x => x.Ethnicity).Distinct().OrderBy(x => x).ToList();
-        }
-
-        public List<string> GetGrades()
-        {
-            return _demographicJunkRepository.GetAll().Select(x => new { x.GradeLevel, x.GradeLevelSort}).Distinct().OrderBy(x => x.GradeLevelSort).Select(x => x.GradeLevel).ToList();
+            return await _demographicJunkRepository.GetAll().Select(x => x.Ethnicity).Distinct().OrderBy(x => x).ToListAsync();
         }
 
-        public List<string> GetLunchStatuses()
+        public async Task<List<string>> GetGrades()
         {
-            return _demographicJunkRepository.GetAll().Select(x => x.FreeReducedLunchStatus).Distinct().OrderBy(x => x).ToList();
+            return await _demographicJunkRepository.GetAll().Select(x => new { x.GradeLevel, x.GradeLevelSort}).Distinct().OrderBy(x => x.GradeLevelSort).Select(x => x.GradeLevel).ToListAsync();
         }
 
-        public List<string> GetSpecialEducationStatuses()
+        public async Task<List<string>> GetLunchStatuses()
         {
-            return _demographicJunkRepository.GetAll().Select(x => x.SpecialEducationStatus).Distinct().OrderBy(x => x).ToList();
+            return await _demographicJunkRepository.GetAll().Select(x => x.FreeReducedLunchStatus).Distinct().OrderBy(x => x).ToListAsync();
+        }
+
+        public async Task<List<string>> GetSpecialEducationStatuses()
+        {
+            return await _demographicJunkRepository.GetAll().Select(x => x.SpecialEducationStatus).Distinct().OrderBy(x => x).ToListAsync();
         }
     }
 }

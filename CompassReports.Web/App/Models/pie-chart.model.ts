@@ -41,7 +41,7 @@
             this.Options = {
                 responsive: true,
                 maintainAspectRatio: false,
-                legend: { display: true, position: 'left' },
+                legend: { display: true, position: 'bottom' },
                 tooltips: {
                     callbacks: {
                         label: (tooltipItem, data) => {

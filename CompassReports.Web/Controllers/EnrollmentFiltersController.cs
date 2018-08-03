@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using CompassReports.Resources.Services;
@@ -21,9 +22,9 @@ namespace CompassReports.Web.Controllers
 
         [Route("school-years")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetSchoolYears()
+        public async Task<IHttpActionResult> GetSchoolYears()
         {
-            var years = _enrollmentFiltersService.GetSchoolYears();
+            var years = await _enrollmentFiltersService.GetSchoolYears();
             return Ok(years);
         }
     }

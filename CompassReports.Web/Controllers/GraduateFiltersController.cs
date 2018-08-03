@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using CompassReports.Resources.Services;
@@ -21,17 +22,17 @@ namespace CompassReports.Web.Controllers
 
         [Route("cohorts")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetCohorts(short? expectedGraduationYear = null)
+        public async Task<IHttpActionResult> GetCohorts(short? expectedGraduationYear = null)
         {
-            var cohorts = _graduateFiltersService.GetCohorts(expectedGraduationYear);
+            var cohorts = await _graduateFiltersService.GetCohorts(expectedGraduationYear);
             return Ok(cohorts);
         }
 
         [Route("school-years")]
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetSchoolYears()
+        public async Task<IHttpActionResult> GetSchoolYears()
         {
-            var years = _graduateFiltersService.GetSchoolYears();
+            var years = await _graduateFiltersService.GetSchoolYears();
             return Ok(years);
         }
     }

@@ -87,7 +87,7 @@ namespace CompassReports.Resources.Services
                     SortOrder = x.Demographic.SpecialEducationStatus
                 });
 
-            return await _enrollmentFactService.CreateChart(groupings, "Special Education Status", "Sepcial Education");
+            return await _enrollmentFactService.CreateChart(groupings, "Special Education Status", "Special Education");
         }
     }
 }

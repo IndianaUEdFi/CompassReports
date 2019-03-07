@@ -50,7 +50,7 @@ module App {
                 stateAuthorizeStartEvent();
             });
 
-            $rootScope.title = "INSITE Compass";
+            $rootScope.title = "INsite Compass";
         }
     }
     
